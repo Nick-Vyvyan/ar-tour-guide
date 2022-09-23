@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>576</x>
+      <y>144</y>
+      <w>324</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>_SculptureData_
+--
+- title : String
+- description : String
+- audioDescription : File
+- url : String
+--
++ SculptureData(title, description, audioDescription, url)
++ getTitle() : String
++ getDescription() : String
++ getAudioDescription() : File
++ getURL() : String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>621</x>
+      <y>378</y>
+      <w>216</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+_BuildingType_
+--
+Academic, CampusServices, Library, 
+Administration</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>207</x>
+      <y>144</y>
+      <w>351</w>
+      <h>351</h>
+    </coordinates>
+    <panel_attributes>_BuildingData_
+--
+- title : String
+- code : String
+- types : BuildingType[]
+- departments : HashMap&lt;name: String, url: String&gt;
+- accessibilityInfo : String
+- genderNeutralRestrooms : String
+- computerLabs : String
+- parkingInfo : String
+- url : String
+- 
+--
++ BuildingData(title, code, types, departments, 
+                         accessibilityInfo, genderNeutralRestrooms, 
+                         computerLabs, url)
++ getTitle() : String
++ getCode() : String
++ getTypes() : BuildingType[]
++ getDepartments() : HashMap&lt;name: String, url: String&gt;
++ getAccessibilityInfo() : String
++ getGenderNeutralRestrooms() : String
++ getComputerLabs() : String
++ getParkingInfo() : String
++ getURL() : String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>576</y>
+      <w>198</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>_Controller_
+--
+- server : TBD
+- model : Model
+- view : View
+- user : User
+--
++ Controller(server, view)
++ getBuildingData(url: String)
++ getSculptureData(url: String)
++ updateView()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>207</x>
+      <y>702</y>
+      <w>198</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>_Entity_
+--
+- name : String
+- id : Long
+- perimeter : Point[]
+- url : String
+--
++ Entity(name, id, url)
++ setPerimeter(points: Point[])
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>207</x>
+      <y>576</y>
+      <w>324</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>_Model_
+--
+- entities : ArrayList&lt;Entity&gt;
+--
++ Model()
++ addEntity(entity: Entity)
++ getEntitiesInView(userOrientation): ArrayList&lt;Entity&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>756</x>
+      <y>585</y>
+      <w>297</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>_View_
+--
+- UI data
+--
++ View()
++ displayBuildingData(data: BuildingData)
++ displaySculptureData(data: BuildingData)
++ displayEntityTooltips(entitiesInView)
+- entityPressed()
+- update()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>756</y>
+      <w>180</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>_User_
+--
+- orientation: Orientation
+--
++ User()
++ getOrientation(): Orientation
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>765</x>
+      <y>774</y>
+      <w>189</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>_Orientation_
+--
+- rotation : float[]
+- location : float[]
+--
++ getRotation(): float[]
++ getLocation(): float[]
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
