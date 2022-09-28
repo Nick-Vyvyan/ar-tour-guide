@@ -6,7 +6,7 @@ describe('webparsing', () => {
     const returnedData = parse('./tests/unit/webscrapingTestAssets/AHTest.html')
     const expectedData = {
       buildingName: 'Arntzen Hall',
-      buildingType: ['Academic', 'Campus Services'],
+      buildingTypes: ['Academic', 'Campus Services'],
       floorplanLink: 'https://cpd.wwu.edu/files/2020-04/AH.pdf',
       departmentsOffices: ['Anthropology', 'Environmental Studies', 'Urban and Environmental Planning and Policy', 'Political Science', 'Sociology'],
       computerLabs: ['AH 01 (Sociology)', 'AH 02', 'AH 05', 'AH 16 (Spatial Analysis Lab)'],
@@ -19,7 +19,7 @@ describe('webparsing', () => {
     const returnedData = parse('./tests/unit/webscrapingTestAssets/BHTest.html')
     const expectedData = {
       buildingName: 'Bond Hall',
-      buildingType: ['Academic'],
+      buildingTypes: ['Academic'],
       floorplanLink: 'https://cpd.wwu.edu/files/2020-04/BH.pdf',
       departmentsOffices: null,
       computerLabs: ['BH 319'],
@@ -32,7 +32,7 @@ describe('webparsing', () => {
     const returnedData = parse('./tests/unit/webscrapingTestAssets/PATest.html')
     const expectedData = {
       buildingName: 'Performing Arts Center',
-      buildingType: ['Academic', 'Events'],
+      buildingTypes: ['Academic', 'Events'],
       floorplanLink: 'https://cpd.wwu.edu/files/2020-01/PA.pdf',
       departmentsOffices: ['Box Office', 'College of Fine and Performing Arts', 'Music', 'Music Library', 'Dance'],
       computerLabs: null,
@@ -45,7 +45,7 @@ describe('webparsing', () => {
     const returnedData = parse('./tests/unit/webscrapingTestAssets/RDTest.html')
     const expectedData = {
       buildingName: 'Ridgeway Delta',
-      buildingType: ['University Residence'],
+      buildingTypes: ['University Residence'],
       floorplanLink: 'https://cpd.wwu.edu/files/2020-01/RD.pdf',
       departmentsOffices: null,
       computerLabs: ['See Ridgeway Commons and Ridgeway Sigma'],
@@ -58,7 +58,7 @@ describe('webparsing', () => {
     const returnedData = parse('./tests/unit/webscrapingTestAssets/VUTest.html')
     const expectedData = {
       buildingName: 'Viking Union',
-      buildingType: ['Campus Services', 'Events'],
+      buildingTypes: ['Campus Services', 'Events'],
       floorplanLink: 'https://cpd.wwu.edu/files/2020-01/VU.pdf',
       departmentsOffices: ['Associated Students', 'Bookstore, Associated Students', 'Ethnic Student Center', 'LGBTQ+ Western', 'Office of Student Life', 'Off Campus Living', 'Outdoor Center', 'Student Advocacy and Identity Resource Center'],
       computerLabs: null,
