@@ -34,6 +34,7 @@ const PanelView = (props) => {
           <Row>
             <Col>
               <Form.Control
+                required
                 type="text"
                 placeholder="Enter GPS x-coordinate..."
                 value={xCoord}
@@ -45,6 +46,7 @@ const PanelView = (props) => {
             </Col>
             <Col>
               <Form.Control
+                required
                 type="text"
                 placeholder="Enter GPS y-coordinate..."
                 value={yCoord}
@@ -60,6 +62,7 @@ const PanelView = (props) => {
         <Form.Group className="mb-3">
           <Form.Label>Website Link</Form.Label>
           <Form.Control
+            required
             type="text"
             placeholder="Paste link of website to scrape..."
             value={websiteLink}

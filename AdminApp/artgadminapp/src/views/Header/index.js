@@ -13,7 +13,33 @@ const Header = () => {
   return (
     <Navbar fixed="top" expand="lg" bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand>AR Tour Guide Admin Panel</Navbar.Brand>
+        <Navbar.Brand>
+          <span className="align-middle">
+            <a
+              href="/"
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <img
+                alt="Logo"
+                src="/Logo.png"
+                width="30"
+                height="30"
+                style={{ borderRadius: "50%", border: "solid white 2px" }}
+                className="d-inline-block align-top"
+              />{" "}
+              <span
+                style={{
+                  paddingLeft: "5px",
+                }}
+              >
+                AR Tour Guide Admin Panel
+              </span>
+            </a>
+          </span>
+        </Navbar.Brand>
         {user && (
           <Navbar.Collapse className="justify-content-end">
             <Button variant="primary" onClick={() => logout()}>
