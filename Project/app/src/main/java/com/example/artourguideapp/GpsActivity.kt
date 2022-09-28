@@ -2,11 +2,18 @@ package com.example.artourguideapp
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
+import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
@@ -20,7 +27,7 @@ private const val DEFAULT_UPDATE_INTERVAL : Long = 30
 private const val FAST_UPDATE_INTERVAL : Long = 5
 private const val PERMISSIONS_FINE_LOCATION = 101
 
-class GpsActivity : AppCompatActivity() {
+class GpsActivity : AppCompatActivity(), SensorEventListener {
 
     // Text View UI Elements
     lateinit var tv_lat : TextView
@@ -30,13 +37,18 @@ class GpsActivity : AppCompatActivity() {
     lateinit var tv_speed : TextView
     lateinit var tv_sensor : TextView
     lateinit var tv_updates : TextView
-    lateinit var tv_address : TextView
+    lateinit var tv_heading : TextView
 
     // Switch UI Elements
     lateinit var sw_locationupdates : Switch
     lateinit var sw_gps : Switch
 
     var updateOn : Boolean = false
+
+    // Used for compass
+    lateinit var iv_compass : ImageView
+    lateinit var sensorManager: SensorManager
+    var degreeStart : Float = 0f
 
     // Location Request is config file for settings of FusedLocationProviderClient
     lateinit var locationRequest : LocationRequest
@@ -60,11 +72,15 @@ class GpsActivity : AppCompatActivity() {
         tv_speed = findViewById(R.id.tv_speed)
         tv_updates = findViewById(R.id.tv_updates)
         tv_sensor = findViewById(R.id.tv_sensor)
-        tv_address = findViewById(R.id.tv_address)
+        tv_heading = findViewById(R.id.tv_heading)
 
         sw_locationupdates = findViewById(R.id.sw_locationsupdates)
         sw_gps = findViewById(R.id.sw_gps)
 
+        iv_compass = findViewById(R.id.iv_compass)
+
+        // initialize sensor manager
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
         // set properties of location request
         locationRequest = LocationRequest()
@@ -147,7 +163,7 @@ class GpsActivity : AppCompatActivity() {
         tv_lat.text = "Not Tracking Location"
         tv_lon.text = "Not Tracking Location"
         tv_speed.text = "Not Tracking Location"
-        tv_address.text = "Not Tracking Location"
+        tv_heading.text = "Not Tracking Location"
         tv_accuracy.text = "Not Tracking Location"
         tv_altitude.text = "Not Tracking Location"
 
@@ -175,6 +191,18 @@ class GpsActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        sensorManager.unregisterListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_GAME)
     }
 
     private fun updateGPS() {
@@ -221,6 +249,36 @@ class GpsActivity : AppCompatActivity() {
         else {
             tv_altitude.text = "Not Available"
         }
+    }
+
+    override fun onSensorChanged(p0: SensorEvent?) {
+        if (p0 is SensorEvent) {
+            // get roation data from sensor and convert to degrees
+            var degree : Float = Math.toDegrees(p0.values[2].toDouble()).toFloat()
+
+            tv_heading.text = degree.toString() + " degrees"
+
+            // initialize a rotation animation
+            var ra : RotateAnimation = RotateAnimation(
+                degreeStart,
+                -degree,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+            )
+            // set animation rules
+            ra.fillAfter = true
+            ra.duration = 210
+
+            // start animation and update starting rotation
+            iv_compass.startAnimation(ra)
+            degreeStart = -degree
+        }
+
+
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        // do nothing
     }
 
 

@@ -148,20 +148,29 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_labelupdates" />
 
     <TextView
-        android:id="@+id/tv_address"
+        android:id="@+id/tv_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/tv_lbladdress"
-        app:layout_constraintTop_toTopOf="@+id/tv_lbladdress" />
+        app:layout_constraintStart_toEndOf="@+id/tv_lblheading"
+        app:layout_constraintTop_toTopOf="@+id/tv_lblheading" />
 
     <TextView
-        android:id="@+id/tv_lbladdress"
+        android:id="@+id/tv_lblheading"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Address:"
+        android:text="Heading:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_labelspeed" />
+
+    <ImageView
+        android:id="@+id/iv_compass"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/compass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lblheading" />
 
     <View
         android:id="@+id/divider"
@@ -169,7 +178,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="32dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@+id/tv_address"
+        app:layout_constraintTop_toBottomOf="@+id/iv_compass"
         tools:layout_editor_absoluteX="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
