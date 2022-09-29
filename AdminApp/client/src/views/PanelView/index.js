@@ -11,7 +11,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 // other imports
-const { parseFromURL } = require("./../../../src/scripts/PageParser");
+const { parseWeb } = require("./../../../src/scripts/PageParser");
 const axios = require("axios").default;
 
 const PanelView = (props) => {
@@ -21,9 +21,14 @@ const PanelView = (props) => {
   if (user === null || user === undefined)
     return <Navigate to={{ pathname: "/login" }} />;
 
+  // const baseServerURL = "http://localhost:5000/";
+  const baseServerURL =
+    "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+
   // eslint-disable-next-line
   const [error, setError] = useState(null);
   const [websiteLink, setWebsiteLink] = useState("");
+  const [scrapedData, setScrapedData] = useState();
 
   // center point for WWU on Google map
   const wwuCenter = useMemo(
@@ -42,11 +47,11 @@ const PanelView = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // forward request to server to bypass cors restrictions
     axios
-      .get(websiteLink, { headers: { "Access-Control-Allow-Origin": "*" } })
+      .get(baseServerURL, { headers: { websiteLink: websiteLink } })
       .then((res) => {
-        const returnedData = parseFromURL(res.data);
-        console.log(returnedData);
+        setScrapedData(parseWeb(res.data));
       })
       .catch((err) => console.error(err));
   };
@@ -87,6 +92,20 @@ const PanelView = (props) => {
         </Button>
       </Form>
       <br />
+
+      {scrapedData && (
+        <>
+          <u>Your scraped data is:</u>
+          {Object.keys(scrapedData).map((key, index) => {
+            return (
+              <div key={index}>
+                {key}: {scrapedData[key]}
+              </div>
+            );
+          })}
+          <br />
+        </>
+      )}
 
       {/* display all errors */}
       {error && <Error error={error} />}

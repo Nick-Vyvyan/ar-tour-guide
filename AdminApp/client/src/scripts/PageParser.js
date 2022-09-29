@@ -1,5 +1,4 @@
 const fs = require("fs");
-// const axios = require("axios").default;
 
 function parse(page) {
   const output = {};
@@ -83,16 +82,12 @@ function parse(page) {
     });
   }
 
-  // console.log('output')
   return output;
 }
 
-function parseFromURL(data) {
+function parseWeb(data) {
   const output = {};
-  // axios
-  //   .get(data, { headers: { "Access-Control-Allow-Origin": "*" } })
-  //   .then((res) => {
-  // get general building info
+
   output.buildingName = getContentBetweenTags(
     "<span>",
     "</span>",
@@ -170,10 +165,7 @@ function parseFromURL(data) {
     });
   }
 
-  // console.log('output')
   return output;
-  // })
-  // .catch((err) => console.error(err));
 }
 
 // returns string between two user provided tags in data
@@ -294,4 +286,4 @@ function removeTagsFromString(data) {
   return retString;
 }
 
-module.exports = { parse, parseFromURL };
+module.exports = { parse, parseWeb };
