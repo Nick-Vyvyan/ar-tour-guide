@@ -53,7 +53,7 @@ const PanelView = (props) => {
           <Form.Control
             required
             type="text"
-            placeholder="Paste link of website to scrape..."
+            placeholder="Paste link of website to scrape for building/landmark info..."
             value={websiteLink}
             onChange={(e) => {
               try {
