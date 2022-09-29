@@ -30,20 +30,22 @@ function parse (page) {
   }
 
   // get Departments and Offices
-  const departmentOfficeElements = getDivListContent(
-    'class="field-item"><a href="/taxonomy',
+  const departmentsOfficesElements = getDivListContent(
+    'href="https://www.wwu.edu/taxonomy',
     data
   )
 
-  departmentOfficeElements.forEach(
-    (s, i, arr) =>
-      (arr[i] = s.substring(26).substring(0, s.substring(26).search('<')))
-  )
+  if (departmentsOfficesElements) {
+    departmentsOfficesElements.forEach(
+      (s, i, arr) =>
+        (arr[i] = s.substring(s.search('>') + 1).substring(0, s.substring(s.search('>') + 1).search('<')).trim())
+    )
+  }
 
-  output.departmentOffices = departmentOfficeElements
+  output.departmentsOffices = departmentsOfficesElements
 
   // get computer labs
-  output.computerLabs = getListContent(
+  output.computerLabs = getValuesAsList(
     getContentBetweenTags(
       '<div class="field field--name-field-computer-labs field--type-text-long field--label-hidden field-item">',
       '</div>',
@@ -51,7 +53,15 @@ function parse (page) {
     )
   )
 
-  const diningData = getListContent(
+  if (!output.computerLabs) {
+    output.computerLabs = []
+  }
+
+  output.computerLabs.forEach((v, i, arr) => {
+    arr[i] = removeTagsFromString(v)
+  })
+
+  const diningData = getValuesAsList(
     getContentBetweenTags(
       '<div class="field field--name-field-dining field--type-text-long field--label-hidden field-item">',
       '</div>',
@@ -61,17 +71,19 @@ function parse (page) {
 
   output.dining = []
 
-  diningData.forEach((v) => {
-    const diningLink = getContentBetweenTags('<a href="', '">', v)
-    const diningName = getContentBetweenTags('">', '</a>', v)
-    output.dining.push([diningName, diningLink])
-  })
+  if (diningData) {
+    diningData.forEach((v) => {
+      const diningLink = getContentBetweenTags('href="', '">', v)
+      const diningName = getContentBetweenTags('">', '</a>', v).trim()
+      output.dining.push([diningName, diningLink])
+    })
+  }
 
   // console.log('output')
-  // console.log(output)
   return output
 }
 
+// returns string between two user provided tags in data
 function getContentBetweenTags (tag1, tag2, data) {
   if (data === null) {
     return null
@@ -94,6 +106,24 @@ function getContentBetweenTags (tag1, tag2, data) {
   return data
 }
 
+// gets values from list if list of content,
+// otherwise gets singular value from between element tags
+function getValuesAsList (data) {
+  if (data === null) {
+    return null
+  }
+
+  if (data.search('<li>') > -1) {
+    return getListContent(data)
+  } else {
+    // returns data between first and last tag
+    const firstTag = data.substring(0, data.search('>') + 1)
+    const lastTag = data.substring(data.length - firstTag.length - 1)
+    return [getContentBetweenTags(firstTag, lastTag, data)]
+  }
+}
+
+// get content between li tags in an unordered list
 function getListContent (data) {
   const ret = []
 
@@ -103,7 +133,7 @@ function getListContent (data) {
     return null
   }
 
-  while (listElements.indexOf('<li>') > 0) {
+  while (listElements.indexOf('<li>') >= 0) {
     ret.push(
       listElements.substring(
         listElements.indexOf('<li>') + 4,
@@ -116,6 +146,8 @@ function getListContent (data) {
   return ret
 }
 
+// gets preceding tag - will only return
+// parent if element is single child
 function getParentTag (content, data) {
   const entry = data.search(content)
 
@@ -130,10 +162,16 @@ function getParentTag (content, data) {
   return data.substring(mod, entry)
 }
 
+// get content from div constructed from list
 function getDivListContent (entryTag, data) {
   const temp = []
 
   const entry = data.search(entryTag)
+
+  if (entry < 0) {
+    return []
+  }
+
   data = data.substring(entry + entryTag.length)
   let search = data.search(entryTag)
   while (search !== -1) {
@@ -145,6 +183,22 @@ function getDivListContent (entryTag, data) {
   temp.push(data)
 
   return temp
+}
+
+// removes all html opening and closing tags from string
+// does not work for nested tags
+function removeTagsFromString (data) {
+  if (data.search('<') < 0) {
+    return data
+  }
+
+  let retString = ''
+  while (data.search('<') > -1) {
+    retString += data.substring(0, data.search('<'))
+    data = data.substring(data.search('>') + 1)
+  }
+
+  return retString
 }
 
 module.exports = { parse }
