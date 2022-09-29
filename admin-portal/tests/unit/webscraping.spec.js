@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const { parse } = require('./../../src/scripts/PageParser')
 
 describe('webparsing', () => {
-  it('returns correct data for Artzen Hall', () => {
+  it('returns correct data for Arntzen Hall', () => {
     const returnedData = parse('./tests/unit/webscrapingTestAssets/AHTest.html')
     const expectedData = {
       buildingName: 'Arntzen Hall',
@@ -21,9 +21,9 @@ describe('webparsing', () => {
       buildingName: 'Bond Hall',
       buildingTypes: ['Academic'],
       floorplanLink: 'https://cpd.wwu.edu/files/2020-04/BH.pdf',
-      departmentsOffices: null,
+      departmentsOffices: [],
       computerLabs: ['BH 319'],
-      dining: null
+      dining: []
     }
     expect(returnedData).to.deep.equal(expectedData)
   })
@@ -35,8 +35,8 @@ describe('webparsing', () => {
       buildingTypes: ['Academic', 'Events'],
       floorplanLink: 'https://cpd.wwu.edu/files/2020-01/PA.pdf',
       departmentsOffices: ['Box Office', 'College of Fine and Performing Arts', 'Music', 'Music Library', 'Dance'],
-      computerLabs: null,
-      dining: null
+      computerLabs: [],
+      dining: []
     }
     expect(returnedData).to.deep.equal(expectedData)
   })
@@ -47,7 +47,7 @@ describe('webparsing', () => {
       buildingName: 'Ridgeway Delta',
       buildingTypes: ['University Residence'],
       floorplanLink: 'https://cpd.wwu.edu/files/2020-01/RD.pdf',
-      departmentsOffices: null,
+      departmentsOffices: [],
       computerLabs: ['See Ridgeway Commons and Ridgeway Sigma'],
       dining: [['Ridgeway Commons', 'https://www.wwu.edu/building/rc']]
     }
@@ -61,7 +61,7 @@ describe('webparsing', () => {
       buildingTypes: ['Campus Services', 'Events'],
       floorplanLink: 'https://cpd.wwu.edu/files/2020-01/VU.pdf',
       departmentsOffices: ['Associated Students', 'Bookstore, Associated Students', 'Ethnic Student Center', 'LGBTQ+ Western', 'Office of Student Life', 'Off Campus Living', 'Outdoor Center', 'Student Advocacy and Identity Resource Center'],
-      computerLabs: null,
+      computerLabs: [],
       dining: [['Viking Union Market', 'https://wwu.campusdish.com/LocationsAndMenus/VikingUnionMarket'], ['Viking Union Cafe', 'https://wwu.campusdish.com/LocationsAndMenus/VikingUnionCafe'], ['The Underground Coffeehouse', 'https://wwu.campusdish.com/LocationsAndMenus/UndergroundCoffeehouse'], ['Vendor\'s Row', 'https://vu.wwu.edu/dining-spaces']]
     }
     expect(returnedData).to.deep.equal(expectedData)
