@@ -10,6 +10,10 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
+// other imports
+const { parseFromURL } = require("./../../../src/scripts/PageParser");
+const axios = require("axios").default;
+
 const PanelView = (props) => {
   // auth and error
   const { user } = useAuth();
@@ -35,11 +39,23 @@ const PanelView = (props) => {
   });
   if (!isLoaded) return <div>Loading Map...</div>;
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios
+      .get(websiteLink, { headers: { "Access-Control-Allow-Origin": "*" } })
+      .then((res) => {
+        const returnedData = parseFromURL(res.data);
+        console.log(returnedData);
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <Container style={{ marginTop: "80px" }}>
       <h1>Add a Building/Landmark</h1>
       <br />
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Label>Outline Building/Landmark on Map:</Form.Label>
         <GoogleMap
           zoom={15}
