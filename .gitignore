@@ -38,6 +38,7 @@ captures/
 
 # IntelliJ
 *.iml
+.idea/
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
@@ -84,3 +85,6 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 Project/.idea/deploymentTargetDropDown.xml
+
+# node
+node_modules/
