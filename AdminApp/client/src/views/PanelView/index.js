@@ -1,7 +1,7 @@
 // react imports
 import React, { useState, useMemo } from "react";
 import { Navigate } from "react-router-dom";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, DrawingManager } from "@react-google-maps/api";
 import useAuth from "../../hook/useAuth";
 import Error from "../../components/Error";
 
@@ -39,10 +39,18 @@ const PanelView = (props) => {
     []
   );
 
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyC4KhgTKzblt28kngclW9__A2vZUevgdgo",
-  });
-  if (!isLoaded) return <div>Loading Map...</div>;
+  // const { isLoaded } = useLoadScript({
+  //   googleMapsApiKey: "AIzaSyC4KhgTKzblt28kngclW9__A2vZUevgdgo",
+  // });
+  // if (!isLoaded) return <div>Loading Map...</div>;
+
+  const onLoad = (drawingManager) => {
+    console.log(drawingManager);
+  };
+
+  const onPolygonComplete = (polygon) => {
+    console.log(polygon);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,11 +70,22 @@ const PanelView = (props) => {
       <br />
       <Form onSubmit={handleSubmit}>
         <Form.Label>Outline Building/Landmark on Map:</Form.Label>
-        <GoogleMap
-          zoom={15}
-          center={wwuCenter}
-          mapContainerClassName="map-container"
-        />
+        <LoadScript
+          googleMapsApiKey="AIzaSyC4KhgTKzblt28kngclW9__A2vZUevgdgo"
+          libraries={["drawing"]}
+        >
+          <GoogleMap
+            zoom={15}
+            center={wwuCenter}
+            mapContainerClassName="map-container"
+          >
+            <DrawingManager
+              drawingMode={"polygon"}
+              onLoad={onLoad}
+              onPolygonComplete={onPolygonComplete}
+            />
+          </GoogleMap>
+        </LoadScript>
         <br />
 
         <Form.Group className="mb-3">

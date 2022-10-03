@@ -11,6 +11,7 @@
     "bootstrap": "^5.2.1",
     "chai": "^4.3.6",
     "firebase": "^9.10.0",
+    "mocha": "^10.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
@@ -21,7 +22,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "mocha tests/**/*.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
