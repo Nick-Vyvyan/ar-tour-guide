@@ -45,10 +45,18 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
 
     var updateOn : Boolean = false
 
-    // Used for compass
+    // Used for compass, store device orientation data
     lateinit var iv_compass : ImageView
-    lateinit var sensorManager: SensorManager
     var degreeStart : Float = 0f
+
+    lateinit var sensorManager: SensorManager
+    private val accelerometerReading = FloatArray(3)
+    private val magnetometerReading = FloatArray(3)
+
+    private val rotationMatrix = FloatArray(9)
+    private val orientationAngles = FloatArray(3)
+
+
 
     // Location Request is config file for settings of FusedLocationProviderClient
     lateinit var locationRequest : LocationRequest
@@ -64,7 +72,7 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gps)
 
-        //give UI variables values
+        //initialize UI variables
         tv_lat = findViewById(R.id.tv_lat)
         tv_lon = findViewById(R.id.tv_lon)
         tv_altitude = findViewById(R.id.tv_altitude)
@@ -202,7 +210,24 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
     override fun onResume() {
         super.onResume()
 
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_GAME)
+        // register accelerometer sensor listener
+        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)?.also { accelerometer ->
+            sensorManager.registerListener(
+                this,
+                accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL,
+                SensorManager.SENSOR_DELAY_UI
+            )
+        }
+        // register magnetometer sensor listener
+        sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)?.also { magneticField ->
+            sensorManager.registerListener(
+                this,
+                magneticField,
+                SensorManager.SENSOR_DELAY_NORMAL,
+                SensorManager.SENSOR_DELAY_UI
+            )
+        }
     }
 
     private fun updateGPS() {
@@ -251,27 +276,23 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    override fun onSensorChanged(p0: SensorEvent?) {
-        if (p0 is SensorEvent) {
-            // get roation data from sensor and convert to degrees
-            var degree : Float = Math.toDegrees(p0.values[2].toDouble()).toFloat()
+    override fun onSensorChanged(event: SensorEvent) {
+        if (event != null) {
 
-            tv_heading.text = degree.toString() + " degrees"
+            // get readings from accelerometer and magnetometer. store as unit vectors??
+            if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+                System.arraycopy(event.values, 0, accelerometerReading, 0, accelerometerReading.size)
+            }
+            else if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
+                System.arraycopy(event.values, 0, magnetometerReading, 0, magnetometerReading.size)
+            }
 
-            // initialize a rotation animation
-            var ra : RotateAnimation = RotateAnimation(
-                degreeStart,
-                -degree,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f
-            )
-            // set animation rules
-            ra.fillAfter = true
-            ra.duration = 210
+            // update rotation matrix and orientation angles with SensorManager
+            updateOrientationAngles()
 
-            // start animation and update starting rotation
-            iv_compass.startAnimation(ra)
-            degreeStart = -degree
+            // update compass UI
+            var degree : Float = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
+            updateCompassUI(degree)
         }
 
 
@@ -279,6 +300,36 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         // do nothing
+    }
+
+    fun updateOrientationAngles() {
+        SensorManager.getRotationMatrix(
+            rotationMatrix,
+            null,
+            accelerometerReading,
+            magnetometerReading
+        )
+
+        SensorManager.getOrientation(rotationMatrix, orientationAngles)
+    }
+
+    fun updateCompassUI(heading : Float) {
+        tv_heading.text = heading.toString() + " degrees"
+
+        // initialize a rotation animation
+        var ra : RotateAnimation = RotateAnimation(
+            degreeStart,
+            -heading,
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
+        )
+        // set animation rules
+        ra.fillAfter = true
+        ra.duration = 210
+
+        // start animation and update starting rotation
+        iv_compass.startAnimation(ra)
+        degreeStart = -heading
     }
 
 
