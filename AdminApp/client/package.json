@@ -24,6 +24,7 @@
     "build": "react-scripts build",
     "test": "mocha tests/**/*.js",
     "eject": "react-scripts eject"
+
   },
   "eslintConfig": {
     "extends": [
