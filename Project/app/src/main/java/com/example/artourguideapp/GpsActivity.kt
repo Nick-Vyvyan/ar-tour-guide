@@ -259,7 +259,7 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
         tv_lat.text = location.latitude.toString()
         println("DEBUG - CURRENT LATITUDE = " + location.latitude.toString())
         tv_lon.text = location.longitude.toString()
-        tv_accuracy.text = location.accuracy.toString()
+        tv_accuracy.text = location.accuracy.toString() + " meters"
 
         if (location.hasAltitude()) {
             tv_altitude.text = location.altitude.toString()
