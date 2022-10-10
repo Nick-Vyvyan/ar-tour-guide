@@ -4,15 +4,19 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.hardware.SensorManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
 import android.location.Location
 import android.os.Build
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.getSystemService
 import androidx.core.app.ActivityCompat.requestPermissions
 import com.google.android.gms.location.*
 
 private const val PERMISSIONS_FINE_LOCATION = 101
 
-class Orientation {
+class Orientation : SensorEventListener {
     private var heading = FloatArray(3)
     private var location = Location("")
 
@@ -75,9 +79,42 @@ class Orientation {
         }
     }
 
-    private fun updateHeading()
+    private fun updateHeading(activity: Activity)
     {
 
     }
 
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event != null) {
+
+            // get readings from accelerometer and magnetometer. store as unit vectors??
+            if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+                System.arraycopy(event.values, 0, accelerometerReading, 0, accelerometerReading.size)
+            }
+            else if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
+                System.arraycopy(event.values, 0, magnetometerReading, 0, magnetometerReading.size)
+            }
+
+            // update rotation matrix and orientation angles with SensorManager
+            updateOrientationAngles()
+
+            // update compass UI
+            var degree : Float = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
+        }
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        TODO("Not yet implemented")
+    }
+
+    private fun updateOrientationAngles() {
+        SensorManager.getRotationMatrix(
+            rotationMatrix,
+            null,
+            accelerometerReading,
+            magnetometerReading
+        )
+
+        SensorManager.getOrientation(rotationMatrix, orientationAngles)
+    }
 }
