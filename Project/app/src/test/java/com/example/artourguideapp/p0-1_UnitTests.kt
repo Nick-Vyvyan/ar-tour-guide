@@ -95,6 +95,7 @@ class P0_1_UnitTests {
      */
     val entity = Entity("",0,ArrayList<Point>(),"")
 
+
     @Test
     fun getName() {
         assertTrue(entity.getName().equals("Wilson Library"))
@@ -120,6 +121,23 @@ class P0_1_UnitTests {
         val newPoints = ArrayList<Point>()
         entity.setPerimeter(newPoints)
         assertTrue(entity.getPerimeter().equals(ArrayList<Point>()))
+    }
+
+    @Test
+    fun setLocation() {
+        val CFLat = 48.73266494618646
+        val CFLon = -122.48524954354191
+        assertTrue(entity.setLocation(CFLat, CFLon).equals(0))
+    }
+
+    @Test
+    fun getEntityLocation() {
+        val CFLat : Double = 48.73266494618646
+        val CFLon : Double = -122.48524954354191
+
+        entity.setLocation(CFLat, CFLon)
+        assertTrue(entity.getLocation().latitude.equals(CFLat))
+        assertTrue(entity.getLocation().longitude.equals(CFLon))
     }
 
     /**
