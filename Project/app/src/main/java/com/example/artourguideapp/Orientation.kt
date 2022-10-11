@@ -23,9 +23,13 @@ class Orientation {
     private val rotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
 
+    init {
+        sensorActivity.startUpdates()
+    }
+
 
     fun getOrientation() : FloatArray {
-        sensorActivity.startUpdates()
+
         calcOrientation()
         return orientationAngles
     }

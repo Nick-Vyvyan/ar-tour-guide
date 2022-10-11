@@ -158,15 +158,16 @@ class P0_1_UnitTests {
      * Orientation Unit Tests
      */
     val orientation = Orientation()
-    @Test
-    fun getRotation() {
-        assertTrue(orientation.getRotation().equals(""))
-    }
 
     @Test
-    fun getLocation() {
-        assertTrue(orientation.getLocation().equals(""))
+    fun getOrientation() {
+        assertTrue(orientation.getOrientation().equals(""))
     }
+
+//    @Test
+//    fun getLocation() {
+//        assertTrue(orientation.getLocation().equals(""))
+//    }
 
     /**
      * SculptureData Unit Tests
@@ -196,7 +197,7 @@ class P0_1_UnitTests {
      * User Unit Tests
      */
     @Test
-    fun getOrientation(){
+    fun getHeading(){
         assertTrue(user.getOrientation().equals(Orientation()))
     }
 
