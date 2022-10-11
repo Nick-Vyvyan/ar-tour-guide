@@ -16,13 +16,13 @@ private const val PERMISSIONS_FINE_LOCATION = 101
 
 class UserLocation : Activity() {
     private lateinit var currentLocation : Location
-    private var locationRequest: LocationRequest
+
+    private var locationRequest: LocationRequest = LocationRequest()
     private var locationCallback: LocationCallback
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     init {
         // config location request
-        locationRequest = LocationRequest()
         locationRequest.interval = 1000 * DEFAULT_UPDATE_INTERVAL
         locationRequest.fastestInterval = 1000 * FAST_UPDATE_INTERVAL
         locationRequest.priority = Priority.PRIORITY_HIGH_ACCURACY
@@ -36,6 +36,10 @@ class UserLocation : Activity() {
         }
 
         startLocationUpdates()
+    }
+
+    fun getLocation() : Location {
+        return currentLocation
     }
 
     fun startLocationUpdates() {
