@@ -35,8 +35,8 @@ const PanelView = (props) => {
   // eslint-disable-next-line
   const [error, setError] = useState(null);
   const [websiteLink, setWebsiteLink] = useState("");
-  const [scrapedData, setScrapedData] = useState();
   const [coordinates, setCoordinates] = useState("");
+  const [scrapedData, setScrapedData] = useState();
 
   // center point for WWU on Google map
   const wwuCenter = useMemo(
@@ -47,6 +47,7 @@ const PanelView = (props) => {
     []
   );
 
+  // load in google map with required libraries
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyC4KhgTKzblt28kngclW9__A2vZUevgdgo",
     libraries,
@@ -57,18 +58,19 @@ const PanelView = (props) => {
   //   console.log(drawingManager);
   // };
 
+  // get coordinates of finished polygon
   const onPolygonComplete = (polygon) => {
-    console.log(polygon);
+    setCoordinates(
+      polygon
+        .getPath()
+        .getArray()
+        .toString()
+    );
   };
 
   // get map coords and scrape website
   const handleFirstSubmit = (e) => {
     e.preventDefault();
-
-    // PLACEHOLDER
-    setCoordinates(
-      "(48.734682375806216, -122.48841639686137),(48.734342718528104, -122.48918887305766),(48.734300261207, -122.48785849738627)"
-    );
 
     // forward request to server to bypass cors restrictions
     axios
@@ -95,10 +97,13 @@ const PanelView = (props) => {
 
   return (
     <>
-      {/* if scraped data is present, display form to manually review it */}
-      {scrapedData ? (
+      {/* if coordinates and scraped data are present, display form to manually review it */}
+      {coordinates !== "" && scrapedData ? (
         <Container style={{ marginTop: "80px" }}>
           <h1>Review your Building/Landmark Data</h1>
+          <p>
+            Your supplied coordinates are: <b>{coordinates}</b>
+          </p>
           <br />
           <Form onSubmit={handleSecondSubmit}>
             <Form.Group className="mb-3">
@@ -134,10 +139,6 @@ const PanelView = (props) => {
           <br />
           <Form onSubmit={handleFirstSubmit}>
             <Form.Label>Outline Building/Landmark on Map:</Form.Label>
-            {/* <LoadScript
-              googleMapsApiKey="AIzaSyC4KhgTKzblt28kngclW9__A2vZUevgdgo"
-              libraries={["drawing"]}
-            > */}
             <GoogleMap
               zoom={15}
               center={wwuCenter}
@@ -145,11 +146,9 @@ const PanelView = (props) => {
             >
               <DrawingManager
                 drawingMode="polygon"
-                // onLoad={onLoad}
                 onPolygonComplete={onPolygonComplete}
               />
             </GoogleMap>
-            {/* </LoadScript> */}
             <br />
 
             <Form.Group className="mb-3">
