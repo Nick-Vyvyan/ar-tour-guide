@@ -1,20 +1,6 @@
 package com.example.artourguideapp
 
-import android.Manifest
-import android.app.Activity
-import android.content.pm.PackageManager
 import android.hardware.SensorManager
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.location.Location
-import android.os.Build
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.getSystemService
-import androidx.core.app.ActivityCompat.requestPermissions
-import com.google.android.gms.location.*
-
-private const val PERMISSIONS_FINE_LOCATION = 101
 
 class Orientation {
 
