@@ -14,11 +14,13 @@
   },
   "main": "index.js",
   "dependencies": {
-    "firebase-admin": "^10.0.2",
-    "firebase-functions": "^3.18.0",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
-    "express": "^4.18.1"
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.24.1",
+    "mongodb": "^4.10.0"
   },
   "devDependencies": {
     "eslint": "^8.9.0",

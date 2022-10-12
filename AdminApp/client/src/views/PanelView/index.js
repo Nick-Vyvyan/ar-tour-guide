@@ -28,7 +28,7 @@ const PanelView = (props) => {
   if (user === null || user === undefined)
     return <Navigate to={{ pathname: "/login" }} />;
 
-  // const baseServerURL = "http://localhost:5000/";
+  // const baseServerURL = "http://localhost:5000";
   const baseServerURL =
     "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
 
@@ -37,6 +37,7 @@ const PanelView = (props) => {
   const [websiteLink, setWebsiteLink] = useState("");
   const [coordinates, setCoordinates] = useState("");
   const [scrapedData, setScrapedData] = useState();
+  const [isLandmark, setIsLandmark] = useState(false);
 
   // center point for WWU on Google map
   const wwuCenter = useMemo(
@@ -72,10 +73,22 @@ const PanelView = (props) => {
   const handleFirstSubmit = (e) => {
     e.preventDefault();
 
+    // make sure structure is outlined on map first
+    if (coordinates === "")
+      return window.alert(
+        "Please outline a building/landmark on the map using the polygon tool!"
+      );
+
     // forward request to server to bypass cors restrictions
     axios
       .get(baseServerURL, { headers: { websiteLink: websiteLink } })
       .then((res) => {
+        // catch errors
+        if (res.status !== 200) {
+          const message = `An error occurred: ${res.statusText}`;
+          return window.alert(message);
+        }
+
         setScrapedData(parseWeb(res.data));
       })
       .catch((err) => console.error(err));
@@ -85,8 +98,29 @@ const PanelView = (props) => {
   const handleSecondSubmit = (e) => {
     e.preventDefault();
 
-    const responseJson = { coordinates, scrapedData };
-    console.log(responseJson);
+    // put all structure info together into one json
+    const requestJson = { coordinates, scrapedData, isLandmark };
+
+    // send structure info to backend to be saved to database
+    axios
+      .post(`${baseServerURL}/db/add`, {
+        headers: { "Content-Type": "application/json" },
+        body: requestJson,
+      })
+      .then((res) => {
+        // catch errors
+        if (res.status !== 200) {
+          const message = `An error occurred: ${res.statusText}`;
+          return window.alert(message);
+        }
+
+        // reset state info
+        setWebsiteLink("");
+        setCoordinates("");
+        setScrapedData();
+        setIsLandmark(false);
+      })
+      .catch((err) => console.error(err));
   };
 
   // convert camel case to title case for a given string
@@ -126,6 +160,16 @@ const PanelView = (props) => {
                 );
               })}
             </Form.Group>
+            <br />
+            <Form.Group className="mb-3">
+              <Form.Check
+                type="checkbox"
+                label="Is this structure a landmark?"
+                checked={isLandmark}
+                onChange={(e) => setIsLandmark(e.target.checked)}
+              />
+            </Form.Group>
+            <br />
             <Button variant="primary" type="submit">
               Submit
             </Button>
@@ -142,6 +186,7 @@ const PanelView = (props) => {
             <GoogleMap
               zoom={15}
               center={wwuCenter}
+              mapTypeId="hybrid"
               mapContainerClassName="map-container"
             >
               <DrawingManager
