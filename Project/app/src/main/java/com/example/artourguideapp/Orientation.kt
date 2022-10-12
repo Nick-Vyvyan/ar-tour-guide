@@ -1,43 +1,48 @@
 package com.example.artourguideapp
 
+import android.content.Context
 import android.hardware.SensorManager
 
-class Orientation : Subscriber {
-
-    private val sensorActivity : SensorActivity = SensorActivity()
-
+class Orientation(
+    context : Context
+) {
+    private val accelerometer : MeasurableSensor = Accelerometer(context)
+    private val magnetometer : MeasurableSensor = Magnetometer(context)
+    private val accelReading : FloatArray = FloatArray(3)
+    private val magReading : FloatArray = FloatArray(3)
     private val rotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
 
     init {
-        sensorActivity.startUpdates()
-        sensorActivity.register(this)
+        accelerometer.setOnSensorValuesChangedListener { values ->
+            System.arraycopy(values.toFloatArray(), 0, accelReading, 0, accelReading.size)
+            updateOrientation()
+        }
+
+        magnetometer.setOnSensorValuesChangedListener { values ->
+            System.arraycopy(values.toFloatArray(), 0, magReading, 0, magReading.size)
+            updateOrientation()
+        }
+
+        accelerometer.startListening()
+        magnetometer.startListening()
     }
 
 
     fun getOrientation() : FloatArray {
-
-        calcOrientation()
+//        updateOrientation()
         return orientationAngles
     }
 
-    private fun calcOrientation() {
-        val accelData : FloatArray = sensorActivity.getAccelerometer()
-        val magData : FloatArray = sensorActivity.getMagnetometer()
-
+    private fun updateOrientation() {
         SensorManager.getRotationMatrix(
             rotationMatrix,
             null,
-            accelData,
-            magData
+            accelReading,
+            magReading
         )
 
         SensorManager.getOrientation(rotationMatrix, orientationAngles)
     }
-
-    override fun update() {
-        calcOrientation()
-    }
-
 
 }
