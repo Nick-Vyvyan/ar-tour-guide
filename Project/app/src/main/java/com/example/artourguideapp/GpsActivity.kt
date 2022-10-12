@@ -27,7 +27,7 @@ private const val DEFAULT_UPDATE_INTERVAL : Long = 30
 private const val FAST_UPDATE_INTERVAL : Long = 5
 private const val PERMISSIONS_FINE_LOCATION = 101
 
-class GpsActivity : AppCompatActivity(), SensorEventListener {
+class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
 
     // Text View UI Elements
     lateinit var tv_lat : TextView
@@ -49,10 +49,11 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
     lateinit var iv_compass : ImageView
     var degreeStart : Float = 0f
 
-    lateinit var sensorManager: SensorManager
+    // COMPASS
     private val accelerometerReading = FloatArray(3)
     private val magnetometerReading = FloatArray(3)
-
+    private val accelerometer : MeasurableSensor = Accelerometer(this)
+    private val magnetometer : MeasurableSensor = Magnetometer(this)
     private val rotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
 
@@ -87,8 +88,18 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
 
         iv_compass = findViewById(R.id.iv_compass)
 
-        // initialize sensor manager
-        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        // initialize sensor Listening
+        accelerometer.startListening()
+        accelerometer.setOnSensorValuesChangedListener { values ->
+            System.arraycopy(values.toFloatArray(), 0, accelerometerReading, 0, accelerometerReading.size)
+            updateOrientationAngles()
+        }
+
+        magnetometer.startListening()
+        magnetometer.setOnSensorValuesChangedListener { values ->
+            System.arraycopy(values.toFloatArray(), 0, magnetometerReading, 0, magnetometerReading.size)
+            updateOrientationAngles()
+        }
 
         // set properties of location request
         locationRequest = LocationRequest()
@@ -201,35 +212,6 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        sensorManager.unregisterListener(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // register accelerometer sensor listener
-        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)?.also { accelerometer ->
-            sensorManager.registerListener(
-                this,
-                accelerometer,
-                SensorManager.SENSOR_DELAY_NORMAL,
-                SensorManager.SENSOR_DELAY_UI
-            )
-        }
-        // register magnetometer sensor listener
-        sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)?.also { magneticField ->
-            sensorManager.registerListener(
-                this,
-                magneticField,
-                SensorManager.SENSOR_DELAY_NORMAL,
-                SensorManager.SENSOR_DELAY_UI
-            )
-        }
-    }
-
     private fun updateGPS() {
         // get permissions from user
         // get current location from fused client
@@ -276,33 +258,7 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    override fun onSensorChanged(event: SensorEvent) {
-        if (event != null) {
-
-            // get readings from accelerometer and magnetometer. store as unit vectors??
-            if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-                System.arraycopy(event.values, 0, accelerometerReading, 0, accelerometerReading.size)
-            }
-            else if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
-                System.arraycopy(event.values, 0, magnetometerReading, 0, magnetometerReading.size)
-            }
-
-            // update rotation matrix and orientation angles with SensorManager
-            updateOrientationAngles()
-
-            // update compass UI
-            var degree : Float = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
-            updateCompassUI(degree)
-        }
-
-
-    }
-
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        // do nothing
-    }
-
-    fun updateOrientationAngles() {
+    private fun updateOrientationAngles() {
         SensorManager.getRotationMatrix(
             rotationMatrix,
             null,
@@ -311,9 +267,10 @@ class GpsActivity : AppCompatActivity(), SensorEventListener {
         )
 
         SensorManager.getOrientation(rotationMatrix, orientationAngles)
+        updateCompassUI(Math.toDegrees(orientationAngles[0].toDouble()).toFloat())
     }
 
-    fun updateCompassUI(heading : Float) {
+    private fun updateCompassUI(heading : Float) {
         tv_heading.text = heading.toString() + " degrees"
 
         // initialize a rotation animation
