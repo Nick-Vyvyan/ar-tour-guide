@@ -2,7 +2,7 @@ package com.example.artourguideapp
 
 import android.hardware.SensorManager
 
-class Orientation {
+class Orientation : Subscriber {
 
     private val sensorActivity : SensorActivity = SensorActivity()
 
@@ -11,6 +11,7 @@ class Orientation {
 
     init {
         sensorActivity.startUpdates()
+        sensorActivity.register(this)
     }
 
 
@@ -34,7 +35,9 @@ class Orientation {
         SensorManager.getOrientation(rotationMatrix, orientationAngles)
     }
 
-
+    override fun update() {
+        calcOrientation()
+    }
 
 
 }

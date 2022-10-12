@@ -9,7 +9,9 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 
-class SensorActivity : Activity(), SensorEventListener {
+class SensorActivity : Activity(), SensorEventListener, Publisher {
+
+    override lateinit var subscribers: ArrayList<Subscriber>
 
     private var sensorManager : SensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private var accelerometer : Sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -21,6 +23,11 @@ class SensorActivity : Activity(), SensorEventListener {
     public fun startUpdates() {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
         sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL)
+    }
+
+    init {
+        startUpdates()
+        subscribers = ArrayList()
     }
 
     public fun stopUpdates() {
@@ -39,9 +46,11 @@ class SensorActivity : Activity(), SensorEventListener {
         if (event != null) {
             if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
                 System.arraycopy(event.values, 0, accelerometerReading, 0, accelerometerReading.size)
+                updateSubscribers()
             }
             else if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
                 System.arraycopy(event.values, 0, magnetometerReading, 0, magnetometerReading.size)
+                updateSubscribers()
             }
         }
     }
@@ -49,4 +58,22 @@ class SensorActivity : Activity(), SensorEventListener {
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         // do nothing
     }
+
+    override fun register(subscriber: Subscriber): Subscriber {
+        subscribers.add(subscriber)
+        return subscriber
+    }
+
+    override fun remove(subscriber: Subscriber): Subscriber {
+        subscribers.remove(subscriber)
+        return subscriber
+    }
+
+    override fun updateSubscribers() {
+        for (sub in subscribers) {
+            sub.update()
+        }
+    }
+
+
 }
