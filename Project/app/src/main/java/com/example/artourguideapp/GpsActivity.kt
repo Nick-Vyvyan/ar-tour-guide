@@ -39,12 +39,6 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
     lateinit var tv_updates : TextView
     lateinit var tv_heading : TextView
 
-    // Switch UI Elements
-    lateinit var sw_locationupdates : Switch
-    lateinit var sw_gps : Switch
-
-    var updateOn : Boolean = false
-
     // Used for compass, store device orientation data
     lateinit var iv_compass : ImageView
     var degreeStart : Float = 0f
@@ -58,15 +52,7 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
     private val orientationAngles = FloatArray(3)
 
 
-
-    // Location Request is config file for settings of FusedLocationProviderClient
-    lateinit var locationRequest : LocationRequest
-
-    lateinit var locationCallBack : LocationCallback
-
-    // Google API for location services
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
+    private lateinit var userLocation : UserLocation
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,9 +69,6 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
         tv_sensor = findViewById(R.id.tv_sensor)
         tv_heading = findViewById(R.id.tv_heading)
 
-        sw_locationupdates = findViewById(R.id.sw_locationsupdates)
-        sw_gps = findViewById(R.id.sw_gps)
-
         iv_compass = findViewById(R.id.iv_compass)
 
         // initialize sensor Listening
@@ -101,94 +84,15 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
             updateOrientationAngles()
         }
 
-        // set properties of location request
-        locationRequest = LocationRequest()
-
-        // set default location check frequency
-        locationRequest.setInterval(1000 * DEFAULT_UPDATE_INTERVAL)
-        //set fastest location check frequency
-        locationRequest.setFastestInterval(1000 * FAST_UPDATE_INTERVAL)
-        // set priority/accuracy (power) balance
-        locationRequest.setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
-
-        // event when location update interval is met
-        locationCallBack = object : LocationCallback() {
-            override fun onLocationResult(p0: LocationResult) {
-                super.onLocationResult(p0)
-
-                updateUIValues(p0.lastLocation!!)
-            }
+        userLocation = UserLocation(this)
+        userLocation.startLocationUpdates()
+        userLocation.setLocationUpdateListener { result ->
+            updateUIValues(result.lastLocation!!)
         }
 
-        sw_gps.setOnClickListener(View.OnClickListener {
-            println("DEBUG - GPS TOGGLE CLICKED")
-            if (sw_gps.isChecked) {
-                //most accurate - use GPS
-                locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-                tv_sensor.text = "Using GPS sensors"
-            }
-            else {
-                locationRequest.setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
-                tv_sensor.text = "Cell Tower + Wifi"
-            }
-        })
-
-        sw_locationupdates.setOnClickListener {
-            println("DEBUG - LOCATION UPDATES CLICKED")
-            if (sw_locationupdates.isChecked) {
-                // turn on location updates
-                startLocationUpdates()
-            }
-            else {
-                // turn off tracking
-                stopLocationUpdates()
-            }
-        }
-
-
-
-        updateGPS()
+//        updateGPS()
 
     } // END onCreate method
-
-    private fun startLocationUpdates() {
-        tv_updates.text = "Location is being tracked"
-
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallBack, null)
-    }
-
-
-    private fun stopLocationUpdates() {
-        tv_updates.text = "Location is NOT being tracked"
-
-        //update UI elements
-        tv_lat.text = "Not Tracking Location"
-        tv_lon.text = "Not Tracking Location"
-        tv_speed.text = "Not Tracking Location"
-        tv_heading.text = "Not Tracking Location"
-        tv_accuracy.text = "Not Tracking Location"
-        tv_altitude.text = "Not Tracking Location"
-
-
-        fusedLocationProviderClient.removeLocationUpdates(locationCallBack)
-    }
 
 
     override fun onRequestPermissionsResult(
@@ -201,7 +105,7 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
         when(requestCode) {
             PERMISSIONS_FINE_LOCATION -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    updateGPS()
+//                    updateGPS()
                 }
                 else {
                     Toast.makeText(this, "This app requires permission to be granted in order to work properly", Toast.LENGTH_SHORT).show()
@@ -209,30 +113,6 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
                 }
             }
 
-        }
-    }
-
-    private fun updateGPS() {
-        // get permissions from user
-        // get current location from fused client
-        // update UI elements
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            // user has provided permissions
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location : Location? ->
-                if (location != null) {
-                    updateUIValues(location)
-                }
-            }
-        }
-        else {
-            // permissions have not been granted
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_FINE_LOCATION)
-            }
         }
     }
 
