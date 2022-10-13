@@ -4,8 +4,8 @@ import useAuth from "../../hook/useAuth";
 
 // components
 import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import Button from "react-bootstrap/Button";
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -41,11 +41,17 @@ const Header = () => {
           </span>
         </Navbar.Brand>
         {user && (
-          <Navbar.Collapse className="justify-content-end">
-            <Button variant="primary" onClick={() => logout()}>
-              Logout
-            </Button>
-          </Navbar.Collapse>
+          <>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse
+              id="responsive-navbar-nav"
+              className="justify-content-end"
+            >
+              <Nav>
+                <Nav.Link onClick={() => logout()}>Logout</Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
+          </>
         )}
       </Container>
     </Navbar>
