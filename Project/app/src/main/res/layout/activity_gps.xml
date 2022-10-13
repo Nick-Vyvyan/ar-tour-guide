@@ -182,6 +182,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_lblheading"
+        android:layout_marginTop="10dp"
         android:contentDescription="Compass Rose" />
 
 <!--    <View-->

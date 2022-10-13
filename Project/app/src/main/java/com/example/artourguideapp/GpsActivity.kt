@@ -65,8 +65,8 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
         tv_altitude = findViewById(R.id.tv_altitude)
         tv_accuracy = findViewById(R.id.tv_accuracy)
         tv_speed = findViewById(R.id.tv_speed)
-        tv_updates = findViewById(R.id.tv_updates)
-        tv_sensor = findViewById(R.id.tv_sensor)
+//        tv_updates = findViewById(R.id.tv_updates)
+//        tv_sensor = findViewById(R.id.tv_sensor)
         tv_heading = findViewById(R.id.tv_heading)
 
         iv_compass = findViewById(R.id.iv_compass)
