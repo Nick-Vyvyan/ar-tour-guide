@@ -9,7 +9,7 @@ class Entity(
     private var perimeter: ArrayList<Point>,
     private var url: String
 ) {
-    private var location : Location = Location("");
+    private lateinit var location : Location
 
     fun getName(): String {
         return name

@@ -36,8 +36,8 @@ class UserLocation(
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
                 super.onLocationResult(result)
-                onLocationUpdate?.invoke(result)
                 currentLocation = result.lastLocation!!
+                onLocationUpdate?.invoke(result)
             }
         }
 
