@@ -1,26 +1,15 @@
 package com.example.artourguideapp
 
-import android.Manifest
 import android.content.pm.PackageManager
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
-import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.google.android.gms.location.*
+import androidx.appcompat.app.AppCompatActivity
 
 
 private const val DEFAULT_UPDATE_INTERVAL : Long = 30
@@ -50,7 +39,6 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
     private val magnetometer : MeasurableSensor = Magnetometer(this)
     private val rotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
-
 
     private lateinit var userLocation : UserLocation
 
@@ -104,8 +92,9 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
 
         when(requestCode) {
             PERMISSIONS_FINE_LOCATION -> {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //                    updateGPS()
+                    println("DEBUG - FINE LOCATION PERMISSION GRANTED")
                 }
                 else {
                     Toast.makeText(this, "This app requires permission to be granted in order to work properly", Toast.LENGTH_SHORT).show()
