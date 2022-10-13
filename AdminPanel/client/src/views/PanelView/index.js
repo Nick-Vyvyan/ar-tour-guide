@@ -133,7 +133,7 @@ const PanelView = (props) => {
     <>
       {/* if coordinates and scraped data are present, display form to manually review it */}
       {coordinates !== "" && scrapedData ? (
-        <Container style={{ marginTop: "80px" }}>
+        <Container>
           <h1>Review your Building/Landmark Data</h1>
           <p>
             Your supplied coordinates are: <b>{coordinates}</b>
@@ -160,7 +160,6 @@ const PanelView = (props) => {
                 );
               })}
             </Form.Group>
-            <br />
             <Form.Group className="mb-3">
               <Form.Check
                 type="checkbox"
@@ -169,7 +168,9 @@ const PanelView = (props) => {
                 onChange={(e) => setIsLandmark(e.target.checked)}
               />
             </Form.Group>
-            <br />
+            {/* display all errors */}
+            {error && <Error error={error} />}
+
             <Button variant="primary" type="submit">
               Submit
             </Button>
@@ -178,7 +179,7 @@ const PanelView = (props) => {
         </Container>
       ) : (
         // otherwise, display google map and field to input website link for scraping
-        <Container style={{ marginTop: "80px" }}>
+        <Container>
           <h1>Add a Building/Landmark</h1>
           <br />
           <Form onSubmit={handleFirstSubmit}>
@@ -201,7 +202,7 @@ const PanelView = (props) => {
               <Form.Control
                 required
                 type="text"
-                placeholder="Paste link of website to scrape for building/landmark info..."
+                placeholder="Paste link of website to scrape..."
                 value={websiteLink}
                 onChange={(e) => {
                   try {
@@ -213,15 +214,14 @@ const PanelView = (props) => {
                 }}
               />
             </Form.Group>
+            {/* display all errors */}
+            {error && <Error error={error} />}
 
             <Button variant="primary" type="submit">
               Submit
             </Button>
           </Form>
           <br />
-
-          {/* display all errors */}
-          {error && <Error error={error} />}
         </Container>
       )}
     </>

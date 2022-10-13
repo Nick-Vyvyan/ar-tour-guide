@@ -43,7 +43,7 @@ const LoginView = (props) => {
   if (user) return <Navigate to={{ pathname: "/" }} />;
 
   return (
-    <Container style={{ marginTop: "80px" }}>
+    <Container>
       <h1>Login to the Admin Panel</h1>
       <br />
       <Form onSubmit={signin}>
@@ -66,11 +66,14 @@ const LoginView = (props) => {
             placeholder="Enter password"
           />
         </Form.Group>
+        {/* display all errors */}
         {error && <Error error={error} />}
+
         <Button variant="primary" type="submit">
           Submit
         </Button>
       </Form>
+      <br />
     </Container>
   );
 };

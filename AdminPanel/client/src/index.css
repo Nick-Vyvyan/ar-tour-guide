@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  padding-top: 130px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -13,6 +14,6 @@ code {
 }
 
 .map-container {
-  width: 45%;
-  height: 45vh;
+  width: 100%;
+  height: 100vh;
 }
