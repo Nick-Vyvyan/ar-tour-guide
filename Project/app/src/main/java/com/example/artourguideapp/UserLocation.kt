@@ -20,7 +20,7 @@ private const val PERMISSIONS_FINE_LOCATION = 101
 class UserLocation(
     private val context: Context
 ){
-    private lateinit var currentLocation : Location
+    private var currentLocation : Location = Location("user")
     private var locationRequest: LocationRequest = LocationRequest()
     private var locationCallback: LocationCallback
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient

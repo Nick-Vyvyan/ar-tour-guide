@@ -7,9 +7,10 @@ class Entity(
     private var name: String,
     private var id: Long,
     private var perimeter: ArrayList<Point>,
-    private var url: String
+    private var url: String,
+    private var location : Location
 ) {
-    private lateinit var location : Location
+
 
     fun getName(): String {
         return name
