@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 
 
 private const val DEFAULT_UPDATE_INTERVAL : Long = 30
@@ -32,6 +33,9 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
     lateinit var iv_compass : ImageView
     var degreeStart : Float = 0f
 
+    lateinit var tv_nearby : TextView
+    lateinit var tv_looking : TextView
+
     // COMPASS
     private val accelerometerReading = FloatArray(3)
     private val magnetometerReading = FloatArray(3)
@@ -41,6 +45,8 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
     private val orientationAngles = FloatArray(3)
 
     private lateinit var userLocation : UserLocation
+
+    private lateinit var user: User
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +64,9 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
         tv_heading = findViewById(R.id.tv_heading)
 
         iv_compass = findViewById(R.id.iv_compass)
+
+        tv_looking = findViewById(R.id.tv_lookingat)
+        tv_nearby = findViewById(R.id.tv_nearby)
 
         // initialize sensor Listening
         accelerometer.startListening()
@@ -77,6 +86,8 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
         userLocation.setLocationUpdateListener { result ->
             updateUIValues(result.lastLocation!!)
         }
+
+        user = User(this)
 
 //        updateGPS()
 
@@ -125,6 +136,21 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
         else {
             tv_altitude.text = "Not Available"
         }
+
+        val nearbyList : ArrayList<Location> = user.detectNearbyEntities()
+        var nearby = ""
+        nearbyList.forEach{
+            nearby += it.provider + "\n"
+        }
+        tv_nearby.text = nearby
+
+        val lookingAtList = user.getInView()
+        var lookingAt = ""
+        lookingAtList.forEach {
+            lookingAt += it.provider + "\n"
+            println("added ${it.provider} to looking at list")
+        }
+        tv_looking.text = lookingAt
     }
 
     private fun updateOrientationAngles() {
@@ -143,7 +169,7 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
         tv_heading.text = heading.toString() + " degrees"
 
         // initialize a rotation animation
-        var ra : RotateAnimation = RotateAnimation(
+        val ra : RotateAnimation = RotateAnimation(
             degreeStart,
             -heading,
             Animation.RELATIVE_TO_SELF, 0.5f,
