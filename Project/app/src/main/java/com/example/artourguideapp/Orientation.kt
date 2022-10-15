@@ -28,10 +28,20 @@ class Orientation(
         magnetometer.startListening()
     }
 
-
+    /** Returns Float Array of [Azimuth, Pitch, Roll]*/
     fun getOrientation() : FloatArray {
 //        updateOrientation()
         return orientationAngles
+    }
+
+    fun startUpdates() {
+        accelerometer.startListening()
+        magnetometer.startListening()
+    }
+
+    fun stopUpdates() {
+        accelerometer.stopListening()
+        magnetometer.stopListening()
     }
 
     private fun updateOrientation() {
