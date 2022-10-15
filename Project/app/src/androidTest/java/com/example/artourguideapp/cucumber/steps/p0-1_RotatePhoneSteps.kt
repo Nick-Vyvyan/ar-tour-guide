@@ -9,7 +9,7 @@ import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
 
 class RotatePhoneSteps {
-    val user = User()
+    lateinit var user : User
     val camera = View()
 
     @Given("^Sean has already seen the buildings he is currently looking at$")
