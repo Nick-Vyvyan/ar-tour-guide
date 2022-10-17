@@ -14,6 +14,7 @@ import Spinner from "react-bootstrap/Spinner";
 const Header = lazy(() => import("./views/Header"));
 const LoginView = lazy(() => import("./views/LoginView"));
 const PanelView = lazy(() => import("./views/PanelView"));
+const ListView = lazy(() => import('./views/ListView'));
 
 const App = () => {
   return (
@@ -26,7 +27,7 @@ const App = () => {
               element={
                 <Suspense fallback={<Loading />}>
                   <Header />
-                  <PanelView />
+                  <ListView />
                 </Suspense>
               }
             />
@@ -45,6 +46,15 @@ const App = () => {
                 <Suspense fallback={<Loading />}>
                   <Header />
                   <PanelView />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/list"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Header />
+                  <ListView />
                 </Suspense>
               }
             />
