@@ -7,9 +7,9 @@ import android.os.Bundle
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        //setContentView(R.layout.activity_building_info)
 
-        val intent = Intent(this, GpsActivity::class.java)
+        val intent = Intent(this, BuildingDialog::class.java)
         startActivity(intent)
     }
 

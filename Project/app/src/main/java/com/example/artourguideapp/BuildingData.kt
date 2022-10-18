@@ -7,6 +7,7 @@ class BuildingData( private val title: String?,
                     private val accessibilityInfo: String?,
                     private val genderNeutralRestrooms: String?,
                     private val computerLabs: String?,
+                    private val dining: String?,
                     private val parkingInfo: String?,
                     private val url: String?) {
 
@@ -37,6 +38,10 @@ class BuildingData( private val title: String?,
 
     fun getComputerLabs(): String? {
         return computerLabs
+    }
+
+    fun getDining(): String? {
+        return dining
     }
 
     fun getParkingInfo(): String? {
