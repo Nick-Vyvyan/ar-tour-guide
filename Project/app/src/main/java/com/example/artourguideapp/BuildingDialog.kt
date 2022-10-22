@@ -1,38 +1,14 @@
 package com.example.artourguideapp
 
-import android.app.Dialog
-import android.content.Context
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
-import androidx.core.text.HtmlCompat
-import androidx.core.text.HtmlCompat.fromHtml
 
 class BuildingDialog : AppCompatActivity() {
     lateinit var commFacilityButton: Button
     lateinit var wadeKingButton: Button
 
-    lateinit var buildingView: View
-    lateinit var buildingDialog: Dialog
-
-    lateinit var nameAndCode: TextView
-
-    lateinit var buildingScrollView: ScrollView
-    lateinit var types: TextView
-    lateinit var departments: TextView
-    lateinit var accessibilityLayout: LinearLayout
-    lateinit var genderNeutralRestrooms: TextView
-    lateinit var computerLabs: TextView
-    lateinit var parkingInfo: TextView
-    lateinit var dining: TextView
-    lateinit var additionalInfo: TextView
+    //lateinit var buildingInfoDialog: BuildingInfoDialog
 
     lateinit var commFacility : BuildingData
 
@@ -41,71 +17,23 @@ class BuildingDialog : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_building_info)
-
         initializeButtons()
-        initializeBuildingInfoDialog()
         initializeDummyBuildingData()
     }
 
-    fun displayBuildingInfo(buildingData: BuildingData) {
-        nameAndCode.text = buildingData.getTitle() + " (" + buildingData.getCode() + ")"
-        types.text = buildingData.getTypes()
-        departments.text = buildingData.getDepartments()
-        displayAccessibility(buildingData.getAccessibilityInfo())
-        genderNeutralRestrooms.text = buildingData.getGenderNeutralRestrooms()
-        computerLabs.text = buildingData.getComputerLabs()
-        parkingInfo.text = buildingData.getParkingInfo()
-        dining.text = buildingData.getDining()
-        var hyperlinkText = "<a href='" + buildingData.getURL() + "'> Link to website </a>"
-        additionalInfo.text = fromHtml(hyperlinkText, HtmlCompat.FROM_HTML_MODE_COMPACT)
-
-        buildingScrollView.scrollY = 0
-        buildingDialog.show()
-    }
-
     private fun initializeButtons() {
-        commFacilityButton = findViewById<Button>(R.id.commFacilityButton)
+        commFacilityButton = findViewById(R.id.commFacilityButton)
         commFacilityButton.setOnClickListener {
-            displayBuildingInfo(commFacility)
+            var buildingInfoDialogFragment = BuildingInfoDialogFragment(commFacility)
+            buildingInfoDialogFragment.show(supportFragmentManager, "Comm Facility")
         }
 
-        wadeKingButton = findViewById<Button>(R.id.wadeKingButton)
+        wadeKingButton = findViewById(R.id.wadeKingButton)
         wadeKingButton.setOnClickListener {
-            displayBuildingInfo(wadeKing)
+            var buildingInfoDialogFragment = BuildingInfoDialogFragment(wadeKing)
+            buildingInfoDialogFragment.show(supportFragmentManager, "Wade King")
+
         }
-    }
-
-    private fun initializeBuildingInfoDialog() {
-        var inflater : LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        buildingView = inflater.inflate(R.layout.building_info, null)
-
-        nameAndCode = buildingView.findViewById(R.id.buildingNameAndCode)
-
-        buildingScrollView = buildingView.findViewById(R.id.buildingScrollView)
-
-        types = buildingView.findViewById(R.id.buildingTypes)
-
-        departments = buildingView.findViewById(R.id.buildingDepartments)
-
-        accessibilityLayout = buildingView.findViewById(R.id.accessibilityLayout)
-
-        genderNeutralRestrooms = buildingView.findViewById(R.id.genderNeutralRestrooms)
-
-        computerLabs = buildingView.findViewById(R.id.computerLabs)
-
-        parkingInfo = buildingView.findViewById(R.id.parkingInfo)
-        parkingInfo.isClickable = true
-        parkingInfo.movementMethod = LinkMovementMethod.getInstance()
-
-        dining = buildingView.findViewById(R.id.dining)
-
-        additionalInfo = buildingView.findViewById(R.id.additionalInfo)
-        additionalInfo.isClickable = true
-        additionalInfo.movementMethod = LinkMovementMethod.getInstance()
-
-        buildingDialog = Dialog(this)
-        buildingDialog.setContentView(buildingView)
-        buildingDialog.window?.setLayout((Resources.getSystem().displayMetrics.widthPixels * .9).toInt(), (Resources.getSystem().displayMetrics.heightPixels * .9).toInt())
     }
 
     private fun initializeDummyBuildingData() {
@@ -147,20 +75,6 @@ class BuildingDialog : AppCompatActivity() {
             null,
             "https://www.wwu.edu/building/sv"
         )
-    }
-
-    private fun displayAccessibility(accessibilityInfo: String?) {
-        accessibilityLayout.removeAllViews()
-
-        if (accessibilityInfo != null) {
-            var accessibilitySections = accessibilityInfo.split("\n")
-            for (section in accessibilitySections) {
-                var newView = TextView(this)
-                newView.textSize = 18f
-                newView.text = "-    $section"
-                accessibilityLayout.addView(newView)
-            }
-        }
     }
 
 }
