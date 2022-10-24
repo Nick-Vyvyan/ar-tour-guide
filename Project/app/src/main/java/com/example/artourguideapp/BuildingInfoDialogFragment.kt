@@ -15,7 +15,8 @@ import androidx.fragment.app.DialogFragment
  * This is a custom Dialog that can be used to display building info
  *
  * To use:
- *      Construct a new BuildingInfoDialogFragment with a given BuildingData object
+ *      Construct a BuildingEntity
+ *      Get the BuildingEntity's Dialog Fragment (.getDialogFragment())
  *      call buildingInfoDialogFragment.show(supportFragmentManager, "custom tag")
  */
 class BuildingInfoDialogFragment(var buildingData: BuildingData): DialogFragment() {
@@ -55,8 +56,8 @@ class BuildingInfoDialogFragment(var buildingData: BuildingData): DialogFragment
         departments.text = buildingData.getDepartments()
 
         accessibilityLayout.removeAllViews()
-        var accessibilityInfo: String? = buildingData.getAccessibilityInfo()
-        if (accessibilityInfo != null) {
+        var accessibilityInfo: String = buildingData.getAccessibilityInfo()
+        if (accessibilityInfo != "") {
             var accessibilitySections = accessibilityInfo.split("\n")
             for (section in accessibilitySections) {
                 var newView = TextView(activity)

@@ -9,7 +9,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_building_info)
 
-        val intent = Intent(this, BuildingDialog::class.java)
+        DummyBuildingEntities.initialize()
+        val intent = Intent(this, GpsActivity::class.java)
         startActivity(intent)
     }
 

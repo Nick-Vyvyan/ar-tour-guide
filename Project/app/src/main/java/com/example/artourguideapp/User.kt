@@ -14,20 +14,11 @@ class User(
     private lateinit var entitiesInView : List<Entity>
 
     /** TEMP FOR TESTING*/
-    private var entityList : ArrayList<Location> = ArrayList()
+    private var entityList : ArrayList<Entity> = ArrayList()
+
     init {
-        // Communications Facility
-        var cfLoc : Location = Location("Communications Facility")
-        cfLoc.latitude = 48.7327738818
-        cfLoc.longitude = -122.485214413
-
-        // Wade King Recreational Center
-        var wkrcLoc : Location = Location("Wade King Recreational Center")
-        wkrcLoc.latitude = 48.7315959997
-        wkrcLoc.longitude = -122.488958036
-
-        entityList.add(cfLoc)
-        entityList.add(wkrcLoc)
+        entityList.add(DummyBuildingEntities.commFacilityEntity)
+        entityList.add(DummyBuildingEntities.wadeKingEntity)
     }
 
     fun getOrientation(): Orientation {
@@ -38,15 +29,15 @@ class User(
         return userLocation.getLocation()
     }
 
-    fun getInView() : ArrayList<Location> {
+    fun getInView() : ArrayList<Entity> {
         val nearbyEntities = detectNearbyEntities()
-        var lookingAt : ArrayList<Location> = ArrayList()
+        var lookingAt : ArrayList<Entity> = ArrayList()
         val myLocation = getLocation()
         val myHeading = Math.toDegrees(getOrientation().getOrientation()[0].toDouble())
 
         nearbyEntities.forEach {
-            val bearingTo = myLocation.bearingTo(it)
-            println("DEBUG - BEARING TO " + it.provider + " = " + bearingTo.toString())
+            val bearingTo = myLocation.bearingTo(it.getCentralLocation())
+            println("DEBUG - BEARING TO " + it.getName() + " = " + bearingTo.toString())
             println("DEBUG - MY HEADING = $myHeading")
 
             var headingDiff = bearingTo - myHeading
@@ -70,13 +61,13 @@ class User(
         TODO("Not yet implemented")
     }
 
-    fun detectNearbyEntities() : ArrayList<Location> {
-        var nearbyEntities : ArrayList<Location> = ArrayList()
+    fun detectNearbyEntities() : ArrayList<Entity> {
+        var nearbyEntities : ArrayList<Entity> = ArrayList()
         var myLocation = getLocation()
         // Loop through entity locations and detect which ones are within PROXIMITY_RADIUS
         entityList.forEach {
-            if (myLocation.distanceTo(it) <= PROXIMITY_RADIUS) {
-                println("Within " + PROXIMITY_RADIUS + " meters of " + it.provider)
+            if (myLocation.distanceTo(it.getCentralLocation()) <= PROXIMITY_RADIUS) {
+                println("Within " + PROXIMITY_RADIUS + " meters of " + it.getName())
                 nearbyEntities.add(it)
             }
         }
