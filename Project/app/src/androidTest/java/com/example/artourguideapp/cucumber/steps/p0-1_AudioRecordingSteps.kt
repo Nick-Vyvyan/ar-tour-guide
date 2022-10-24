@@ -9,7 +9,7 @@ import cucumber.api.java.en.When
 
 class AudioRecordingSteps {
     val model = Model()
-    val view = View()
+    val view = UserView()
     lateinit var user : User
     val controller = Controller("", model, view, user)
     var sculpture = Entity("", 0, ArrayList<Point>(), "", Location("SculptureTest"))

@@ -10,7 +10,7 @@ import cucumber.api.java.en.When
 
 class BuildingNameSteps {
     val model = Model()
-    val camera = View()
+    val camera = UserView()
     lateinit var user : User
     val controller = Controller("", model, camera, user)
     var sculpture = Entity("", 0, ArrayList<Point>(), "", Location("BuildingName"))

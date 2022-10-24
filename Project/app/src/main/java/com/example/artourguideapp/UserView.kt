@@ -1,6 +1,6 @@
 package com.example.artourguideapp
 
-class View {
+class UserView {
     private var UIData: String = ""
 
     fun displayBuildingData(data: BuildingData) {

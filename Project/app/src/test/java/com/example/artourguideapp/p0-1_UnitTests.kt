@@ -18,7 +18,7 @@ class P0_1_UnitTests {
      * BuildingData Unit Tests
      */
 
-    val buildingData = BuildingData("","","","","","","","","")
+    val buildingData = BuildingData("","","","","","","","","","")
 
     @Test
     fun getTitle() {
@@ -70,7 +70,7 @@ class P0_1_UnitTests {
      */
     val server: String = ""
     val model = Model()
-    val view = View()
+    val view = UserView()
     val user = User()
     val controller = Controller(server, model, view, user)
 
@@ -87,7 +87,7 @@ class P0_1_UnitTests {
     @Test
     fun updateView() {
         controller.updateView()
-        assertTrue(view.equals(View()))
+        assertTrue(view.equals(UserView()))
     }
 
     /**

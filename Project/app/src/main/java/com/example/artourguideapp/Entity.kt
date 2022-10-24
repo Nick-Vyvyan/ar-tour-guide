@@ -2,25 +2,20 @@ package com.example.artourguideapp
 
 import android.graphics.Point
 import android.location.Location
+import androidx.fragment.app.DialogFragment
 
-class Entity(
+abstract class Entity(
     private var name: String,
-    private var id: Long,
-    private var perimeter: ArrayList<Point>,
+    private var perimeter: ArrayList<Location>,
     private var url: String,
-    private var location : Location
+    private var centralLocation : Location,
 ) {
-
 
     fun getName(): String {
         return name
     }
 
-    fun getID(): Long {
-        return id
-    }
-
-    fun getPerimeter(): ArrayList<Point> {
+    fun getPerimeter(): ArrayList<Location> {
         return perimeter
     }
 
@@ -28,13 +23,13 @@ class Entity(
         return url
     }
 
-    fun setPerimeter(points: ArrayList<Point>) {
+    fun setPerimeter(points: ArrayList<Location>) {
         perimeter = points
     }
 
-    fun getLocation() : Location
+    fun getCentralLocation() : Location
     {
-        return location
+        return centralLocation
     }
 
     fun setLocation(latitude : Double, longitude : Double) : Int
@@ -43,14 +38,17 @@ class Entity(
         val lonRange : ClosedRange<Double> = -180.0..180.0
         if (latitude in latRange && longitude in lonRange)
         {
-            location.latitude = latitude
-            location.longitude = longitude
+            centralLocation.latitude = latitude
+            centralLocation.longitude = longitude
         }
         else
         {
             error("invalid latitude/longitude value in setLocation")
         }
         return 0
+
     }
+
+    abstract fun getDialogFragment(): DialogFragment
 
 }
