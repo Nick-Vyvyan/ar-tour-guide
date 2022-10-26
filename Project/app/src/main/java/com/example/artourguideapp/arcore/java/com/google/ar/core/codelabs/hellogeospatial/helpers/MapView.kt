@@ -31,7 +31,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.ar.core.codelabs.hellogeospatial.HelloGeoActivity
-import com.google.ar.core.codelabs.hellogeospatial.R
+//import com.google.ar.core.codelabs.hellogeospatial.R
+import com.example.artourguideapp.R
 
 class MapView(val activity: HelloGeoActivity, val googleMap: GoogleMap) {
   private val CAMERA_MARKER_COLOR: Int = Color.argb(255, 0, 255, 0)

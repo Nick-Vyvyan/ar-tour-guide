@@ -19,13 +19,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.artourguideapp.GeospatialActivity
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.FullScreenHelper
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.SampleRender
 import com.google.ar.core.Config
 import com.google.ar.core.Session
 import com.google.ar.core.codelabs.hellogeospatial.helpers.ARCoreSessionLifecycleHelper
 import com.google.ar.core.codelabs.hellogeospatial.helpers.GeoPermissionsHelper
 import com.google.ar.core.codelabs.hellogeospatial.helpers.HelloGeoView
-import com.google.ar.core.examples.java.common.helpers.FullScreenHelper
-import com.google.ar.core.examples.java.common.samplerender.SampleRender
+//import com.google.ar.core.examples.java.common.helpers.FullScreenHelper
+//import com.google.ar.core.examples.java.common.samplerender.SampleRender
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import com.google.ar.core.exceptions.UnavailableApkTooOldException
 import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException
@@ -69,11 +72,11 @@ class HelloGeoActivity : AppCompatActivity() {
     lifecycle.addObserver(arCoreSessionHelper)
 
     // Set up the Hello AR renderer.
-    renderer = HelloGeoRenderer(this)
+//    renderer = HelloGeoRenderer(this)
     lifecycle.addObserver(renderer)
 
     // Set up Hello AR UI.
-    view = HelloGeoView(this)
+//    view = HelloGeoView(this)
     lifecycle.addObserver(view)
     setContentView(view.root)
 

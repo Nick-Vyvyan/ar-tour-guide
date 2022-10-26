@@ -17,14 +17,21 @@ package com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.
 
 import android.media.Image;
 import android.opengl.GLES30;
+
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.Framebuffer;
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.Mesh;
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.SampleRender;
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.Shader;
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.Texture;
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.VertexBuffer;
 import com.google.ar.core.Coordinates2d;
 import com.google.ar.core.Frame;
-import com.google.ar.core.examples.java.common.samplerender.Framebuffer;
-import com.google.ar.core.examples.java.common.samplerender.Mesh;
-import com.google.ar.core.examples.java.common.samplerender.SampleRender;
-import com.google.ar.core.examples.java.common.samplerender.Shader;
-import com.google.ar.core.examples.java.common.samplerender.Texture;
-import com.google.ar.core.examples.java.common.samplerender.VertexBuffer;
+//import com.google.ar.core.examples.java.common.samplerender.Framebuffer;
+//import com.google.ar.core.examples.java.common.samplerender.Mesh;
+//import com.google.ar.core.examples.java.common.samplerender.SampleRender;
+//import com.google.ar.core.examples.java.common.samplerender.Shader;
+//import com.google.ar.core.examples.java.common.samplerender.Texture;
+//import com.google.ar.core.examples.java.common.samplerender.VertexBuffer;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -230,7 +237,7 @@ public class BackgroundRenderer {
    * com.google.ar.core.Camera#getProjectionMatrix(float[], int, float, float)}.
    */
   public void drawVirtualScene(
-      SampleRender render, Framebuffer virtualSceneFramebuffer, float zNear, float zFar) {
+          SampleRender render, Framebuffer virtualSceneFramebuffer, float zNear, float zFar) {
     occlusionShader.setTexture(
         "u_VirtualSceneColorTexture", virtualSceneFramebuffer.getColorTexture());
     if (useOcclusion) {

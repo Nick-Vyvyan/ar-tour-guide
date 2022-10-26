@@ -19,22 +19,28 @@ import android.opengl.Matrix
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.example.artourguideapp.GeospatialActivity
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.DisplayRotationHelper
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.TrackingStateHelper
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.*
+import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.arcore.BackgroundRenderer
 import com.google.android.gms.maps.model.LatLng
 import com.google.ar.core.Anchor
 import com.google.ar.core.TrackingState
-import com.google.ar.core.examples.java.common.helpers.DisplayRotationHelper
-import com.google.ar.core.examples.java.common.helpers.TrackingStateHelper
-import com.google.ar.core.examples.java.common.samplerender.Framebuffer
-import com.google.ar.core.examples.java.common.samplerender.Mesh
-import com.google.ar.core.examples.java.common.samplerender.SampleRender
-import com.google.ar.core.examples.java.common.samplerender.Shader
-import com.google.ar.core.examples.java.common.samplerender.Texture
-import com.google.ar.core.examples.java.common.samplerender.arcore.BackgroundRenderer
+//import com.google.ar.core.examples.java.common.helpers.DisplayRotationHelper
+//import com.google.ar.core.examples.java.common.helpers.TrackingStateHelper
+//import com.google.ar.core.examples.java.common.samplerender.Framebuffer
+//import com.google.ar.core.examples.java.common.samplerender.Mesh
+//import com.google.ar.core.examples.java.common.samplerender.SampleRender
+//import com.google.ar.core.examples.java.common.samplerender.Shader
+//import com.google.ar.core.examples.java.common.samplerender.Texture
+//import com.google.ar.core.examples.java.common.samplerender.arcore.BackgroundRenderer
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import java.io.IOException
+import com.example.artourguideapp.arcore.assets.models.*
 
 
-class HelloGeoRenderer(val activity: HelloGeoActivity) :
+class HelloGeoRenderer(val activity: GeospatialActivity) :
   SampleRender.Renderer, DefaultLifecycleObserver {
   //<editor-fold desc="ARCore initialization" defaultstate="collapsed">
   companion object {
@@ -186,6 +192,8 @@ class HelloGeoRenderer(val activity: HelloGeoActivity) :
         longitude = cameraGeospatialPose.longitude,
         heading = cameraGeospatialPose.heading
       )
+
+      activity.view.updateStatusText(earth, cameraGeospatialPose)
     }
 
     // Draw the placed anchor, if it exists.
