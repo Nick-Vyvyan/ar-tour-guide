@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#323232"
-    android:id="@+id/parent_layout"
-    tools:context=".BuildingDialog">
+    android:id="@+id/parent_layout">
 
 
     <Button

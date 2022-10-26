@@ -17,7 +17,7 @@ class BuildingEntity(
     private var buildingData: BuildingData
 ): Entity(name, perimeter, buildingData.getURL(), location) {
 
-    private var buildingInfoDialogFragment: BuildingInfoDialogFragment = BuildingInfoDialogFragment(buildingData)
+    private var buildingInfoDialogFragment: BuildingDataDialogFragment = BuildingDataDialogFragment(buildingData)
 
     fun getBuildingData(): BuildingData {
         return buildingData

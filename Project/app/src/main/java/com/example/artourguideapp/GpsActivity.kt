@@ -6,11 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.allViews
 import androidx.recyclerview.widget.RecyclerView

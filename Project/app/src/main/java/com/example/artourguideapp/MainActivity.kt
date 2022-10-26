@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         //setContentView(R.layout.activity_building_info)
 
         DummyBuildingEntities.initialize()
-        val intent = Intent(this, GpsActivity::class.java)
+        val intent = Intent(this, BuildingDialogExample::class.java)
         startActivity(intent)
     }
 

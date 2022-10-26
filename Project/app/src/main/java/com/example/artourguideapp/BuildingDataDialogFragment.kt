@@ -1,5 +1,8 @@
 package com.example.artourguideapp
 
+import android.app.Dialog
+import android.content.DialogInterface
+import android.content.res.Resources
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -19,14 +22,14 @@ import androidx.fragment.app.DialogFragment
  *      Get the BuildingEntity's Dialog Fragment (.getDialogFragment())
  *      call buildingInfoDialogFragment.show(supportFragmentManager, "custom tag")
  */
-class BuildingInfoDialogFragment(var buildingData: BuildingData): DialogFragment() {
+class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var rootView = inflater.inflate(R.layout.building_info, container, false)
+        var rootView = inflater.inflate(R.layout.building_data_dialog, container, false)
         return rootView
     }
 
@@ -41,10 +44,15 @@ class BuildingInfoDialogFragment(var buildingData: BuildingData): DialogFragment
         var accessibilityLayout: LinearLayout = view.findViewById(R.id.accessibilityLayout)
         var genderNeutralRestrooms: TextView = view.findViewById(R.id.genderNeutralRestrooms)
         var computerLabs: TextView = view.findViewById(R.id.computerLabs)
+
+        // Allow links in parking info
         var parkingInfo: TextView = view.findViewById(R.id.parkingInfo)
         parkingInfo.isClickable = true
         parkingInfo.movementMethod = LinkMovementMethod.getInstance()
+
         var dining: TextView = view.findViewById(R.id.dining)
+
+        // Allow additional info to hold website link
         var additionalInfo: TextView = view.findViewById(R.id.additionalInfo)
         additionalInfo.isClickable = true
         additionalInfo.movementMethod = LinkMovementMethod.getInstance()
@@ -55,8 +63,12 @@ class BuildingInfoDialogFragment(var buildingData: BuildingData): DialogFragment
         types.text = buildingData.getTypes()
         departments.text = buildingData.getDepartments()
 
-        accessibilityLayout.removeAllViews()
+
+
+        //accessibilityLayout.removeAllViews()
         var accessibilityInfo: String = buildingData.getAccessibilityInfo()
+
+        // CURRENT METHOD OF PARSING ACCESSIBILITY INFO. MAY CHANGE
         if (accessibilityInfo != "") {
             var accessibilitySections = accessibilityInfo.split("\n")
             for (section in accessibilitySections) {
@@ -71,9 +83,18 @@ class BuildingInfoDialogFragment(var buildingData: BuildingData): DialogFragment
         computerLabs.text = buildingData.getComputerLabs()
         parkingInfo.text = buildingData.getParkingInfo()
         dining.text = buildingData.getDining()
+
+        // Build html website link in a string
         var hyperlinkText = "<a href='" + buildingData.getURL() + "'> Link to website </a>"
         additionalInfo.text = HtmlCompat.fromHtml(hyperlinkText, HtmlCompat.FROM_HTML_MODE_COMPACT)
 
         buildingScrollView.scrollY = 0
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+
+        // Set ScrollView back to top so opening it again will appear as a fresh view
+        view?.findViewById<ScrollView>(R.id.buildingScrollView)?.scrollY = 0
     }
 }
