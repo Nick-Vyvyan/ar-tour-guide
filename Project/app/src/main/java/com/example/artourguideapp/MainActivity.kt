@@ -2,8 +2,8 @@ package com.example.artourguideapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
 import org.json.JSONArray
 import java.io.*
 import java.net.HttpURLConnection
@@ -11,6 +11,12 @@ import java.net.URL
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
+    val server: String = ""
+    val model = Model()
+    val view = View()
+    val user = null
+    val controller = Controller(server, model, view, user)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         thread {
             var localStructuresJsonStr = ""
             var remoteStructuresJsonStr = ""
-            val gson = Gson()
 
             try {
                 try {
@@ -74,10 +79,57 @@ class MainActivity : AppCompatActivity() {
                             OutputStreamWriter(openFileOutput("structures.json", MODE_PRIVATE))
                         outputStreamWriter.write(remoteStructuresJsonStr)
                         outputStreamWriter.close()
-
-                        // TODO: Create structure objects for each object in JSONArray to be used by the app.
                     } catch (ioException: IOException) {
                         ioException.printStackTrace()
+                    }
+
+                    // create structure objects for each object in JSONArray to be used by the app
+                    val buildings: MutableList<BuildingData> = mutableListOf()
+                    val landmarks: MutableList<SculptureData> = mutableListOf()
+
+                    val structuresJsonArr = JSONArray(remoteStructuresJsonStr)
+                    for (i in 0 until structuresJsonArr.length()) {
+                        val currentStructure = structuresJsonArr.getJSONObject(i)
+                        val currentScrapedData = currentStructure.getJSONObject("scrapedData")
+                        // if landmark, add to landmark list
+                        if (currentStructure.getBoolean("isLandmark")) {
+                            landmarks.add(
+                                // TODO: ALTER SCRAPER TO HAVE CORRECT AND REMAINING FIELDS
+                                SculptureData(currentScrapedData.getString("buildingName"),
+                                "", "", ""
+                            ))
+                        }
+                        // otherwise it's a building so add to building list
+                        else {
+                            buildings.add(
+                                // TODO: ALTER SCRAPER TO HAVE REMAINING FIELDS
+                                BuildingData(
+                                    currentScrapedData.getString("buildingName"),
+                                    "", currentScrapedData.getJSONArray("buildingTypes").toString(),
+                                    currentScrapedData.getJSONArray("departmentsOffices").toString(),
+                                    "", "",
+                                    currentScrapedData.getJSONArray("computerLabs").toString(),
+                                    "", ""
+                                ))
+                        }
+
+                        // pass off lists to controller to give to model
+                        controller.addBuildings(buildings)
+                        controller.addLandmarks(landmarks)
+
+                        // get lists from model
+                        val modelBuildings: MutableList<BuildingData> = controller.getBuildings()
+                        val modelLandmarks: MutableList<SculptureData> = controller.getLandmarks()
+
+                        // print all buildings from model
+                        for (j in 0 until modelBuildings.size) {
+                            Log.d("building", modelBuildings[j].toString())
+                        }
+
+                        // print all landmarks from model
+                        for (j in 0 until modelLandmarks.size) {
+                            Log.d("landmark", modelLandmarks[j].toString())
+                        }
                     }
                 }
             } catch (ioException: IOException) {
