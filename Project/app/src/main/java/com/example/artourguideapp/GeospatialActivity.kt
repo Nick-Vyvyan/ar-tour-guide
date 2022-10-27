@@ -29,6 +29,7 @@ import com.google.ar.core.Session
 import com.google.ar.core.codelabs.hellogeospatial.*
 import com.google.ar.core.codelabs.hellogeospatial.helpers.*
 import com.google.ar.core.exceptions.*
+import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException
 
 class GeospatialActivity : AppCompatActivity() {
     companion object {
@@ -78,6 +79,7 @@ class GeospatialActivity : AppCompatActivity() {
         setContentView(view.root)
 
         SampleRender(view.surfaceView, renderer, assets)
+        renderer.setTestAnchors()
     }
 
 

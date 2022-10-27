@@ -17,6 +17,7 @@ package com.google.ar.core.codelabs.hellogeospatial.helpers
 
 import android.opengl.GLSurfaceView
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -42,17 +43,17 @@ class HelloGeoView(val activity: GeospatialActivity) : DefaultLifecycleObserver 
   val snackbarHelper = SnackbarHelper()
 
   var mapView: MapView? = null
-//  val mapTouchWrapper = root.findViewById<MapTouchWrapper>(R.id.map_wrapper).apply {
-//    setup { screenLocation ->
-//      val latLng: LatLng =
-//        mapView?.googleMap?.projection?.fromScreenLocation(screenLocation) ?: return@setup
-//      activity.renderer.onMapClick(latLng)
-//    }
-//  }
-//  val mapFragment =
-//    (activity.supportFragmentManager.findFragmentById(R.id.map)!! as SupportMapFragment).also {
-//      it.getMapAsync { googleMap -> mapView = MapView(activity, googleMap) }
-//    }
+  val mapTouchWrapper = root.findViewById<MapTouchWrapper>(R.id.map_wrapper).apply {
+    setup { screenLocation ->
+      val latLng: LatLng =
+        mapView?.googleMap?.projection?.fromScreenLocation(screenLocation) ?: return@setup
+      activity.renderer.onMapClick(latLng)
+    }
+  }
+  val mapFragment =
+    (activity.supportFragmentManager.findFragmentById(R.id.map)!! as SupportMapFragment).also {
+      it.getMapAsync { googleMap -> mapView = MapView(activity, googleMap) }
+    }
 
   val statusText = root.findViewById<TextView>(R.id.statusText)
   fun updateStatusText(earth: Earth, cameraGeospatialPose: GeospatialPose?) {
@@ -72,6 +73,14 @@ class HelloGeoView(val activity: GeospatialActivity) : DefaultLifecycleObserver 
                                                      poseText)
     }
   }
+
+    /**
+     * CUSTOM ADDED
+     * */
+    var ll_interactable = root.findViewById<LinearLayout>(R.id.interactable_buildings)
+    fun updateAnchors(earth: Earth, cameraGeospatialPose: GeospatialPose?) {
+
+    }
 
   override fun onResume(owner: LifecycleOwner) {
     surfaceView.onResume()

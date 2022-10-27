@@ -27,18 +27,52 @@
         android:layout_height="fill_parent"
         android:layout_gravity="top" />
 
-    <TextView
-        android:padding="8dp"
-        android:textColor="@android:color/black"
-        android:background="#AAFFFFFF"
-        android:layout_width="wrap_content"
-        android:fontFamily="monospace"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:id="@+id/statusText"
-        android:layout_alignBottom="@id/surfaceview"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="50dp"
-        />
+<!--    <TextView-->
+<!--        android:padding="8dp"-->
+<!--        android:textColor="@android:color/black"-->
+<!--        android:background="#8DFFFFFF"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:fontFamily="monospace"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textAlignment="center"-->
+<!--        android:id="@+id/statusText"-->
+<!--        android:layout_alignBottom="@id/surfaceview"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:layout_marginBottom="50dp"-->
+<!--        />-->
+
+    <com.google.ar.core.codelabs.hellogeospatial.helpers.MapTouchWrapper
+        android:id="@+id/map_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".HelloGeoActivity" />
+        <TextView
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            android:background="#AAFFFFFF"
+            android:layout_width="wrap_content"
+            android:fontFamily="monospace"
+            android:layout_height="wrap_content"
+            android:id="@+id/statusText"
+            />
+    </com.google.ar.core.codelabs.hellogeospatial.helpers.MapTouchWrapper>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/interactable_buildings"-->
+<!--        android:layout_width="356dp"-->
+<!--        android:layout_height="135dp"-->
+<!--        android:layout_alignTop="@id/surfaceview"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:orientation="vertical" />-->
 
 </RelativeLayout>

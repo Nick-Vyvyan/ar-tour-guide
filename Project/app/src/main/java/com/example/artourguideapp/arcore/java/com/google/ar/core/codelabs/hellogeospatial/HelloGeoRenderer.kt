@@ -37,7 +37,6 @@ import com.google.ar.core.TrackingState
 //import com.google.ar.core.examples.java.common.samplerender.arcore.BackgroundRenderer
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import java.io.IOException
-import com.example.artourguideapp.arcore.assets.models.*
 
 
 class HelloGeoRenderer(val activity: GeospatialActivity) :
@@ -194,10 +193,38 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
       )
 
       activity.view.updateStatusText(earth, cameraGeospatialPose)
+
+//      when (testAnchor?.terrainAnchorState) {
+//        Anchor.TerrainAnchorState.SUCCESS -> {
+//          if (testAnchor?.trackingState == TrackingState.TRACKING) {
+//            render.renderCompassAtAnchor(testAnchor!!)
+//          }
+//        }
+//        Anchor.TerrainAnchorState.TASK_IN_PROGRESS -> {
+//          println("Waiting on ARCore API to resolve terrain anchor's pose")
+//        }
+//        Anchor.TerrainAnchorState.ERROR_UNSUPPORTED_LOCATION -> {
+//          println("Terrain Anchor in unsupported location")
+//        }
+//        Anchor.TerrainAnchorState.ERROR_NOT_AUTHORIZED -> {
+//          println("Error authorizing app with ARCore API")
+//        }
+//        Anchor.TerrainAnchorState.ERROR_INTERNAL -> {
+//          println("Terrain anchor could not be resolved due to an internal error")
+//        }
+//        Anchor.TerrainAnchorState.NONE -> {
+//          println("This anchor is not a Terrain Anchor or became invalid")
+//        }
+//        else -> {}
+//      }
     }
 
     // Draw the placed anchor, if it exists.
     earthAnchor?.let {
+      render.renderCompassAtAnchor(it)
+    }
+
+    testAnchorMyHouse?.let {
       render.renderCompassAtAnchor(it)
     }
 
@@ -229,7 +256,60 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
       position = latLng
       isVisible = true
     }
+
+    setTestAnchors()
   }
+
+  private var testAnchorMyHouse: Anchor? = null
+  private var testAnchorCF: Anchor? = null
+  private var testAnchorWK: Anchor? = null
+
+  /** Currently Only for Testing */
+  fun setTestAnchors() {
+    val earth = session?.earth ?: return
+    if (earth.trackingState != TrackingState.TRACKING) {
+      return
+    }
+    testAnchorMyHouse?.detach()
+    testAnchorCF?.detach()
+    testAnchorWK?.detach()
+
+    testAnchorMyHouse= earth.resolveAnchorOnTerrain(
+      48.888967847790994, -122.47955367918804,
+      1.0,
+      0f,0f,0f,1f
+    )
+
+    testAnchorCF = earth.resolveAnchorOnTerrain(
+      48.7327738818, -122.485214413,
+      1.0,
+      0f, 0f, 0f, 1f
+    )
+
+    testAnchorWK = earth.resolveAnchorOnTerrain(
+      48.7315959997, -122.488958036,
+      1.0,
+      0f, 0f, 0f, 1f
+    )
+
+    var housePosition = LatLng(48.888967847790994, -122.47955367918804)
+    var cfPosition = LatLng(48.7327738818, -122.485214413)
+    var wkPosition = LatLng(48.7315959997, -122.488958036)
+
+    activity.view.mapView?.houseMarker?.apply {
+      position = housePosition
+      isVisible = true
+    }
+    activity.view.mapView?.cfMarker?.apply {
+      position = cfPosition
+      isVisible = true
+    }
+    activity.view.mapView?.wkMarker?.apply {
+      position = wkPosition
+      isVisible = true
+    }
+  }
+
 
   private fun SampleRender.renderCompassAtAnchor(anchor: Anchor) {
     // Get the current pose of the Anchor in world space. The Anchor pose is updated
