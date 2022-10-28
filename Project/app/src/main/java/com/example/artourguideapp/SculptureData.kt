@@ -23,4 +23,10 @@ class SculptureData(private val title: String?,
         return url
     }
 
+    override fun toString(): String {
+        return ("title: " + title
+                + "\ndescription: " + description
+                + "\naudioDescription: " + audioDescription
+                + "\nurl: " + url)
+    }
 }

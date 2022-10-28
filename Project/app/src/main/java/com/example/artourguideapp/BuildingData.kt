@@ -52,7 +52,15 @@ class BuildingData( private val title: String,
         return url
     }
 
-
-
-
+    override fun toString(): String {
+        return ("title: " + title
+                + "\ncode: " + code
+                + "\ntypes: " + types
+                + "\ndepartments: " + departments
+                + "\naccessibilityInfo: " + accessibilityInfo
+                + "\ngenderNeutralRestrooms: " + genderNeutralRestrooms
+                + "\ncomputerLabs: " + computerLabs
+                + "\nparkingInfo: " + parkingInfo
+                + "\nurl: " + url)
+    }
 }
