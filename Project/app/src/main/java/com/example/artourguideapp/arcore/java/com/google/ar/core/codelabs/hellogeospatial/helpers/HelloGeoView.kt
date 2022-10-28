@@ -74,14 +74,6 @@ class HelloGeoView(val activity: GeospatialActivity) : DefaultLifecycleObserver 
     }
   }
 
-    /**
-     * CUSTOM ADDED
-     * */
-    var ll_interactable = root.findViewById<LinearLayout>(R.id.interactable_buildings)
-    fun updateAnchors(earth: Earth, cameraGeospatialPose: GeospatialPose?) {
-
-    }
-
   override fun onResume(owner: LifecycleOwner) {
     surfaceView.onResume()
   }

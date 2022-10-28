@@ -65,29 +65,6 @@ class UserLocation(
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
-
-
-    /**WILL BE NEEDED IN (MAIN ACTIVITY??)**/
-//    fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//
-//        when (requestCode) {
-//            PERMISSIONS_FINE_LOCATION -> {
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    updateGPS()
-//                } else {
-//                    Toast.makeText(this, "This app requires location permissions to function properly", Toast.LENGTH_SHORT).show()
-//                    finish()
-//                }
-//            }
-//        }
-//    }
-
-
     fun stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
