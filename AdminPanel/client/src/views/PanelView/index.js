@@ -187,12 +187,19 @@ const PanelView = (props) => {
             <GoogleMap
               zoom={15}
               center={wwuCenter}
+              tilt="0"
               mapTypeId="hybrid"
               mapContainerClassName="map-container"
+              
             >
               <DrawingManager
-                drawingMode="polygon"
+                defaultDrawingMode="polygon"
                 onPolygonComplete={onPolygonComplete}
+                defaultOptions={{
+                  polygonOptions: {
+                    strokeColor: '#ffff00'
+                  }
+                }}
               />
             </GoogleMap>
             <br />
