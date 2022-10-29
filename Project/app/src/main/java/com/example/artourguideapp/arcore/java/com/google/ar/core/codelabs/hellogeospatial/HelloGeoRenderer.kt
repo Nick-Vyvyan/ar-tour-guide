@@ -202,6 +202,7 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
 
     }
 
+    // check status of terrain anchors, render a compass if ready
     if (currentAnchorList.isNotEmpty()) {
       for (anchor in currentAnchorList) {
         when (anchor.terrainAnchorState) {
@@ -255,7 +256,6 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
   var earthAnchor: Anchor? = null
 
   fun onMapClick(latLng: LatLng) {
-    // TODO: place an anchor at the given position.
     val earth = session?.earth ?: return
     if (earth.trackingState != TrackingState.TRACKING) {
       return
@@ -277,58 +277,6 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
       isVisible = true
     }
 
-//    setTestAnchors()
-//    updateAnchors(activity.entityList)
-  }
-
-  private var testAnchorMyHouse: Anchor? = null
-  private var testAnchorCF: Anchor? = null
-  private var testAnchorWK: Anchor? = null
-
-  /** Currently Only for Testing */
-  fun setTestAnchors() {
-    val earth = session?.earth ?: return
-    if (earth.trackingState != TrackingState.TRACKING) {
-      return
-    }
-    testAnchorMyHouse?.detach()
-    testAnchorCF?.detach()
-    testAnchorWK?.detach()
-
-    testAnchorMyHouse= earth.resolveAnchorOnTerrain(
-      48.888967847790994, -122.47955367918804,
-      1.0,
-      0f,0f,0f,1f
-    )
-
-    testAnchorCF = earth.resolveAnchorOnTerrain(
-      48.7327738818, -122.485214413,
-      1.0,
-      0f, 0f, 0f, 1f
-    )
-
-    testAnchorWK = earth.resolveAnchorOnTerrain(
-      48.7315959997, -122.488958036,
-      1.0,
-      0f, 0f, 0f, 1f
-    )
-
-    var housePosition = LatLng(48.888967847790994, -122.47955367918804)
-    var cfPosition = LatLng(48.7327738818, -122.485214413)
-    var wkPosition = LatLng(48.7315959997, -122.488958036)
-
-    activity.view.mapView?.houseMarker?.apply {
-      position = housePosition
-      isVisible = true
-    }
-    activity.view.mapView?.cfMarker?.apply {
-      position = cfPosition
-      isVisible = true
-    }
-    activity.view.mapView?.wkMarker?.apply {
-      position = wkPosition
-      isVisible = true
-    }
   }
 
 
@@ -341,9 +289,9 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
       return
     }
 
+    // TODO: add check to see if we can keep an existing anchor
     for (anchor in currentAnchorList) {
       anchor.detach()
-//      currentAnchorList.remove(anchor)
     }
     currentAnchorList.clear()
 
