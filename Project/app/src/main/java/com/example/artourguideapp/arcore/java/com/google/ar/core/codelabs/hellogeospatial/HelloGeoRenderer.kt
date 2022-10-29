@@ -15,10 +15,12 @@
  */
 package com.google.ar.core.codelabs.hellogeospatial
 
+import android.location.Location
 import android.opengl.Matrix
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.example.artourguideapp.Entity
 import com.example.artourguideapp.GeospatialActivity
 import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.DisplayRotationHelper
 import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.TrackingStateHelper
@@ -37,6 +39,7 @@ import com.google.ar.core.TrackingState
 //import com.google.ar.core.examples.java.common.samplerender.arcore.BackgroundRenderer
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import java.io.IOException
+import kotlin.math.max
 
 
 class HelloGeoRenderer(val activity: GeospatialActivity) :
@@ -120,6 +123,8 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
   }
   //</editor-fold>
 
+  private val currentAnchorList : ArrayList<Anchor> = ArrayList()
+
   override fun onDrawFrame(render: SampleRender) {
     val session = session ?: return
 
@@ -194,29 +199,36 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
 
       activity.view.updateStatusText(earth, cameraGeospatialPose)
 
-//      when (testAnchor?.terrainAnchorState) {
-//        Anchor.TerrainAnchorState.SUCCESS -> {
-//          if (testAnchor?.trackingState == TrackingState.TRACKING) {
-//            render.renderCompassAtAnchor(testAnchor!!)
-//          }
-//        }
-//        Anchor.TerrainAnchorState.TASK_IN_PROGRESS -> {
-//          println("Waiting on ARCore API to resolve terrain anchor's pose")
-//        }
-//        Anchor.TerrainAnchorState.ERROR_UNSUPPORTED_LOCATION -> {
-//          println("Terrain Anchor in unsupported location")
-//        }
-//        Anchor.TerrainAnchorState.ERROR_NOT_AUTHORIZED -> {
-//          println("Error authorizing app with ARCore API")
-//        }
-//        Anchor.TerrainAnchorState.ERROR_INTERNAL -> {
-//          println("Terrain anchor could not be resolved due to an internal error")
-//        }
-//        Anchor.TerrainAnchorState.NONE -> {
-//          println("This anchor is not a Terrain Anchor or became invalid")
-//        }
-//        else -> {}
-//      }
+
+    }
+
+    if (currentAnchorList.isNotEmpty()) {
+      for (anchor in currentAnchorList) {
+        when (anchor.terrainAnchorState) {
+          Anchor.TerrainAnchorState.SUCCESS -> {
+            if (anchor.trackingState == TrackingState.TRACKING) {
+              render.renderCompassAtAnchor(anchor)
+              println("DEBUG - RENDERED ANCHOR AT ${anchor.pose}")
+            }
+          }
+          Anchor.TerrainAnchorState.TASK_IN_PROGRESS -> {
+            println("Waiting on ARCore API to resolve terrain anchor's pose")
+          }
+          Anchor.TerrainAnchorState.ERROR_UNSUPPORTED_LOCATION -> {
+            println("Terrain Anchor in unsupported location")
+          }
+          Anchor.TerrainAnchorState.ERROR_NOT_AUTHORIZED -> {
+            println("Error authorizing app with ARCore API")
+          }
+          Anchor.TerrainAnchorState.ERROR_INTERNAL -> {
+            println("Terrain anchor could not be resolved due to an internal error")
+          }
+          Anchor.TerrainAnchorState.NONE -> {
+            println("This anchor is not a Terrain Anchor or became invalid")
+          }
+          else -> {}
+        }
+      }
     }
 
     // Draw the placed anchor, if it exists.
@@ -224,9 +236,17 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
       render.renderCompassAtAnchor(it)
     }
 
-    testAnchorMyHouse?.let {
-      render.renderCompassAtAnchor(it)
-    }
+//    testAnchorMyHouse?.let {
+//      render.renderCompassAtAnchor(it)
+//    }
+//
+//    testAnchorCF?.let {
+//      render.renderCompassAtAnchor(it)
+//    }
+//
+//    testAnchorWK?.let {
+//      render.renderCompassAtAnchor(it)
+//    }
 
     // Compose the virtual scene with the background.
     backgroundRenderer.drawVirtualScene(render, virtualSceneFramebuffer, Z_NEAR, Z_FAR)
@@ -257,7 +277,8 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
       isVisible = true
     }
 
-    setTestAnchors()
+//    setTestAnchors()
+//    updateAnchors(activity.entityList)
   }
 
   private var testAnchorMyHouse: Anchor? = null
@@ -308,6 +329,36 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
       position = wkPosition
       isVisible = true
     }
+  }
+
+
+  /** Detaches all current anchors and then replaces
+   * them with the new anchors created from the list
+   * of entities */
+  fun updateAnchors(entityList : List<Entity>) {
+    val earth = session?.earth ?: return
+    if (earth.trackingState != TrackingState.TRACKING) {
+      return
+    }
+
+    for (anchor in currentAnchorList) {
+      anchor.detach()
+//      currentAnchorList.remove(anchor)
+    }
+    currentAnchorList.clear()
+
+    for (entity in entityList) {
+      val newAnchor = earth.resolveAnchorOnTerrain(
+        entity.getCentralLocation().latitude,
+        entity.getCentralLocation().longitude,
+        10.0,
+        0f,0f,0f,1f
+      )
+      currentAnchorList.add(newAnchor)
+    }
+
+    // for debug purposes
+    println("DEBUG - FINISHED UPDATEANCHORS() CALL INSIDE RENDERER")
   }
 
 

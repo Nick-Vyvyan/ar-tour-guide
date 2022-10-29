@@ -20,6 +20,8 @@ package com.example.artourguideapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.FullScreenHelper
@@ -30,6 +32,9 @@ import com.google.ar.core.codelabs.hellogeospatial.*
 import com.google.ar.core.codelabs.hellogeospatial.helpers.*
 import com.google.ar.core.exceptions.*
 import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException
+import kotlinx.coroutines.Runnable
+import java.util.Timer
+import java.util.TimerTask
 
 class GeospatialActivity : AppCompatActivity() {
     companion object {
@@ -39,6 +44,9 @@ class GeospatialActivity : AppCompatActivity() {
     lateinit var arCoreSessionHelper: ARCoreSessionLifecycleHelper
     lateinit var view: HelloGeoView
     lateinit var renderer: HelloGeoRenderer
+
+
+    var entityList : ArrayList<Entity> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +87,25 @@ class GeospatialActivity : AppCompatActivity() {
         setContentView(view.root)
 
         SampleRender(view.surfaceView, renderer, assets)
-        renderer.setTestAnchors()
+//        renderer.setTestAnchors()
+
+
+        DummyBuildingEntities.initialize()
+        DummyBuildingEntities.entityList.forEach {
+            this.entityList.add(it)
+        }
+
+
+        // update anchors being rendered every 10 seconds
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                // TODO: get new list of nearby Entity objects
+                println("DEBUG - INSIDE UPDATE ANCHORS TIMER TASK")
+                renderer.updateAnchors(entityList)
+            }
+        }, 0, 10000)
+
+
     }
 
 
@@ -113,4 +139,5 @@ class GeospatialActivity : AppCompatActivity() {
         super.onWindowFocusChanged(hasFocus)
         FullScreenHelper.setFullScreenOnWindowFocusChanged(this, hasFocus)
     }
+
 }
