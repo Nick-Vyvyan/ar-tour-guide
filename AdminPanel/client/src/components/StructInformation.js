@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ListStruct from './ListStruct';
+import ListStruct from './ListStruct/ListStruct';
 
 const axios = require("axios").default;
 

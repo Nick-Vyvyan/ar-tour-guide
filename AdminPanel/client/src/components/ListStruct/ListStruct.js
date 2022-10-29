@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles.css"
 
 const axios = require("axios").default;
 
@@ -17,26 +18,10 @@ function ListStruct(props) {
       .delete(baseServerURL + "/" + props.id)
   }
 
-  let flexRowStyle = {
-    display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: 'LightSteelBlue',
-    padding: '10px',
-    borderRadius: '5px',
-    justifyContent: 'space-between'
-  }
-
-  let buttonStyle = {
-    backgroundColor: 'darkred',
-    padding: '5px',
-    borderRadius: '5px',
-    color: 'white'
-  }
-
   return (
-    <div style={flexRowStyle}>
+    <div class="flexRowStyle">
       <h3>{props.name}</h3>
-      <div onClick={removeBuilding} style={buttonStyle}>Remove Structure</div>
+      <div onClick={removeBuilding} class="structButtonStyle">Remove Structure</div>
     </div>
   );
 }
