@@ -1,8 +1,11 @@
 package com.example.artourguideapp
 
+import com.example.artourguideapp.entities.BuildingData
+import com.example.artourguideapp.entities.LandmarkData
+
 class Controller(private var server: String,
                  private var model: Model,
-                 private var view: View,
+                 private var view: UserView,
                  private var user: User?)
 {
     fun addBuildings(buildings: MutableList<BuildingData>) {
@@ -10,7 +13,7 @@ class Controller(private var server: String,
         model.setBuildings(buildings)
     }
 
-    fun addLandmarks(landmarks: MutableList<SculptureData>) {
+    fun addLandmarks(landmarks: MutableList<LandmarkData>) {
         model.clearLandmarks()
         model.setLandmarks(landmarks)
     }
@@ -19,7 +22,7 @@ class Controller(private var server: String,
         return model.getBuildings()
     }
 
-    fun getLandmarks(): MutableList<SculptureData> {
+    fun getLandmarks(): MutableList<LandmarkData> {
         return model.getLandmarks()
     }
 

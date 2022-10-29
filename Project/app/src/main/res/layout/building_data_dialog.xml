@@ -11,7 +11,7 @@
     android:background="#00000000">
 
     <TextView
-        android:id="@+id/buildingNameAndCode"
+        android:id="@+id/landmark_data_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#00FFFFFF"
-        android:id="@+id/buildingScrollView"
+        android:id="@+id/landmark_data_scrollview"
         tools:visibility="visible">
 
         <LinearLayout
@@ -42,7 +42,7 @@
             android:padding="20dp">
 
             <TextView
-                android:id="@+id/buildingTypesLabel"
+                android:id="@+id/landmark_data_description_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
@@ -52,7 +52,7 @@
 
 
             <TextView
-                android:id="@+id/buildingTypes"
+                android:id="@+id/landmark_data_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -169,7 +169,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/additionalInfoLabel"
+                android:id="@+id/landmark_data_url_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -178,7 +178,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/additionalInfo"
+                android:id="@+id/landmark_data_url"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

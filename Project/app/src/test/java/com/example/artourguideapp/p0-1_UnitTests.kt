@@ -1,10 +1,12 @@
 package com.example.artourguideapp
 
 import android.graphics.Point
+import com.example.artourguideapp.entities.BuildingData
+import com.example.artourguideapp.entities.Entity
+import com.example.artourguideapp.entities.LandmarkData
 import org.junit.Test
 
 import org.junit.Assert.*
-import java.io.File
 
 /**
  * Unit tests for User Story P0-1.
@@ -172,25 +174,25 @@ class P0_1_UnitTests {
     /**
      * SculptureData Unit Tests
      */
-    val sculptureData = SculptureData("A", "B", "", "C")
+    val landmarkData = LandmarkData("A", "B", "", "C")
     @Test
     fun getSculptTitle(){
-        assertTrue(sculptureData.getTitle().equals(""))
+        assertTrue(landmarkData.getTitle().equals(""))
     }
 
     @Test
     fun getDescription(){
-        assertTrue(sculptureData.getDescription().equals(""))
+        assertTrue(landmarkData.getDescription().equals(""))
     }
 
     @Test
     fun getAudioDescription(){
-        assertTrue(sculptureData.getAudioDescription().equals(""))
+        assertTrue(landmarkData.getAudioDescription().equals(""))
     }
 
     @Test
     fun getSculptURL(){
-        assertTrue(sculptureData.getURL().equals(""))
+        assertTrue(landmarkData.getURL().equals(""))
     }
 
     /**

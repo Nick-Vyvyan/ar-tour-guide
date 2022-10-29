@@ -1,4 +1,4 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.entities
 
 import android.location.Location
 import androidx.fragment.app.DialogFragment

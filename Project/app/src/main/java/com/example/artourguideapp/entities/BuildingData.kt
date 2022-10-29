@@ -1,4 +1,4 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.entities
 
 class BuildingData( private val title: String,
                     private val code: String,

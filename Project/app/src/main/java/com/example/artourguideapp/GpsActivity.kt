@@ -8,8 +8,7 @@ import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.allViews
-import androidx.recyclerview.widget.RecyclerView
+import com.example.artourguideapp.entities.*
 
 
 private const val PERMISSIONS_FINE_LOCATION = 101

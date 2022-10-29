@@ -1,9 +1,10 @@
 package com.example.artourguideapp
 
 import android.location.Location
+import com.example.artourguideapp.entities.BuildingData
+import com.example.artourguideapp.entities.BuildingEntity
 import org.junit.Assert.*
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 
 class EntityUnitTests {

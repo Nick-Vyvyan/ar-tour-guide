@@ -1,7 +1,7 @@
 package com.example.artourguideapp
 
+import com.example.artourguideapp.entities.BuildingData
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 
 class BuildingDataUnitTests {

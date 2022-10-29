@@ -1,13 +1,14 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.entities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.example.artourguideapp.R
 
 /**
  * DUMMY CLASS TO TEST BUILDING DIALOG FRAGMENTS
  */
-class BuildingDialogExample : AppCompatActivity() {
+class EntityDataDialogFragmentExample : AppCompatActivity() {
     lateinit var commFacilityButton: Button
     lateinit var wadeKingButton: Button
 
@@ -20,7 +21,7 @@ class BuildingDialogExample : AppCompatActivity() {
     private fun initializeButtons() {
         commFacilityButton = findViewById(R.id.commFacilityButton)
         commFacilityButton.setOnClickListener {
-            DummyBuildingEntities.commFacilityEntity.getDialogFragment().show(supportFragmentManager, DummyBuildingEntities.commFacilityEntity.getName())
+            DummyBuildingEntities.handel.getDialogFragment().show(supportFragmentManager, DummyBuildingEntities.handel.getName())
         }
 
         wadeKingButton = findViewById(R.id.wadeKingButton)

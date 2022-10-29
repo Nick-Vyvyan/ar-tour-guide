@@ -1,8 +1,6 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.entities
 
-import android.app.Dialog
 import android.content.DialogInterface
-import android.content.res.Resources
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -13,6 +11,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
+import com.example.artourguideapp.R
 
 /**
  * This is a custom Dialog that can be used to display building info
@@ -37,9 +36,9 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
         super.onViewCreated(view, savedInstanceState)
 
         /* GET ALL UI ELEMENTS */
-        var nameAndCode: TextView = view.findViewById(R.id.buildingNameAndCode)
-        var buildingScrollView : ScrollView = view.findViewById(R.id.buildingScrollView)
-        var types: TextView = view.findViewById(R.id.buildingTypes)
+        var nameAndCode: TextView = view.findViewById(R.id.landmark_data_name)
+        var buildingScrollView : ScrollView = view.findViewById(R.id.landmark_data_scrollview)
+        var types: TextView = view.findViewById(R.id.landmark_data_description)
         var departments: TextView = view.findViewById(R.id.buildingDepartments)
         var accessibilityLayout: LinearLayout = view.findViewById(R.id.accessibilityLayout)
         var genderNeutralRestrooms: TextView = view.findViewById(R.id.genderNeutralRestrooms)
@@ -53,7 +52,7 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
         var dining: TextView = view.findViewById(R.id.dining)
 
         // Allow additional info to hold website link
-        var additionalInfo: TextView = view.findViewById(R.id.additionalInfo)
+        var additionalInfo: TextView = view.findViewById(R.id.landmark_data_url)
         additionalInfo.isClickable = true
         additionalInfo.movementMethod = LinkMovementMethod.getInstance()
 
@@ -95,6 +94,6 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
         super.onDismiss(dialog)
 
         // Set ScrollView back to top so opening it again will appear as a fresh view
-        view?.findViewById<ScrollView>(R.id.buildingScrollView)?.scrollY = 0
+        view?.findViewById<ScrollView>(R.id.landmark_data_scrollview)?.scrollY = 0
     }
 }

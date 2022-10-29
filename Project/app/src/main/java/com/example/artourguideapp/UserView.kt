@@ -1,5 +1,7 @@
 package com.example.artourguideapp
 
+import com.example.artourguideapp.entities.*
+
 class UserView {
     private var UIData: String = ""
 
@@ -7,7 +9,7 @@ class UserView {
 
     }
 
-    fun displaySculptureData(data: SculptureData) {
+    fun displaySculptureData(data: LandmarkData) {
 
     }
 

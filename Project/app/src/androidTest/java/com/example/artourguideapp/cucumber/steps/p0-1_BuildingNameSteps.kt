@@ -3,6 +3,8 @@ package com.example.artourguideapp.cucumber.steps
 import android.graphics.Point
 import android.location.Location
 import com.example.artourguideapp.*
+import com.example.artourguideapp.entities.Entity
+import com.example.artourguideapp.entities.LandmarkData
 import cucumber.api.java.en.And
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
@@ -14,7 +16,7 @@ class BuildingNameSteps {
     lateinit var user : User
     val controller = Controller("", model, camera, user)
     var sculpture = Entity("", 0, ArrayList<Point>(), "", Location("BuildingName"))
-    var sculptureData = SculptureData("","","","")
+    var landmarkData = LandmarkData("","","","")
 
     @Given("^John is using his smartphone camera to view the WWU campus in the app$")
     fun turn_on_camera() {

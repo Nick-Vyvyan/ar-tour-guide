@@ -1,6 +1,6 @@
 package com.example.artourguideapp.cucumber.steps
 
-import com.example.artourguideapp.Entity
+import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.User
 import com.example.artourguideapp.UserView
 import cucumber.api.java.en.And

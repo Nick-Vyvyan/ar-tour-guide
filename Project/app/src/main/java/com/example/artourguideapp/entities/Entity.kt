@@ -1,6 +1,5 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.entities
 
-import android.graphics.Point
 import android.location.Location
 import androidx.fragment.app.DialogFragment
 

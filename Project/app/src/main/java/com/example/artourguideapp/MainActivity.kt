@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.artourguideapp.entities.*
 import org.json.JSONArray
 import java.io.*
 import java.net.HttpURLConnection
@@ -13,7 +14,7 @@ import kotlin.concurrent.thread
 class MainActivity : AppCompatActivity() {
     val server: String = ""
     val model = Model()
-    val view = View()
+    val view = UserView()
     val user = null
     val controller = Controller(server, model, view, user)
 
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         DummyBuildingEntities.initialize()
         updateStructures()
 
-        val intent = Intent(this, GpsActivity::class.java)
+        val intent = Intent(this, EntityDataDialogFragmentExample::class.java)
         startActivity(intent)
     }
 
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
                     // create structure objects for each object in JSONArray to be used by the app
                     val buildings: MutableList<BuildingData> = mutableListOf()
-                    val landmarks: MutableList<SculptureData> = mutableListOf()
+                    val landmarks: MutableList<LandmarkData> = mutableListOf()
 
                     val structuresJsonArr = JSONArray(remoteStructuresJsonStr)
                     for (i in 0 until structuresJsonArr.length()) {
@@ -96,9 +97,10 @@ class MainActivity : AppCompatActivity() {
                         if (currentStructure.getBoolean("isLandmark")) {
                             landmarks.add(
                                 // TODO: ALTER SCRAPER TO HAVE CORRECT AND REMAINING FIELDS
-                                SculptureData(currentScrapedData.getString("buildingName"),
+                                LandmarkData(currentScrapedData.getString("buildingName"),
                                 "", "", ""
-                            ))
+                            )
+                            )
                         }
                         // otherwise it's a building so add to building list
                         else {
@@ -110,8 +112,9 @@ class MainActivity : AppCompatActivity() {
                                     currentScrapedData.getJSONArray("departmentsOffices").toString(),
                                     "", "",
                                     currentScrapedData.getJSONArray("computerLabs").toString(),
-                                    "", ""
-                                ))
+                                    "", "",""
+                                )
+                            )
                         }
 
                         // pass off lists to controller to give to model
@@ -120,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
                         // get lists from model
                         val modelBuildings: MutableList<BuildingData> = controller.getBuildings()
-                        val modelLandmarks: MutableList<SculptureData> = controller.getLandmarks()
+                        val modelLandmarks: MutableList<LandmarkData> = controller.getLandmarks()
 
                         // print all buildings from model
                         for (j in 0 until modelBuildings.size) {

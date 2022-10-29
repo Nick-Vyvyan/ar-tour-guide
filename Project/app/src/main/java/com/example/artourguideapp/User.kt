@@ -2,6 +2,7 @@ package com.example.artourguideapp
 
 import android.content.Context
 import android.location.Location
+import com.example.artourguideapp.entities.*
 import kotlin.math.abs
 
 private const val PROXIMITY_RADIUS = 200
