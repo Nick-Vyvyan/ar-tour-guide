@@ -123,7 +123,7 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
   }
   //</editor-fold>
 
-  private val currentAnchorList : ArrayList<Anchor> = ArrayList()
+  private val currentAnchorList : MutableList<Anchor> = mutableListOf()
 
   override fun onDrawFrame(render: SampleRender) {
     val session = session ?: return
@@ -283,7 +283,7 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
   /** Detaches all current anchors and then replaces
    * them with the new anchors created from the list
    * of entities */
-  fun updateAnchors(entityList : List<Entity>) {
+  fun updateAnchors(entityList : MutableList<Entity>) {
     val earth = session?.earth ?: return
     if (earth.trackingState != TrackingState.TRACKING) {
       return

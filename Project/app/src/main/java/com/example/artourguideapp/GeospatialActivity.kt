@@ -47,7 +47,7 @@ class GeospatialActivity : AppCompatActivity() {
     lateinit var renderer: HelloGeoRenderer
 
 
-    var entityList : ArrayList<Entity> = ArrayList()
+    var entityList : MutableList<Entity> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

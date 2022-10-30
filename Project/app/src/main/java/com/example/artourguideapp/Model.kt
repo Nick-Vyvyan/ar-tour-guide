@@ -3,13 +3,13 @@ package com.example.artourguideapp
 import com.example.artourguideapp.entities.*
 
 class Model {
-    private var entities: ArrayList<Entity>
+    private var entities: MutableList<Entity>
     private lateinit var buildings: MutableList<BuildingData>
     private lateinit var landmarks: MutableList<LandmarkData>
 
-    constructor() : this(ArrayList<Entity>())
+    constructor() : this(mutableListOf<Entity>())
 
-    constructor(_entities: ArrayList<Entity>) {
+    constructor(_entities: MutableList<Entity>) {
         entities = _entities
     }
 
@@ -41,7 +41,7 @@ class Model {
         entities.add(entity)
     }
 
-    fun getEntitiesInView(userOrientation: Orientation): ArrayList<Entity> {
+    fun getEntitiesInView(userOrientation: Orientation): MutableList<Entity> {
         return entities
     }
 }
