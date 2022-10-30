@@ -21,5 +21,6 @@ class BuildingEntity(
     buildingData.getURL(),
     location,
     buildingData,
-    BuildingDataDialogFragment(buildingData)) {
+    BuildingDataDialogFragment(buildingData),
+    null) {
 }
