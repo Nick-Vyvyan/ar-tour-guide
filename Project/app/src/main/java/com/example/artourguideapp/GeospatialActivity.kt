@@ -32,6 +32,7 @@ import com.google.ar.core.codelabs.hellogeospatial.*
 import com.google.ar.core.codelabs.hellogeospatial.helpers.*
 import com.google.ar.core.exceptions.*
 import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException
+import com.example.artourguideapp.entities.*
 import kotlinx.coroutines.Runnable
 import java.util.Timer
 import java.util.TimerTask

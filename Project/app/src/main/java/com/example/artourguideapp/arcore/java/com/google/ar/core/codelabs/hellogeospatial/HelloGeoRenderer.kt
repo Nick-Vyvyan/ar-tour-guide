@@ -20,7 +20,7 @@ import android.opengl.Matrix
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.example.artourguideapp.Entity
+import com.example.artourguideapp.entities.*
 import com.example.artourguideapp.GeospatialActivity
 import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.DisplayRotationHelper
 import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.TrackingStateHelper
