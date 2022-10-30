@@ -1,6 +1,6 @@
 package com.example.artourguideapp.entities
 
-class BuildingData( private val title: String,
+class BuildingData( title: String,
                     private val code: String,
                     private val types: String,
                     private val departments: String,
@@ -9,12 +9,9 @@ class BuildingData( private val title: String,
                     private val computerLabs: String,
                     private val dining: String,
                     private val parkingInfo: String,
-                    private val url: String) {
+                    url: String): EntityData(title, url) {
 
 
-    fun getTitle(): String {
-        return title
-    }
 
     fun getCode(): String {
         return code
@@ -48,12 +45,9 @@ class BuildingData( private val title: String,
         return parkingInfo
     }
 
-    fun getURL(): String {
-        return url
-    }
 
     override fun toString(): String {
-        return ("title: " + title
+        return ("title: " + getTitle()
                 + "\ncode: " + code
                 + "\ntypes: " + types
                 + "\ndepartments: " + departments
@@ -61,6 +55,6 @@ class BuildingData( private val title: String,
                 + "\ngenderNeutralRestrooms: " + genderNeutralRestrooms
                 + "\ncomputerLabs: " + computerLabs
                 + "\nparkingInfo: " + parkingInfo
-                + "\nurl: " + url)
+                + "\nurl: " + getURL())
     }
 }

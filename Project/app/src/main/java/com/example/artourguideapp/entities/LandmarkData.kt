@@ -1,13 +1,9 @@
 package com.example.artourguideapp.entities
 
-class LandmarkData(private val title: String,
+class LandmarkData(title: String,
                    private val description: String,
                    private val audioDescription: String,
-                   private val url: String) {
-
-    fun getTitle(): String {
-        return title
-    }
+                   url: String): EntityData(title, url) {
 
     fun getDescription(): String {
         return description
@@ -17,14 +13,10 @@ class LandmarkData(private val title: String,
         return audioDescription
     }
 
-    fun getURL(): String {
-        return url
-    }
-
     override fun toString(): String {
-        return ("title: " + title
+        return ("title: " + getTitle()
                 + "\ndescription: " + description
                 + "\naudioDescription: " + audioDescription
-                + "\nurl: " + url)
+                + "\nurl: " + getURL())
     }
 }

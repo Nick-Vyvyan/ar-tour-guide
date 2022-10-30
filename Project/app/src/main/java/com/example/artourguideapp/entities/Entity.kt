@@ -8,6 +8,9 @@ abstract class Entity(
     private var perimeter: ArrayList<Location>,
     private var url: String,
     private var centralLocation : Location,
+    private var entityData: EntityData,
+    private var dialogFragment: DialogFragment
+
 ) {
 
     fun getName(): String {
@@ -18,13 +21,14 @@ abstract class Entity(
         return perimeter
     }
 
+    fun setPerimeter(points: ArrayList<Location>) {
+        perimeter = points
+    }
+
     fun getURL(): String {
         return url
     }
 
-    fun setPerimeter(points: ArrayList<Location>) {
-        perimeter = points
-    }
 
     fun getCentralLocation() : Location
     {
@@ -48,6 +52,12 @@ abstract class Entity(
 
     }
 
-    abstract fun getDialogFragment(): DialogFragment
+    fun getDialogFragment(): DialogFragment {
+        return dialogFragment
+    }
+
+    fun getEntityData(): EntityData {
+        return entityData
+    }
 
 }
