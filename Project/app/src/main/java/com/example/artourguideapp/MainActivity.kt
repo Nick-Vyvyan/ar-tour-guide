@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         DummyBuildingEntities.initialize()
         updateStructures()
 
-        val intent = Intent(this, EntityDataDialogFragmentExample::class.java)
+        val intent = Intent(this, GeospatialActivity::class.java)
         startActivity(intent)
     }
 
