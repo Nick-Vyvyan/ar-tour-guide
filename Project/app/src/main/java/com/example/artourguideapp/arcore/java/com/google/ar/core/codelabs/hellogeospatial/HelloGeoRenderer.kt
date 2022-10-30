@@ -22,6 +22,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.artourguideapp.entities.*
 import com.example.artourguideapp.GeospatialActivity
+import com.example.artourguideapp.arcore.AnchorHelper
 import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.DisplayRotationHelper
 import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.helpers.TrackingStateHelper
 import com.example.artourguideapp.arcore.java.com.google.ar.core.examples.java.common.samplerender.*
@@ -123,7 +124,7 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
   }
   //</editor-fold>
 
-  private val currentAnchorList : MutableList<Anchor> = mutableListOf()
+  private var currentAnchorList : MutableList<Anchor> = mutableListOf()
 
   override fun onDrawFrame(render: SampleRender) {
     val session = session ?: return
@@ -290,19 +291,31 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
     }
 
     // TODO: add check to see if we can keep an existing anchor
-    for (anchor in currentAnchorList) {
-      anchor.detach()
-    }
-    currentAnchorList.clear()
+//    for (anchor in currentAnchorList) {
+//      anchor.detach()
+//    }
+//    currentAnchorList.clear()
+//
+//    for (entity in entityList) {
+//      val newAnchor = earth.resolveAnchorOnTerrain(
+//        entity.getCentralLocation().latitude,
+//        entity.getCentralLocation().longitude,
+//        10.0,
+//        0f,0f,0f,1f
+//      )
+//      currentAnchorList.add(newAnchor)
+//    }
+    val currentLocation = Location("User")
+    currentLocation.latitude = earth.cameraGeospatialPose.latitude
+    currentLocation.longitude = earth.cameraGeospatialPose.longitude
 
-    for (entity in entityList) {
-      val newAnchor = earth.resolveAnchorOnTerrain(
-        entity.getCentralLocation().latitude,
-        entity.getCentralLocation().longitude,
-        10.0,
-        0f,0f,0f,1f
-      )
-      currentAnchorList.add(newAnchor)
+    AnchorHelper.run {
+      currentLocation.latitude = earth.cameraGeospatialPose.latitude
+      currentLocation.longitude = earth.cameraGeospatialPose.longitude
+
+      removeUnusedAnchors(entityList, currentLocation)
+
+      currentAnchorList = updateCurrentAnchors(earth, entityList, currentLocation)
     }
 
     // for debug purposes
