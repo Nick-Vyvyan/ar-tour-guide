@@ -41,7 +41,7 @@ class Model {
         entities.add(entity)
     }
 
-    fun getEntitiesInView(userOrientation: Orientation): MutableList<Entity> {
+    fun getEntities(): MutableList<Entity> {
         return entities
     }
 }
