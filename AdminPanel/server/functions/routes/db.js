@@ -1,5 +1,5 @@
 const express = require("express");
-var ObjectId = require("mongodb").ObjectID;
+var ObjectId = require('mongodb').ObjectID;
 
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
@@ -39,9 +39,10 @@ recordRoutes.route("/db/add").post(function (req, response) {
   let db_connect = dbo.getDb();
 
   let myobj = {
-    coordinates: req.body.body.coordinates,
     scrapedData: req.body.body.scrapedData,
     isLandmark: req.body.body.isLandmark,
+    centerPoint: req.body.body.centerPoint,
+    websiteLink: req.body.body.websiteLink,
   };
   db_connect.collection("structures").insertOne(myobj, function (err, res) {
     if (err) throw err;
