@@ -15,6 +15,7 @@
  */
 package com.google.ar.core.codelabs.hellogeospatial
 
+import android.graphics.Color
 import android.location.Location
 import android.opengl.Matrix
 import android.util.Log
@@ -96,12 +97,12 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
       virtualObjectTexture =
         Texture.createFromAsset(
           render,
-          "models/spatial_marker_baked.png",
+          "models/pink.png",
           Texture.WrapMode.CLAMP_TO_EDGE,
           Texture.ColorFormat.SRGB
         )
 
-      virtualObjectMesh = Mesh.createFromAsset(render, "models/geospatial_marker.obj")
+      virtualObjectMesh = Mesh.createFromAsset(render, "models/smallCube.obj")
       virtualObjectShader =
         Shader.createFromAssets(
           render,
@@ -203,7 +204,7 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
 
     }
 
-    // check status of terrain anchors, render a compass if ready
+    // check status of terrain anchors, render a cube if ready
     if (currentAnchorList.isNotEmpty()) {
       for (anchor in currentAnchorList) {
         when (anchor.terrainAnchorState) {
@@ -305,11 +306,9 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
 //      )
 //      currentAnchorList.add(newAnchor)
 //    }
-    val currentLocation = Location("User")
-    currentLocation.latitude = earth.cameraGeospatialPose.latitude
-    currentLocation.longitude = earth.cameraGeospatialPose.longitude
 
     AnchorHelper.run {
+      val currentLocation = Location("User")
       currentLocation.latitude = earth.cameraGeospatialPose.latitude
       currentLocation.longitude = earth.cameraGeospatialPose.longitude
 
