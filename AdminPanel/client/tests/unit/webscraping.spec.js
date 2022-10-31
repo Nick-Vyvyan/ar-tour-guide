@@ -1,9 +1,9 @@
 const { expect } = require("chai");
-const { parse } = require("./../../src/scripts/PageParser");
+const { parseWeb } = require("./../../src/scripts/PageParser");
 
 describe("webparsing", () => {
   it("returns correct data for Arntzen Hall", () => {
-    const returnedData = parse(
+    const returnedData = parseWeb(
       "./tests/unit/webscrapingTestAssets/AHTest.html"
     );
     const expectedData = {
@@ -24,12 +24,20 @@ describe("webparsing", () => {
         "AH 16 (Spatial Analysis Lab)",
       ],
       dining: [["The Atrium", "https://wwu.campusdish.com/LocationsAndMenus"]],
+      genderNeutralRestrooms: [],
+      accessibilityInfo: [
+        "Accessible parking to the east (Lot 17 G)",
+        "Button activated entrances are located on the west side of the building",
+        "Elevators provide access to all levels",
+        "Accessible restrooms are located on the Concourse level (Basement)",
+        "Access to the Environmental Studies building is provided via the basement connection"
+      ]
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
 
   it("returns correct data for Bond Hall", () => {
-    const returnedData = parse(
+    const returnedData = parseWeb(
       "./tests/unit/webscrapingTestAssets/BHTest.html"
     );
     const expectedData = {
@@ -39,12 +47,25 @@ describe("webparsing", () => {
       departmentsOffices: [],
       computerLabs: ["BH 319"],
       dining: [],
+      genderNeutralRestrooms: [
+        "157",
+        "207",
+        "307",
+        "403B"
+      ],
+      accessibilityInfo: [
+        "Accessible parking to the east or west",
+        "Button activated entrances are located on the northeast side of building",
+        "An elevator offers access to all floors except the 2nd and 3rd half floors (both half floors are accessible via ramps or lifts)",
+        "Accessible restrooms are located on the Mezzanine level",
+        "Many doors in this building are 2' 8\" wide"
+      ]
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
 
   it("returns correct data for Performing Arts Center", () => {
-    const returnedData = parse(
+    const returnedData = parseWeb(
       "./tests/unit/webscrapingTestAssets/PATest.html"
     );
     const expectedData = {
@@ -60,12 +81,21 @@ describe("webparsing", () => {
       ],
       computerLabs: [],
       dining: [],
+      genderNeutralRestrooms: [
+        "150A",
+        "151A",
+        "390"
+      ],
+      accessibilityInfo: [
+        "Accessible parking on the southwest side of the building",
+        "Accessible rest rooms"
+      ]
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
 
   it("returns correct data for Ridgeway Delta", () => {
-    const returnedData = parse(
+    const returnedData = parseWeb(
       "./tests/unit/webscrapingTestAssets/RDTest.html"
     );
     const expectedData = {
@@ -75,12 +105,19 @@ describe("webparsing", () => {
       departmentsOffices: [],
       computerLabs: ["See Ridgeway Commons and Ridgeway Sigma"],
       dining: [["Ridgeway Commons", "https://www.wwu.edu/building/rc"]],
+      genderNeutralRestrooms: [
+        "2"
+      ],
+      accessibilityInfo: [
+        "This building is not wheelchair accessible.",
+        "Accessible parking to west (Lot 15R)."
+      ]
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
 
   it("returns correct data for Viking Union", () => {
-    const returnedData = parse(
+    const returnedData = parseWeb(
       "./tests/unit/webscrapingTestAssets/VUTest.html"
     );
     const expectedData = {
@@ -113,6 +150,19 @@ describe("webparsing", () => {
         ],
         ["Vendor's Row", "https://vu.wwu.edu/dining-spaces"],
       ],
+      genderNeutralRestrooms: [
+        "351",
+        "353",
+        "714",
+        "715",
+        "716",
+        "717"
+      ],
+      accessibilityInfo: [
+        "Automatic doors at High St. and the VU Plaza on the 6th floor and on the 1st floor at the Garden St. entrance.",
+        "Accessible restrooms on floors 3, 4, 5 and 6.",
+        "Accessible parking on the north side of the building (Lot 6V)."
+      ]
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
