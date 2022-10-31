@@ -17,6 +17,8 @@ class AnchorHelper {
             entityList: MutableList<Entity>,
             userLocation : Location
         ) {
+            // TODO: Maybe we have a list of entities in proximity as well as all entities?
+            
             for (currentEntity in entityList) {
                 if (userLocation.distanceTo(currentEntity.getCentralLocation()) > 200) {
                     val anchor = currentEntity.getAnchor()
@@ -48,7 +50,7 @@ class AnchorHelper {
                         val newAnchor = earth.resolveAnchorOnTerrain(
                             currLocation.latitude,
                             currLocation.longitude,
-                            5.0,
+                            2.0,
                             0f,0f,0f,1f
                         )
                         currentEntity.setAnchor(newAnchor)

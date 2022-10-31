@@ -6,7 +6,7 @@ import com.google.ar.core.Anchor
 
 abstract class Entity(
     private var name: String,
-    private var perimeter: ArrayList<Location>,
+    private var perimeter: MutableList<Location>,
     private var url: String,
     private var centralLocation : Location,
     private var entityData: EntityData,
@@ -18,11 +18,11 @@ abstract class Entity(
         return name
     }
 
-    fun getPerimeter(): ArrayList<Location> {
+    fun getPerimeter(): MutableList<Location> {
         return perimeter
     }
 
-    fun setPerimeter(points: ArrayList<Location>) {
+    fun setPerimeter(points: MutableList<Location>) {
         perimeter = points
     }
 

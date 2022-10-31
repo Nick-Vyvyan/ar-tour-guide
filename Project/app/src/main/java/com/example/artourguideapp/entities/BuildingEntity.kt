@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
  */
 class BuildingEntity(
     name: String,
-    perimeter: ArrayList<Location>,
+    perimeter: MutableList<Location>,
     location : Location,
     buildingData: BuildingData
 ) : Entity(

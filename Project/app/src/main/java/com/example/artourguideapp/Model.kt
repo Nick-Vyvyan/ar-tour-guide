@@ -4,8 +4,8 @@ import com.example.artourguideapp.entities.*
 
 class Model {
     private var entities: MutableList<Entity>
-    private lateinit var buildings: MutableList<BuildingData>
-    private lateinit var landmarks: MutableList<LandmarkData>
+    private var buildings: MutableList<BuildingEntity> = mutableListOf()
+    private var landmarks: MutableList<LandmarkEntity> = mutableListOf()
 
     constructor() : this(mutableListOf<Entity>())
 
@@ -29,11 +29,11 @@ class Model {
         this.entities = entities
     }
 
-    fun setBuildings(buildings: MutableList<BuildingData>) {
+    fun setBuildings(buildings: MutableList<BuildingEntity>) {
         this.buildings = buildings
     }
 
-    fun setLandmarks(landmarks: MutableList<LandmarkData>) {
+    fun setLandmarks(landmarks: MutableList<LandmarkEntity>) {
         this.landmarks = landmarks
     }
 
@@ -41,11 +41,11 @@ class Model {
         return entities
     }
 
-    fun getBuildings(): MutableList<BuildingData> {
+    fun getBuildings(): MutableList<BuildingEntity> {
         return buildings
     }
 
-    fun getLandmarks(): MutableList<LandmarkData> {
+    fun getLandmarks(): MutableList<LandmarkEntity> {
         return landmarks
     }
 

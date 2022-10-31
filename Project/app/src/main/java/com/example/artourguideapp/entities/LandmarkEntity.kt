@@ -5,7 +5,7 @@ import androidx.fragment.app.DialogFragment
 
 class LandmarkEntity(
     name: String,
-    perimeter: ArrayList<Location>,
+    perimeter: MutableList<Location>,
     location : Location,
     landmarkData: LandmarkData
 ) : Entity(

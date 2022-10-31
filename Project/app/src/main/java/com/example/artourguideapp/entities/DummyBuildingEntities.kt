@@ -15,6 +15,7 @@ class DummyBuildingEntities() {
         var h2Loc : Location = Location("House 2")
         var h3Loc : Location = Location("House 3")
         var h4Loc : Location = Location("House 4")
+        var h5Loc : Location = Location("House 5")
 
         var entityList = ArrayList<Entity>()
 
@@ -187,6 +188,31 @@ class DummyBuildingEntities() {
                 "",
                 "https://www.wwu.edu/building/cf")
         )
+        var house5 = BuildingEntity(
+            "house5",
+            ArrayList<Location>(),
+            h5Loc,
+            BuildingData(
+                "5",
+                "5",
+                "Residential",
+                "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
+                "Button activated entrances are located on the east and west sides of the building" +
+                        "\nThere are accessible restrooms located on all floors" +
+                        "\nCentrally located elevators provide access to all floors" +
+                        "\nAccessible parking is available to the east (Lot 17 G)",
+                "CF 157",
+                "CF 21\n" +
+                        "CF 24\n" +
+                        "CF 26\n" +
+                        "CF 161\n" +
+                        "CF 165\n" +
+                        "CF 167\n" +
+                        "CF 312",
+                "",
+                "",
+                "https://www.wwu.edu/building/cf")
+        )
 
 
         fun initialize() {
@@ -208,12 +234,16 @@ class DummyBuildingEntities() {
             h4Loc.latitude = 48.88876263392437
             h4Loc.longitude = -122.47895767114501
 
+            h5Loc.latitude = 48.76244375674259
+            h5Loc.longitude = -122.45055761431342
+
             entityList.add(commFacilityEntity)
             entityList.add(wadeKingEntity)
             entityList.add(house1)
             entityList.add(house2)
             entityList.add(house3)
             entityList.add(house4)
+            entityList.add(house5)
         }
     }
 }
