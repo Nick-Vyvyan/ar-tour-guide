@@ -1,9 +1,9 @@
 const { expect } = require("chai");
-const { parseWeb } = require("../../src/scripts/PageParser");
+const { parse } = require("../../src/scripts/PageParser");
 
 describe("webparsing", () => {
   it("returns correct data for Arntzen Hall", () => {
-    const returnedData = parseWeb(
+    const returnedData = parse(
       "./client/test/unit/webscrapingTestAssets/AHTest.html"
     );
     const expectedData = {
@@ -38,7 +38,7 @@ describe("webparsing", () => {
   });
 
   it("returns correct data for Bond Hall", () => {
-    const returnedData = parseWeb(
+    const returnedData = parse(
       "./client/test/unit/webscrapingTestAssets/BHTest.html"
     );
     const expectedData = {
@@ -66,7 +66,7 @@ describe("webparsing", () => {
   });
 
   it("returns correct data for Performing Arts Center", () => {
-    const returnedData = parseWeb(
+    const returnedData = parse(
       "./client/test/unit/webscrapingTestAssets/PATest.html"
     );
     const expectedData = {
@@ -97,7 +97,7 @@ describe("webparsing", () => {
   });
 
   it("returns correct data for Ridgeway Delta", () => {
-    const returnedData = parseWeb(
+    const returnedData = parse(
       "./client/test/unit/webscrapingTestAssets/RDTest.html"
     );
     const expectedData = {
@@ -119,7 +119,7 @@ describe("webparsing", () => {
   });
 
   it("returns correct data for Viking Union", () => {
-    const returnedData = parseWeb(
+    const returnedData = parse(
       "./client/test/unit/webscrapingTestAssets/VUTest.html"
     );
     const expectedData = {

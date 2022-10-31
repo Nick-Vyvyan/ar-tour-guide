@@ -99,18 +99,23 @@ const PanelView = (props) => {
     e.preventDefault();
 
     // calculate center point of building
-    let centerPointX = 0
-    let centerPointY = 0
-    let coordArray = coordinates.split(',')
-    
+    let centerPointX = 0;
+    let centerPointY = 0;
+    let coordArray = coordinates.split(/(?<=\))(,\s*)(?=\()/);
+
     for (let i = 0; i < coordArray.length; i++) {
-      let tempString = coordArray.substring(1,coordArray.length-1)
-      let tempArray = tempString.split(',')
-      centerPointX += parseFloat(tempArray[0])
-      centerPointY += parseFloat(tempArray[1])
+      let tempString = coordArray[i].substring(1, coordArray[i].length - 1);
+      let tempArray = tempString.split(",");
+      centerPointX += parseFloat(tempArray[0]);
+      centerPointY += parseFloat(tempArray[1]);
     }
 
-    const centerPoint = '(' + centerPointX/coordArray.length + ',' + centerPointY/coordArray.length + ')'
+    const centerPoint =
+      "(" +
+      centerPointX / coordArray.length +
+      "," +
+      centerPointY / coordArray.length +
+      ")";
 
     // put all structure info together into one json
     const requestJson = { scrapedData, isLandmark, websiteLink, centerPoint };
@@ -204,15 +209,14 @@ const PanelView = (props) => {
               tilt="0"
               mapTypeId="hybrid"
               mapContainerClassName="map-container"
-              
             >
               <DrawingManager
                 defaultDrawingMode="polygon"
                 onPolygonComplete={onPolygonComplete}
                 defaultOptions={{
                   polygonOptions: {
-                    strokeColor: '#ffff00'
-                  }
+                    strokeColor: "#ffff00",
+                  },
                 }}
               />
             </GoogleMap>
