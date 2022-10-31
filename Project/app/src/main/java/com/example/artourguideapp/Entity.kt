@@ -1,12 +1,12 @@
 package com.example.artourguideapp
 
-import android.graphics.Point
+import android.graphics.PointF
 import android.location.Location
 
 class Entity(
     private var name: String,
     private var id: Long,
-    private var perimeter: ArrayList<Point>,
+    private var perimeter: MutableList<PointF>,
     private var url: String,
     private var location : Location
 ) {
@@ -20,7 +20,7 @@ class Entity(
         return id
     }
 
-    fun getPerimeter(): ArrayList<Point> {
+    fun getPerimeter(): MutableList<PointF> {
         return perimeter
     }
 
@@ -28,7 +28,7 @@ class Entity(
         return url
     }
 
-    fun setPerimeter(points: ArrayList<Point>) {
+    fun setPerimeter(points: MutableList<PointF>) {
         perimeter = points
     }
 
@@ -53,4 +53,11 @@ class Entity(
         return 0
     }
 
+    override fun toString(): String {
+        return ("name: " + name
+                + "\nid: " + id
+                + "\nperimeter: " + perimeter
+                + "\nurl: " + url
+                + "\nlocation: " + location)
+    }
 }

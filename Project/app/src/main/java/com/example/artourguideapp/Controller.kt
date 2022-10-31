@@ -5,6 +5,11 @@ class Controller(private var server: String,
                  private var view: View,
                  private var user: User?)
 {
+    fun addEntities(entities: MutableList<Entity>) {
+        model.clearEntities()
+        model.setEntities(entities)
+    }
+
     fun addBuildings(buildings: MutableList<BuildingData>) {
         model.clearBuildings()
         model.setBuildings(buildings)
@@ -13,6 +18,10 @@ class Controller(private var server: String,
     fun addLandmarks(landmarks: MutableList<SculptureData>) {
         model.clearLandmarks()
         model.setLandmarks(landmarks)
+    }
+
+    fun getEntities(): MutableList<Entity> {
+        return model.getEntities()
     }
 
     fun getBuildings(): MutableList<BuildingData> {
