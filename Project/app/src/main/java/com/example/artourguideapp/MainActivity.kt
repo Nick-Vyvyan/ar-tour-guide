@@ -1,6 +1,8 @@
 package com.example.artourguideapp
 
 import android.content.Intent
+import android.graphics.PointF
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -84,56 +86,85 @@ class MainActivity : AppCompatActivity() {
                     } catch (ioException: IOException) {
                         ioException.printStackTrace()
                     }
+                }
 
-                    // create structure objects for each object in JSONArray to be used by the app
-                    val buildings: MutableList<BuildingData> = mutableListOf()
-                    val landmarks: MutableList<LandmarkData> = mutableListOf()
+                // create structure objects for each object in JSONArray to be used by the app
+                val buildings: MutableList<BuildingData> = mutableListOf()
+                val landmarks: MutableList<SculptureData> = mutableListOf()
+                val entities: MutableList<Entity> = mutableListOf()
 
-                    val structuresJsonArr = JSONArray(remoteStructuresJsonStr)
-                    for (i in 0 until structuresJsonArr.length()) {
-                        val currentStructure = structuresJsonArr.getJSONObject(i)
-                        val currentScrapedData = currentStructure.getJSONObject("scrapedData")
-                        // if landmark, add to landmark list
-                        if (currentStructure.getBoolean("isLandmark")) {
-                            landmarks.add(
-                                // TODO: ALTER SCRAPER TO HAVE CORRECT AND REMAINING FIELDS
-                                LandmarkData(currentScrapedData.getString("buildingName"),
+                val structuresJsonArr = JSONArray(remoteStructuresJsonStr)
+                for (i in 0 until structuresJsonArr.length()) {
+                    val currentStructure = structuresJsonArr.getJSONObject(i)
+                    val currentScrapedData = currentStructure.getJSONObject("scrapedData")
+                    // if landmark, add to landmark list
+                    if (currentStructure.getBoolean("isLandmark")) {
+                        landmarks.add(
+                            // TODO: ALTER SCRAPER TO HAVE CORRECT AND REMAINING FIELDS
+                            SculptureData(currentScrapedData.getString("buildingName"),
                                 "", "", ""
                             )
+                        )
+                    }
+                    // otherwise it's a building so add to building list
+                    else {
+                        buildings.add(
+                            // TODO: ALTER SCRAPER TO HAVE REMAINING FIELDS
+                            BuildingData(
+                                currentScrapedData.getString("buildingName"),
+                                "", currentScrapedData.getJSONArray("buildingTypes").toString(),
+                                currentScrapedData.getJSONArray("departmentsOffices").toString(),
+                                "", "",
+                                currentScrapedData.getJSONArray("computerLabs").toString(),
+                                "", ""
                             )
-                        }
-                        // otherwise it's a building so add to building list
-                        else {
-                            buildings.add(
-                                // TODO: ALTER SCRAPER TO HAVE REMAINING FIELDS
-                                BuildingData(
-                                    currentScrapedData.getString("buildingName"),
-                                    "", currentScrapedData.getJSONArray("buildingTypes").toString(),
-                                    currentScrapedData.getJSONArray("departmentsOffices").toString(),
-                                    "", "",
-                                    currentScrapedData.getJSONArray("computerLabs").toString(),
-                                    "", "",""
-                                )
-                            )
-                        }
+                        )
+                    }
 
-                        // pass off lists to controller to give to model
-                        controller.addBuildings(buildings)
-                        controller.addLandmarks(landmarks)
+                    /* in addition, create abstract entity objects for each structure */
 
-                        // get lists from model
-                        val modelBuildings: MutableList<BuildingData> = controller.getBuildings()
-                        val modelLandmarks: MutableList<LandmarkData> = controller.getLandmarks()
+                    // list of coordinates as proper objects
+                    val coordinates: MutableList<PointF> = currentStructure.getString("coordinates")
+                        .split("(?<=\\))(,\\s*)(?=\\()".toRegex()).map { it.substring(1, it.length - 1) }
+                        .map { PointF(it.split(",")[0].toFloat(), it.split(",")[1].toFloat()) }
+                        .toMutableList()
 
-                        // print all buildings from model
-                        for (j in 0 until modelBuildings.size) {
-                            Log.d("building", modelBuildings[j].toString())
-                        }
+                    // set name and location info
+                    val buildingName = currentScrapedData.getString("buildingName")
+                    val location = Location(buildingName)
+                    // TODO: REPLACE THIS PLACEHOLDER WITH ACTUAL CENTRAL COORDINATES
+                    location.latitude = coordinates[0].x.toDouble()
+                    location.longitude = coordinates[0].y.toDouble()
 
-                        // print all landmarks from model
-                        for (j in 0 until modelLandmarks.size) {
-                            Log.d("landmark", modelLandmarks[j].toString())
-                        }
+                    // add entity object to list
+                    entities.add(
+                        // TODO: ALTER SCRAPER TO HAVE REMAINING FIELDS
+                        Entity(buildingName, 0L, coordinates, "", location)
+                    )
+
+                    // pass off lists to controller to give to model
+                    controller.addBuildings(buildings)
+                    controller.addLandmarks(landmarks)
+                    controller.addEntities(entities)
+
+                    // get lists from model
+                    val modelBuildings: MutableList<BuildingData> = controller.getBuildings()
+                    val modelLandmarks: MutableList<SculptureData> = controller.getLandmarks()
+                    val modelEntities: MutableList<Entity> = controller.getEntities()
+
+                    // print all buildings from model
+                    for (j in 0 until modelBuildings.size) {
+                        Log.d("building", modelBuildings[j].toString())
+                    }
+
+                    // print all landmarks from model
+                    for (j in 0 until modelLandmarks.size) {
+                        Log.d("landmark", modelLandmarks[j].toString())
+                    }
+
+                    // print all entities from model
+                    for (j in 0 until modelEntities.size) {
+                        Log.d("entity", modelEntities[j].toString())
                     }
                 }
             } catch (ioException: IOException) {

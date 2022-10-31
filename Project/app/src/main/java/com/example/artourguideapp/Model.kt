@@ -13,6 +13,10 @@ class Model {
         entities = _entities
     }
 
+    fun clearEntities() {
+        entities = mutableListOf()
+    }
+
     fun clearBuildings() {
         buildings = mutableListOf()
     }
@@ -21,12 +25,20 @@ class Model {
         landmarks = mutableListOf()
     }
 
+    fun setEntities(entities: MutableList<Entity>) {
+        this.entities = entities
+    }
+
     fun setBuildings(buildings: MutableList<BuildingData>) {
         this.buildings = buildings
     }
 
     fun setLandmarks(landmarks: MutableList<LandmarkData>) {
         this.landmarks = landmarks
+    }
+
+    fun getEntities(): MutableList<Entity> {
+        return entities
     }
 
     fun getBuildings(): MutableList<BuildingData> {
@@ -41,7 +53,7 @@ class Model {
         entities.add(entity)
     }
 
-    fun getEntities(): MutableList<Entity> {
+    fun getEntitiesInView(userOrientation: Orientation): MutableList<Entity> {
         return entities
     }
 }
