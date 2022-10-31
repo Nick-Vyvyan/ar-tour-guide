@@ -89,6 +89,7 @@ describe("webparsing", () => {
       ],
       accessibilityInfo: [
         "Accessible parking on the southwest side of the building",
+        "Accessible entrances",
         "Accessible rest rooms"
       ]
     };
