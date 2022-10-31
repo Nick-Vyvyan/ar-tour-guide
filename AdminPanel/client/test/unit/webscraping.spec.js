@@ -3,9 +3,7 @@ const { parse } = require("../../src/scripts/PageParser");
 
 describe("webparsing", () => {
   it("returns correct data for Arntzen Hall", () => {
-    const returnedData = parse(
-      "./client/test/unit/webscrapingTestAssets/AHTest.html"
-    );
+    const returnedData = parse("./test/unit/webscrapingTestAssets/AHTest.html");
     const expectedData = {
       buildingName: "Arntzen Hall",
       buildingTypes: ["Academic", "Campus Services"],
@@ -26,21 +24,18 @@ describe("webparsing", () => {
       dining: [["The Atrium", "https://wwu.campusdish.com/LocationsAndMenus"]],
       genderNeutralRestrooms: [],
       accessibilityInfo: [
-        
         "Button activated entrances are located on the west side of the building",
         "Elevators provide access to all levels",
         "Accessible restrooms are located on the Concourse level (Basement)",
         "Access to the Environmental Studies building is provided via the basement connection",
         "Accessible parking to the east (Lot 17 G)",
-      ]
+      ],
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
 
   it("returns correct data for Bond Hall", () => {
-    const returnedData = parse(
-      "./client/test/unit/webscrapingTestAssets/BHTest.html"
-    );
+    const returnedData = parse("./test/unit/webscrapingTestAssets/BHTest.html");
     const expectedData = {
       buildingName: "Bond Hall",
       buildingTypes: ["Academic"],
@@ -48,27 +43,20 @@ describe("webparsing", () => {
       departmentsOffices: [],
       computerLabs: ["BH 319"],
       dining: [],
-      genderNeutralRestrooms: [
-        "157",
-        "207",
-        "307",
-        "403B"
-      ],
+      genderNeutralRestrooms: ["157", "207", "307", "403B"],
       accessibilityInfo: [
         "Button activated entrances are located on the northeast side of building",
         "An elevator offers access to all floors except the 2nd and 3rd half floors (both half floors are accessible via ramps or lifts)",
         "Accessible restrooms are located on the Mezzanine level",
         "Many doors in this building are 2' 8\" wide",
         "Accessible parking to the east or west",
-      ]
+      ],
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
 
   it("returns correct data for Performing Arts Center", () => {
-    const returnedData = parse(
-      "./client/test/unit/webscrapingTestAssets/PATest.html"
-    );
+    const returnedData = parse("./test/unit/webscrapingTestAssets/PATest.html");
     const expectedData = {
       buildingName: "Performing Arts Center",
       buildingTypes: ["Academic", "Events"],
@@ -82,24 +70,18 @@ describe("webparsing", () => {
       ],
       computerLabs: [],
       dining: [],
-      genderNeutralRestrooms: [
-        "150A",
-        "151A",
-        "390"
-      ],
+      genderNeutralRestrooms: ["150A", "151A", "390"],
       accessibilityInfo: [
         "Accessible parking on the southwest side of the building",
         "Accessible entrances",
-        "Accessible rest rooms"
-      ]
+        "Accessible rest rooms",
+      ],
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
 
   it("returns correct data for Ridgeway Delta", () => {
-    const returnedData = parse(
-      "./client/test/unit/webscrapingTestAssets/RDTest.html"
-    );
+    const returnedData = parse("./test/unit/webscrapingTestAssets/RDTest.html");
     const expectedData = {
       buildingName: "Ridgeway Delta",
       buildingTypes: ["University Residence"],
@@ -107,21 +89,17 @@ describe("webparsing", () => {
       departmentsOffices: [],
       computerLabs: ["See Ridgeway Commons and Ridgeway Sigma"],
       dining: [["Ridgeway Commons", "https://www.wwu.edu/building/rc"]],
-      genderNeutralRestrooms: [
-        "2"
-      ],
+      genderNeutralRestrooms: ["2"],
       accessibilityInfo: [
         "This building is not wheelchair accessible.",
-        "Accessible parking to west (Lot 15R)."
-      ]
+        "Accessible parking to west (Lot 15R).",
+      ],
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
 
   it("returns correct data for Viking Union", () => {
-    const returnedData = parse(
-      "./client/test/unit/webscrapingTestAssets/VUTest.html"
-    );
+    const returnedData = parse("./test/unit/webscrapingTestAssets/VUTest.html");
     const expectedData = {
       buildingName: "Viking Union",
       buildingTypes: ["Campus Services", "Events"],
@@ -152,19 +130,12 @@ describe("webparsing", () => {
         ],
         ["Vendor's Row", "https://vu.wwu.edu/dining-spaces"],
       ],
-      genderNeutralRestrooms: [
-        "351",
-        "353",
-        "714",
-        "715",
-        "716",
-        "717"
-      ],
+      genderNeutralRestrooms: ["351", "353", "714", "715", "716", "717"],
       accessibilityInfo: [
         "Automatic doors at High St. and the VU Plaza on the 6th floor and on the 1st floor at the Garden St. entrance.",
         "Accessible restrooms on floors 3, 4, 5 and 6.",
-        "Accessible parking on the north side of the building (Lot 6V)."
-      ]
+        "Accessible parking on the north side of the building (Lot 6V).",
+      ],
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
