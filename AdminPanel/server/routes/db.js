@@ -42,6 +42,8 @@ recordRoutes.route("/db/add").post(function (req, response) {
     coordinates: req.body.body.coordinates,
     scrapedData: req.body.body.scrapedData,
     isLandmark: req.body.body.isLandmark,
+    centerPoint: req.body.body.centerPoint,
+    websiteLink: req.body.body.websiteLink,
   };
   db_connect.collection("structures").insertOne(myobj, function (err, res) {
     if (err) throw err;

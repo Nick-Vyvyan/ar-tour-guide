@@ -98,8 +98,22 @@ const PanelView = (props) => {
   const handleSecondSubmit = (e) => {
     e.preventDefault();
 
+    // calculate center point of building
+    let centerPointX = 0
+    let centerPointY = 0
+    let coordArray = coordinates.split(',')
+    
+    for (i = 0; i < coordArray.length; i++) {
+      let tempString = coordArray.substring(1,coordArray.length-1)
+      let tempArray = tempString.split(',')
+      centerPointX += parseFloat(tempArray[0])
+      centerPointY += parseFloat(tempArray[1])
+    }
+
+    const centerPoint = '(' + centerPointX/coordArray.length + ',' + centerPointY/coordArray.length + ')'
+
     // put all structure info together into one json
-    const requestJson = { coordinates, scrapedData, isLandmark };
+    const requestJson = { coordinates, scrapedData, isLandmark, websiteLink, centerPoint };
 
     // send structure info to backend to be saved to database
     axios
