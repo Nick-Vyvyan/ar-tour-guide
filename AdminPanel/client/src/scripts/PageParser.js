@@ -156,7 +156,7 @@ function getListContent(data) {
 
   while (listElements.indexOf("<li>") >= 0) {
     // if found ul in current list item
-    if (listElements.indexOf('<ul>') != -1 && listElements.indexOf('<ul>') < listElements.indexOf('</li>')) {
+    if (listElements.indexOf('<ul>') !== -1 && listElements.indexOf('<ul>') < listElements.indexOf('</li>')) {
       // call func recursively on inside unordered list
       ret = ret.concat(
         getListContent(
@@ -251,7 +251,7 @@ function parseRoomNumbers(data) {
   }
 
   // get past initial non-numerical chars
-  i = 0
+  let i = 0
   while (data[i].charCodeAt(0) < 48 || data[i].charCodeAt(0) > 57){
     i++
   }

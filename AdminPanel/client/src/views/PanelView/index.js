@@ -103,7 +103,7 @@ const PanelView = (props) => {
     let centerPointY = 0
     let coordArray = coordinates.split(',')
     
-    for (i = 0; i < coordArray.length; i++) {
+    for (let i = 0; i < coordArray.length; i++) {
       let tempString = coordArray.substring(1,coordArray.length-1)
       let tempArray = tempString.split(',')
       centerPointX += parseFloat(tempArray[0])
