@@ -113,7 +113,7 @@ const PanelView = (props) => {
     const centerPoint = '(' + centerPointX/coordArray.length + ',' + centerPointY/coordArray.length + ')'
 
     // put all structure info together into one json
-    const requestJson = { coordinates, scrapedData, isLandmark, websiteLink, centerPoint };
+    const requestJson = { scrapedData, isLandmark, websiteLink, centerPoint };
 
     // send structure info to backend to be saved to database
     axios

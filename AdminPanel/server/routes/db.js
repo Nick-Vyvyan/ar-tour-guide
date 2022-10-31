@@ -39,7 +39,6 @@ recordRoutes.route("/db/add").post(function (req, response) {
   let db_connect = dbo.getDb();
 
   let myobj = {
-    coordinates: req.body.body.coordinates,
     scrapedData: req.body.body.scrapedData,
     isLandmark: req.body.body.isLandmark,
     centerPoint: req.body.body.centerPoint,
