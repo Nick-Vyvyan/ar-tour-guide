@@ -1,9 +1,11 @@
 const { expect } = require("chai");
-const { parse } = require("../../src/scripts/PageParser");
+const { parseWeb } = require("../../src/scripts/PageParser");
+const fs = require("fs");
 
 describe("webparsing", () => {
   it("returns correct data for Arntzen Hall", () => {
-    const returnedData = parse("./test/unit/webscrapingTestAssets/AHTest.html");
+    const data = fs.readFileSync("./test/unit/webscrapingTestAssets/AHTest.html", "utf8");
+    const returnedData = parseWeb(data);
     const expectedData = {
       buildingName: "Arntzen Hall",
       buildingTypes: ["Academic", "Campus Services"],
@@ -35,7 +37,8 @@ describe("webparsing", () => {
   });
 
   it("returns correct data for Bond Hall", () => {
-    const returnedData = parse("./test/unit/webscrapingTestAssets/BHTest.html");
+    const data = fs.readFileSync("./test/unit/webscrapingTestAssets/BHTest.html", "utf8");
+    const returnedData = parseWeb(data);
     const expectedData = {
       buildingName: "Bond Hall",
       buildingTypes: ["Academic"],
@@ -56,7 +59,8 @@ describe("webparsing", () => {
   });
 
   it("returns correct data for Performing Arts Center", () => {
-    const returnedData = parse("./test/unit/webscrapingTestAssets/PATest.html");
+    const data = fs.readFileSync("./test/unit/webscrapingTestAssets/PATest.html", "utf8");
+    const returnedData = parseWeb(data);
     const expectedData = {
       buildingName: "Performing Arts Center",
       buildingTypes: ["Academic", "Events"],
@@ -81,7 +85,8 @@ describe("webparsing", () => {
   });
 
   it("returns correct data for Ridgeway Delta", () => {
-    const returnedData = parse("./test/unit/webscrapingTestAssets/RDTest.html");
+    const data = fs.readFileSync("./test/unit/webscrapingTestAssets/RDTest.html", "utf8");
+    const returnedData = parseWeb(data);
     const expectedData = {
       buildingName: "Ridgeway Delta",
       buildingTypes: ["University Residence"],
@@ -99,7 +104,8 @@ describe("webparsing", () => {
   });
 
   it("returns correct data for Viking Union", () => {
-    const returnedData = parse("./test/unit/webscrapingTestAssets/VUTest.html");
+    const data = fs.readFileSync("./test/unit/webscrapingTestAssets/VUTest.html", "utf8");
+    const returnedData = parseWeb(data);
     const expectedData = {
       buildingName: "Viking Union",
       buildingTypes: ["Campus Services", "Events"],
