@@ -101,21 +101,19 @@ const PanelView = (props) => {
     // calculate center point of building
     let centerPointX = 0;
     let centerPointY = 0;
-    let coordArray = coordinates.split(/(?<=\))(,\s*)(?=\()/);
+    let coordArray = coordinates.split(',');
 
-    for (let i = 0; i < coordArray.length; i++) {
-      let tempString = coordArray[i].substring(1, coordArray[i].length - 1);
-      let tempArray = tempString.split(",");
-      centerPointX += parseFloat(tempArray[0]);
-      centerPointY += parseFloat(tempArray[1]);
+    for (let i = 0; i < coordArray.length; i+=2) {
+      centerPointX += parseFloat(coordArray[i].substring(1));
+      centerPointY += parseFloat(coordArray[i+1]);
     }
 
     const centerPoint =
-      "(" +
-      centerPointX / coordArray.length +
-      "," +
-      centerPointY / coordArray.length +
-      ")";
+          "(" +
+          centerPointX / (coordArray.length / 2) +
+          "," +
+          centerPointY / (coordArray.length / 2) +
+          ")";
 
     // put all structure info together into one json
     const requestJson = { scrapedData, isLandmark, websiteLink, centerPoint };
