@@ -6,7 +6,7 @@ import android.location.Location
 class Entity(
     private var name: String,
     private var id: Long,
-    private var perimeter: MutableList<PointF>,
+    private var center: PointF,
     private var url: String,
     private var location : Location
 ) {
@@ -20,20 +20,19 @@ class Entity(
         return id
     }
 
-    fun getPerimeter(): MutableList<PointF> {
-        return perimeter
+    fun getCenter(): PointF {
+        return center
     }
 
     fun getURL(): String {
         return url
     }
 
-    fun setPerimeter(points: MutableList<PointF>) {
-        perimeter = points
+    fun setCenter(center: PointF) {
+        this.center = center
     }
 
-    fun getLocation() : Location
-    {
+    fun getLocation() : Location {
         return location
     }
 
@@ -56,7 +55,7 @@ class Entity(
     override fun toString(): String {
         return ("name: " + name
                 + "\nid: " + id
-                + "\nperimeter: " + perimeter
+                + "\ncenter: " + center
                 + "\nurl: " + url
                 + "\nlocation: " + location)
     }

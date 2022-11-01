@@ -66,13 +66,22 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                // get remote db structures json
-                val connection = URL("https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app/db")
-                    .openConnection() as HttpURLConnection
-                // set remote json string
-                remoteStructuresJsonStr = JSONArray(
-                    connection.inputStream.bufferedReader().readText()
-                ).toString(4)
+                var retrievingDB = false
+                while (!retrievingDB) {
+                    retrievingDB = true
+                    try {
+                        // get remote db structures json
+                        val connection =
+                            URL("https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app/db")
+                                .openConnection() as HttpURLConnection
+                        // set remote json string
+                        remoteStructuresJsonStr = JSONArray(
+                            connection.inputStream.bufferedReader().readText()
+                        ).toString(4)
+                    } catch (fnfException: FileNotFoundException) {
+                        retrievingDB = false
+                    }
+                }
 
                 // update structures file with remote db json if different
                 if (localStructuresJsonStr != remoteStructuresJsonStr) {
@@ -95,49 +104,51 @@ class MainActivity : AppCompatActivity() {
                 for (i in 0 until structuresJsonArr.length()) {
                     val currentStructure = structuresJsonArr.getJSONObject(i)
                     val currentScrapedData = currentStructure.getJSONObject("scrapedData")
+                    val websiteLink = currentStructure.getString("websiteLink")
+
                     // if landmark, add to landmark list
                     if (currentStructure.getBoolean("isLandmark")) {
                         landmarks.add(
-                            // TODO: ALTER SCRAPER TO HAVE CORRECT AND REMAINING FIELDS
+                            // TODO: FILL IN REMAINING FIELDS
                             SculptureData(currentScrapedData.getString("buildingName"),
-                                "", "", ""
+                                "", "", websiteLink
                             )
                         )
                     }
                     // otherwise it's a building so add to building list
                     else {
                         buildings.add(
-                            // TODO: ALTER SCRAPER TO HAVE REMAINING FIELDS
+                            // TODO: FILL IN REMAINING FIELDS
                             BuildingData(
                                 currentScrapedData.getString("buildingName"),
                                 "", currentScrapedData.getJSONArray("buildingTypes").toString(),
                                 currentScrapedData.getJSONArray("departmentsOffices").toString(),
-                                "", "",
+                                currentScrapedData.getJSONArray("accessibilityInfo").toString(),
+                                currentScrapedData.getJSONArray("genderNeutralRestrooms").toString(),
                                 currentScrapedData.getJSONArray("computerLabs").toString(),
-                                "", ""
+                                "", websiteLink
                             )
                         )
                     }
 
                     /* in addition, create abstract entity objects for each structure */
 
-                    // list of coordinates as proper objects
-                    val coordinates: MutableList<PointF> = currentStructure.getString("coordinates")
-                        .split("(?<=\\))(,\\s*)(?=\\()".toRegex()).map { it.substring(1, it.length - 1) }
-                        .map { PointF(it.split(",")[0].toFloat(), it.split(",")[1].toFloat()) }
-                        .toMutableList()
+                    // create center point object
+                    var centerPointStr = currentStructure.getString("centerPoint")
+                    centerPointStr = centerPointStr.substring(1, centerPointStr.length - 1)
+                    val centerPointArr = centerPointStr.split(",")
+                    val centerPoint = PointF(centerPointArr[0].toFloat(), centerPointArr[1].toFloat())
 
                     // set name and location info
                     val buildingName = currentScrapedData.getString("buildingName")
                     val location = Location(buildingName)
-                    // TODO: REPLACE THIS PLACEHOLDER WITH ACTUAL CENTRAL COORDINATES
-                    location.latitude = coordinates[0].x.toDouble()
-                    location.longitude = coordinates[0].y.toDouble()
+                    location.latitude = centerPoint.x.toDouble()
+                    location.longitude = centerPoint.y.toDouble()
 
                     // add entity object to list
                     entities.add(
-                        // TODO: ALTER SCRAPER TO HAVE REMAINING FIELDS
-                        Entity(buildingName, 0L, coordinates, "", location)
+                        // TODO: FILL IN REMAINING FIELDS
+                        Entity(buildingName, 0L, centerPoint, websiteLink, location)
                     )
 
                     // pass off lists to controller to give to model
