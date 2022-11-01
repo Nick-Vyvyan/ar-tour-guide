@@ -1,0 +1,21 @@
+.flexRowStyle {
+  display: flex;
+  flex-direction: row;
+  background-color: lightsteelblue;
+  padding: 10px;
+  border-radius: 5px;
+  justify-content: space-between;
+}
+
+.structButtonStyle {
+  background-color: darkred;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.structButtonStyle:hover {
+  background-color: white;
+  color: darkred;
+}

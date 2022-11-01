@@ -84,7 +84,6 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-Project/.idea/deploymentTargetDropDown.xml
 
 # node
 node_modules/
