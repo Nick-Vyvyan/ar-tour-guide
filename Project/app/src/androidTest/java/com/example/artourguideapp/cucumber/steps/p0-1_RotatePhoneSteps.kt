@@ -1,16 +1,16 @@
 package com.example.artourguideapp.cucumber.steps
 
-import com.example.artourguideapp.Entity
+import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.User
-import com.example.artourguideapp.View
+import com.example.artourguideapp.UserView
 import cucumber.api.java.en.And
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
 
 class RotatePhoneSteps {
-    val user = User()
-    val camera = View()
+    lateinit var user : User
+    val camera = UserView()
 
     @Given("^Sean has already seen the buildings he is currently looking at$")
     fun camera_looking_at_building() {

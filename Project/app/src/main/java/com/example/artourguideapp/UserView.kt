@@ -1,13 +1,15 @@
 package com.example.artourguideapp
 
-class View {
+import com.example.artourguideapp.entities.*
+
+class UserView {
     private var UIData: String = ""
 
     fun displayBuildingData(data: BuildingData) {
 
     }
 
-    fun displaySculptureData(data: SculptureData) {
+    fun displaySculptureData(data: LandmarkData) {
 
     }
 
