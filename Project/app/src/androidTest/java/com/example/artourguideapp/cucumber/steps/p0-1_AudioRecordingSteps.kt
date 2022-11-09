@@ -1,6 +1,6 @@
 package com.example.artourguideapp.cucumber.steps
 
-import android.graphics.Point
+import android.graphics.PointF
 import android.location.Location
 import com.example.artourguideapp.*
 import cucumber.api.java.en.Given
@@ -12,7 +12,7 @@ class AudioRecordingSteps {
     val view = View()
     lateinit var user : User
     val controller = Controller("", model, view, user)
-    var sculpture = Entity("", 0, ArrayList<Point>(), "", Location("SculptureTest"))
+    var sculpture = Entity("", 0, PointF(), "", Location("SculptureTest"))
     var sculptureData = SculptureData("","","","")
 
     @Given("^Sarah has brought up a menu for a specific building$")
