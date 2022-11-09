@@ -207,30 +207,30 @@ class HelloGeoRenderer(val activity: GeospatialActivity) :
     // check status of terrain anchors, render a cube if ready
     if (currentAnchorList.isNotEmpty()) {
       for (anchor in currentAnchorList) {
-        when (anchor.terrainAnchorState) {
-          Anchor.TerrainAnchorState.SUCCESS -> {
-            if (anchor.trackingState == TrackingState.TRACKING) {
-              render.renderCompassAtAnchor(anchor)
-              println("DEBUG - RENDERED ANCHOR AT ${anchor.pose}")
-            }
-          }
-          Anchor.TerrainAnchorState.TASK_IN_PROGRESS -> {
-            println("Waiting on ARCore API to resolve terrain anchor's pose")
-          }
-          Anchor.TerrainAnchorState.ERROR_UNSUPPORTED_LOCATION -> {
-            println("Terrain Anchor in unsupported location")
-          }
-          Anchor.TerrainAnchorState.ERROR_NOT_AUTHORIZED -> {
-            println("Error authorizing app with ARCore API")
-          }
-          Anchor.TerrainAnchorState.ERROR_INTERNAL -> {
-            println("Terrain anchor could not be resolved due to an internal error")
-          }
-          Anchor.TerrainAnchorState.NONE -> {
-            println("This anchor is not a Terrain Anchor or became invalid")
-          }
-          else -> {}
-        }
+//        when (anchor.terrainAnchorState) {
+//          Anchor.TerrainAnchorState.SUCCESS -> {
+//            if (anchor.trackingState == TrackingState.TRACKING) {
+//              render.renderCompassAtAnchor(anchor)
+//              println("DEBUG - RENDERED ANCHOR AT ${anchor.pose}")
+//            }
+//          }
+//          Anchor.TerrainAnchorState.TASK_IN_PROGRESS -> {
+//            println("Waiting on ARCore API to resolve terrain anchor's pose")
+//          }
+//          Anchor.TerrainAnchorState.ERROR_UNSUPPORTED_LOCATION -> {
+//            println("Terrain Anchor in unsupported location")
+//          }
+//          Anchor.TerrainAnchorState.ERROR_NOT_AUTHORIZED -> {
+//            println("Error authorizing app with ARCore API")
+//          }
+//          Anchor.TerrainAnchorState.ERROR_INTERNAL -> {
+//            println("Terrain anchor could not be resolved due to an internal error")
+//          }
+//          Anchor.TerrainAnchorState.NONE -> {
+//            println("This anchor is not a Terrain Anchor or became invalid")
+//          }
+//          else -> {}
+//        }
       }
     }
 

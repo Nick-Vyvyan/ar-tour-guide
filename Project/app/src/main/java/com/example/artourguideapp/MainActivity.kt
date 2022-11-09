@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         DummyBuildingEntities.initialize()
 //        updateStructures()
 
-        val intent = Intent(this, GeospatialActivity::class.java)
+        val intent = Intent(this, ArActivity::class.java)
         startActivity(intent)
     }
 

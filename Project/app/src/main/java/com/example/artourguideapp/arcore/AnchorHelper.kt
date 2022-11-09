@@ -47,14 +47,14 @@ class AnchorHelper {
                     if (currAnchor != null) {
                         anchorList.add(currAnchor)
                     } else {
-                        val newAnchor = earth.resolveAnchorOnTerrain(
-                            currLocation.latitude,
-                            currLocation.longitude,
-                            2.0,
-                            0f,0f,0f,1f
-                        )
-                        currentEntity.setAnchor(newAnchor)
-                        anchorList.add(currentEntity.getAnchor()!!)
+//                        val newAnchor = earth.resolveAnchorOnTerrain(
+//                            currLocation.latitude,
+//                            currLocation.longitude,
+//                            2.0,
+//                            0f,0f,0f,1f
+//                        )
+//                        currentEntity.setAnchor(newAnchor)
+//                        anchorList.add(currentEntity.getAnchor()!!)
                     }
                 }
             }
