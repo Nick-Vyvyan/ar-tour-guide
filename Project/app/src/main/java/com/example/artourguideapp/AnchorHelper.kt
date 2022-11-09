@@ -1,4 +1,4 @@
-package com.example.artourguideapp.arcore
+package com.example.artourguideapp
 
 import android.location.Location
 import com.example.artourguideapp.entities.Entity
