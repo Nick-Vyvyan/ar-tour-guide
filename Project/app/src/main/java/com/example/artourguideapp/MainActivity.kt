@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         DummyBuildingEntities.initialize()
 //        updateStructures()
 
-        val intent = Intent(this, ArActivity::class.java)
+        val intent = Intent(this, ArActivityTest::class.java)
         startActivity(intent)
     }
 

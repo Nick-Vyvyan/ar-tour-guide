@@ -13,29 +13,46 @@ import com.google.ar.core.exceptions.CameraNotAvailableException
 import com.google.ar.core.exceptions.UnavailableException
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ArSceneView
-import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.rendering.ViewRenderable
 import java.util.*
 
 
-class ArActivity : AppCompatActivity() {
+class ArActivityTest : AppCompatActivity() {
 
     lateinit var arSceneView: ArSceneView
     lateinit var arButtonRenderable: ViewRenderable
+    lateinit var arAnchorNode: AnchorNode
+    lateinit var arButtonTest: Button
+    lateinit var arButtonRenderableTest: ViewRenderable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ar)
 
+        // Get the ArSceneView from UML
         arSceneView = findViewById(R.id.arSceneView)
 
+
+        // Build the arButtonRenderable from its UML
         ViewRenderable.builder().setView(this, R.layout.ar_button).build()
             .thenAccept {renderable -> arButtonRenderable = renderable}
 
+        // Programmatically build an ar button without a UML
+        arButtonTest = Button(this)
+        arButtonTest.text = "WKRC"
+        arButtonTest.setOnClickListener {
+            DummyBuildingEntities.wadeKingEntity.getDialogFragment().show(supportFragmentManager, "CF")
+        }
+
+        ViewRenderable.builder().setView(this, arButtonTest).build()
+            .thenAccept {renderable -> arButtonRenderableTest = renderable}
+
+        // Request permissions for AR and Geospatial
         ActivityCompat.requestPermissions(
             this, arrayOf(CAMERA, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION), 0)
 
 
+        // Attempt to make a button at current position every 5 seconds after a 1 second delay
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 runOnUiThread {
@@ -49,21 +66,20 @@ class ArActivity : AppCompatActivity() {
         super.onResume()
 
         if (arSceneView == null) {
-            return;
+            return
         }
 
         if (arSceneView.getSession() == null) {
             // If the session wasn't created yet, don't resume rendering.
             // This can happen if ARCore needs to be updated or permissions are not granted yet.
             try {
-                var lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR;
-                var session: Session = Session(this);
+                var session = Session(this)
                 // IMPORTANT!!!  ArSceneView requires the `LATEST_CAMERA_IMAGE` non-blocking update mode.
-                var config = Config(session);
-                config.updateMode = Config.UpdateMode.LATEST_CAMERA_IMAGE;
-                config.lightEstimationMode = lightEstimationMode;
+                var config = Config(session)
+                config.updateMode = Config.UpdateMode.LATEST_CAMERA_IMAGE
+                config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
                 config.geospatialMode = Config.GeospatialMode.ENABLED
-                session.configure(config);
+                session.configure(config)
 
                 if (session == null) {
                     // cameraPermissionRequested = DemoUtils.hasCameraPermission(this);
@@ -109,6 +125,7 @@ class ArActivity : AppCompatActivity() {
     }
 
     private fun attemptToSetAnchor() {
+
         // get Earth
         val earth = arSceneView.session?.earth
         if (earth?.trackingState == TrackingState.TRACKING) {
@@ -121,19 +138,32 @@ class ArActivity : AppCompatActivity() {
                 0f, 0f, 0f, 0f
             )
 
-            // Make an ArNode and set its anchor to the testAnchor
-            var arAnchorNode = AnchorNode(testAnchor)
-            arAnchorNode.parent = arSceneView.scene
+            // Make an AnchorNode at that anchor and set its renderable field to the arButtonRenderable
+            arAnchorNode = AnchorNode(testAnchor)
+            arAnchorNode.renderable = arButtonRenderable
 
-            var arButtonNode = Node()
-            arButtonNode.renderable = arButtonRenderable
 
+            // Set on click listener for the button
             var arButton: Button = arButtonRenderable.view as Button
             arButton.setOnClickListener {
                 DummyBuildingEntities.commFacilityEntity.getDialogFragment().show(supportFragmentManager, "CF")
             }
+            arButton.text = "CF"
 
-            arAnchorNode.addChild(arButtonNode)
+            arAnchorNode.parent = arSceneView.scene
+
+            // Create anchor at current position
+            var testAnchor2 = earth.createAnchor(
+                earth.cameraGeospatialPose.latitude,
+                earth.cameraGeospatialPose.longitude,
+                earth.cameraGeospatialPose.altitude - 1,
+                0f, 0f, 0f, 0f
+            )
+
+            // Make an AnchorNode at that anchor and set its renderable field to the arButtonRenderable
+            var arAnchorNode2 = AnchorNode(testAnchor2)
+            arAnchorNode2.renderable = arButtonRenderableTest
+            arAnchorNode2.parent = arSceneView.scene
         }
     }
 }
