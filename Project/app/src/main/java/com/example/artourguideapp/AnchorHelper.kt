@@ -16,6 +16,9 @@ import com.google.ar.sceneform.ArSceneView
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 class AnchorHelper {
 
@@ -39,21 +42,21 @@ class AnchorHelper {
                         entity.getCentralLocation().latitude,
                         entity.getCentralLocation().longitude,
                         earth.cameraGeospatialPose.altitude + 1,
-                        0f,earth.cameraGeospatialPose.heading.toFloat(),0f,1f
+                        0f,0f,0f,1f
                     )
 
                     val arAnchorNode = AnchorNode(entityAnchor)
                     entity.getNode().parent = arAnchorNode
 
                     updateNodeScale(entity.getNode(), distance)
-                    updateNodeRotation(entity.getNode(), angle)
+                    updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose)
 
                     arAnchorNode.parent = arSceneView.scene
                     println("DEBUG - ANCHOR NODE CREATED AND SET FOR ${entity.getName()}")
                 } else if (entityInProximity(distance) && entity.nodeIsAttached()) {
                     // TODO: update anchor rotation
                     updateNodeScale(entity.getNode(), distance)
-                    updateNodeRotation(entity.getNode(), angle)
+                    updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose)
                 } else {
                     removeAnchor(entity)
                 }
@@ -64,8 +67,13 @@ class AnchorHelper {
             node.localScale = Vector3(distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER)
         }
 
-        private fun updateNodeRotation(node: Node, angle: Float) {
-            node.worldRotation = Quaternion(Vector3(0f, angle, 0f))
+        private fun updateNodeRotation(node: Node, pose: GeospatialPose) {
+            node.worldRotation = Quaternion(
+                0f,
+                sin((PI - Math.toRadians(pose.heading)) / 2).toFloat(),
+                0f,
+                cos((PI - Math.toRadians(pose.heading)) / 2).toFloat()
+            )
         }
 
         private fun removeAnchor(entity: Entity) {
