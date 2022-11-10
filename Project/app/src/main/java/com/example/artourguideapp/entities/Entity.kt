@@ -35,6 +35,10 @@ abstract class Entity(
                 node.renderable = renderable }
     }
 
+    fun nodeIsAttached() : Boolean {
+        return node != null && node.parent != null
+    }
+
     fun getName(): String {
         return name
     }
