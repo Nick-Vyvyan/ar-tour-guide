@@ -1,6 +1,9 @@
 package com.example.artourguideapp.entities
 
+import android.app.Application
 import android.location.Location
+import androidx.appcompat.app.AppCompatActivity
+import com.example.artourguideapp.MainActivity
 
 /**
  * This class serves as a holder for Building Entities until we get data loaded in
@@ -138,7 +141,7 @@ class DummyBuildingEntities() {
         )
 
         var house3 = BuildingEntity(
-            "house1",
+            "house3",
             ArrayList<Location>(),
             h3Loc,
             BuildingData(
@@ -215,15 +218,15 @@ class DummyBuildingEntities() {
         )
 
 
-        fun initialize() {
+        fun initialize(activity: AppCompatActivity) {
             cfLoc.latitude = 48.7327738818
             cfLoc.longitude = -122.485214413
 
             wkrcLoc.latitude = 48.7315959997
             wkrcLoc.longitude = -122.488958036
 
-            h1Loc.latitude = 48.88882702383885
-            h1Loc.longitude = -122.4801498388284
+            h1Loc.latitude = 48.88876780964667
+            h1Loc.longitude = -122.47953104095755
 
             h2Loc.latitude = 48.88908458266765
             h2Loc.longitude = -122.47990714754998
@@ -244,6 +247,10 @@ class DummyBuildingEntities() {
             entityList.add(house3)
             entityList.add(house4)
             entityList.add(house5)
+
+            for (entity in entityList) {
+                entity.initNode(activity)
+            }
         }
     }
 }

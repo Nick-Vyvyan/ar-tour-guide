@@ -1,17 +1,22 @@
 package com.example.artourguideapp
 
+import android.Manifest
+import android.Manifest.permission.*
 import android.content.Intent
-import android.graphics.PointF
-import android.location.Location
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.*
-import org.json.JSONArray
-import java.io.*
-import java.net.HttpURLConnection
-import java.net.URL
-import kotlin.concurrent.thread
+import com.google.ar.core.Config
+import com.google.ar.core.Session
+import com.google.ar.core.exceptions.CameraNotAvailableException
+import com.google.ar.core.exceptions.UnavailableException
+import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.ArSceneView
+import com.google.ar.sceneform.rendering.ViewRenderable
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private val server: String = ""
@@ -20,14 +25,119 @@ class MainActivity : AppCompatActivity() {
     private val user = null
     private val controller = Controller(server, model, view, user)
 
+    // AR SceneForm Variables
+    lateinit var arSceneView: ArSceneView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        DummyBuildingEntities.initialize()
-        EntityFactory.updateStructures(model, controller, this)
+        // Init Entity Objects
+        DummyBuildingEntities.initialize(this)
+        controller.addEntities(DummyBuildingEntities.entityList)
+//        EntityFactory.updateStructures(model, controller, this)
 
-        val intent = Intent(this, ArActivityTest::class.java)
-        startActivity(intent)
+        // get ARSceneView
+        arSceneView = findViewById(R.id.arSceneView)
+
+        // Request permissions for AR and Geospatial
+        ActivityCompat.requestPermissions(
+            this, arrayOf(
+                CAMERA,
+                ACCESS_FINE_LOCATION,
+                ACCESS_COARSE_LOCATION
+            ), 0)
+
+        Timer().schedule(object: TimerTask() {
+            override fun run() {
+                for (entity in model.getEntities()) {
+                    runOnUiThread {
+                        println("DEBUG - ATTEMPTING TO SET ANCHOR FOR ${entity.getName()}")
+                        AnchorHelper.attemptSetAnchor(entity, arSceneView)
+                    }
+                }
+            }
+        },2000, 3000)
+
+
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+//            0 -> {
+//                if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+//                    ActivityCompat.requestPermissions(
+//                        this, arrayOf(
+//                            CAMERA,
+//                            ACCESS_FINE_LOCATION,
+//                            ACCESS_COARSE_LOCATION
+//                        ), 0)
+//                }
+//            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (arSceneView == null) {
+            return
+        }
+
+        if (arSceneView.getSession() == null) {
+            // If the session wasn't created yet, don't resume rendering.
+            // This can happen if ARCore needs to be updated or permissions are not granted yet.
+            try {
+                var session = Session(this)
+                // IMPORTANT!!!  ArSceneView requires the `LATEST_CAMERA_IMAGE` non-blocking update mode.
+                var config = Config(session)
+                config.updateMode = Config.UpdateMode.LATEST_CAMERA_IMAGE
+                config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
+                config.geospatialMode = Config.GeospatialMode.ENABLED
+                session.configure(config)
+
+                if (session == null) {
+                    // cameraPermissionRequested = DemoUtils.hasCameraPermission(this);
+                    return;
+                } else {
+                    arSceneView.session = session;
+                }
+            } catch (e: UnavailableException) {
+                //DemoUtils.handleSessionException(this, e);
+            }
+        }
+
+        try {
+            arSceneView.resume();
+        } catch (ex: CameraNotAvailableException) {
+            // DemoUtils.displayError(this, "Unable to get camera", ex);
+            finish();
+            return;
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (arSceneView != null) {
+            arSceneView.pause()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (arSceneView != null) {
+            arSceneView.destroy()
+        }
+    }
+
+
 
 }

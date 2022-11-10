@@ -1,10 +1,11 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.entities
 
 import android.graphics.PointF
 import android.location.Location
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.artourguideapp.entities.*
+import com.example.artourguideapp.Controller
+import com.example.artourguideapp.Model
 import org.json.JSONArray
 import java.io.*
 import java.net.HttpURLConnection
@@ -156,6 +157,7 @@ class EntityFactory {
                 // print all entities from model
                 for (entity in model.getEntities()) {
                     Log.d("entity", entity.getEntityData().toString())
+                    entity.initNode(activity)
                 }
             }
         }

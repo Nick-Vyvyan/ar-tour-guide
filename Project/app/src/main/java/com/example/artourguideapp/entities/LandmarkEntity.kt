@@ -14,8 +14,7 @@ class LandmarkEntity(
     landmarkData.getURL(),
     location,
     landmarkData,
-    LandmarkDataDialogFragment(landmarkData),
-    null
+    LandmarkDataDialogFragment(landmarkData)
 ) {
 
 }

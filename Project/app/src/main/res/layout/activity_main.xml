@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <com.google.ar.sceneform.ArSceneView
+        android:id="@+id/arSceneView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
