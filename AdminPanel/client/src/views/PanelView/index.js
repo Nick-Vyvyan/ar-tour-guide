@@ -168,6 +168,8 @@ const PanelView = (props) => {
         setCoordinates("");
         setScrapedData();
         setIsLandmark(false);
+        setAudioFileName("");
+        filesContent = null
       })
       .catch((err) => console.error(err));
   };
