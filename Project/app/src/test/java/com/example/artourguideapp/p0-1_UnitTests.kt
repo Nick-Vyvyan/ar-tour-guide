@@ -1,10 +1,12 @@
 package com.example.artourguideapp
 
 import android.graphics.Point
+import com.example.artourguideapp.entities.BuildingData
+import com.example.artourguideapp.entities.Entity
+import com.example.artourguideapp.entities.LandmarkData
 import org.junit.Test
 
 import org.junit.Assert.*
-import java.io.File
 
 /**
  * Unit tests for User Story P0-1.
@@ -18,7 +20,7 @@ class P0_1_UnitTests {
      * BuildingData Unit Tests
      */
 
-    val buildingData = BuildingData("","","","","","","","","")
+    val buildingData = BuildingData("","","","","","","","","","")
 
     @Test
     fun getTitle() {
@@ -70,7 +72,7 @@ class P0_1_UnitTests {
      */
     val server: String = ""
     val model = Model()
-    val view = View()
+    val view = UserView()
     val user = User()
     val controller = Controller(server, model, view, user)
 
@@ -87,13 +89,14 @@ class P0_1_UnitTests {
     @Test
     fun updateView() {
         controller.updateView()
-        assertTrue(view.equals(View()))
+        assertTrue(view.equals(UserView()))
     }
 
     /**
      * Entity Unit Tests
      */
     val entity = Entity("",0,ArrayList<Point>(),"")
+
 
     @Test
     fun getName() {
@@ -122,6 +125,23 @@ class P0_1_UnitTests {
         assertTrue(entity.getPerimeter().equals(ArrayList<Point>()))
     }
 
+    @Test
+    fun setLocation() {
+        val CFLat = 48.73266494618646
+        val CFLon = -122.48524954354191
+        assertTrue(entity.setLocation(CFLat, CFLon).equals(0))
+    }
+
+    @Test
+    fun getEntityLocation() {
+        val CFLat : Double = 48.73266494618646
+        val CFLon : Double = -122.48524954354191
+
+        entity.setLocation(CFLat, CFLon)
+        assertTrue(entity.getLocation().latitude.equals(CFLat))
+        assertTrue(entity.getLocation().longitude.equals(CFLon))
+    }
+
     /**
      * Model Unit Tests
      */
@@ -140,45 +160,46 @@ class P0_1_UnitTests {
      * Orientation Unit Tests
      */
     val orientation = Orientation()
-    @Test
-    fun getRotation() {
-        assertTrue(orientation.getRotation().equals(""))
-    }
 
     @Test
-    fun getLocation() {
-        assertTrue(orientation.getLocation().equals(""))
+    fun getOrientation() {
+        assertTrue(orientation.getOrientation().equals(""))
     }
+
+//    @Test
+//    fun getLocation() {
+//        assertTrue(orientation.getLocation().equals(""))
+//    }
 
     /**
      * SculptureData Unit Tests
      */
-    val sculptureData = SculptureData("A", "B", "", "C")
+    val landmarkData = LandmarkData("A", "B", "", "C")
     @Test
     fun getSculptTitle(){
-        assertTrue(sculptureData.getTitle().equals(""))
+        assertTrue(landmarkData.getTitle().equals(""))
     }
 
     @Test
     fun getDescription(){
-        assertTrue(sculptureData.getDescription().equals(""))
+        assertTrue(landmarkData.getDescription().equals(""))
     }
 
     @Test
     fun getAudioDescription(){
-        assertTrue(sculptureData.getAudioDescription().equals(""))
+        assertTrue(landmarkData.getAudioDescription().equals(""))
     }
 
     @Test
     fun getSculptURL(){
-        assertTrue(sculptureData.getURL().equals(""))
+        assertTrue(landmarkData.getURL().equals(""))
     }
 
     /**
      * User Unit Tests
      */
     @Test
-    fun getOrientation(){
+    fun getHeading(){
         assertTrue(user.getOrientation().equals(Orientation()))
     }
 
