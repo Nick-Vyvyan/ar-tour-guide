@@ -6,6 +6,9 @@ import {
   GoogleMap,
   DrawingManager,
 } from "@react-google-maps/api";
+import S3 from 'react-aws-S3';
+import { useFilePicker } from "use-file-picker";
+import { v4 as uuidv4 } from 'uuid';
 import useAuth from "../../hook/useAuth";
 import Error from "../../components/Error";
 
@@ -38,6 +41,11 @@ const PanelView = (props) => {
   const [coordinates, setCoordinates] = useState("");
   const [scrapedData, setScrapedData] = useState();
   const [isLandmark, setIsLandmark] = useState(false);
+  const [audioFileName, setAudioFileName] = useState("");
+  const [openFileSelector, { filesContent, loading }] = useFilePicker({
+    accept: ['.mp3', '.wav', '.aac'],
+    limitFilesConfig: { max: 1 },
+  });
 
   // center point for WWU on Google map
   const wwuCenter = useMemo(
@@ -47,6 +55,16 @@ const PanelView = (props) => {
     }),
     []
   );
+
+  
+
+  // create new s3 interface
+  const ReactS3Client = new S3({
+    bucketName: 'artourguide',
+    region: 'us-west-2',
+    accessKeyId: 'AKIAQ2YDNUK4NJBCNGOB',
+    secretAccessKey: '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'
+  })
 
   // load in google map with required libraries
   const { isLoaded } = useLoadScript({
@@ -115,8 +133,22 @@ const PanelView = (props) => {
           centerPointY / (coordArray.length / 2) +
           ")";
 
+    // check for presence of description key
+    // if so, is a landmark
+    setIsLandmark(scrapedData.hasOwnProperty('description'))
+
+    if (filesContent) {
+      setAudioFileName(uuidv4())
+
+      ReactS3Client
+        .uploadFile(filesContent[0].content, audioFileName)
+        .then(data => console.log(data))
+        .catch(err => console.error(err))
+    }
+    
+
     // put all structure info together into one json
-    const requestJson = { scrapedData, isLandmark, websiteLink, centerPoint };
+    const requestJson = { scrapedData, isLandmark, websiteLink, centerPoint, audioFileName };
 
     // send structure info to backend to be saved to database
     axios
@@ -177,17 +209,11 @@ const PanelView = (props) => {
                 );
               })}
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                label="Is this structure a landmark?"
-                checked={isLandmark}
-                onChange={(e) => setIsLandmark(e.target.checked)}
-              />
-            </Form.Group>
             {/* display all errors */}
             {error && <Error error={error} />}
-
+            <Button onClick={() => openFileSelector()}>
+              Select Audio File (Optional)
+            </Button>
             <Button variant="primary" type="submit">
               Submit
             </Button>
