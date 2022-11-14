@@ -6,7 +6,7 @@ import {
   GoogleMap,
   DrawingManager,
 } from "@react-google-maps/api";
-import S3 from 'react-aws-S3';
+import S3 from "react-aws-s3";
 import { useFilePicker } from "use-file-picker";
 import { v4 as uuidv4 } from 'uuid';
 import useAuth from "../../hook/useAuth";
@@ -137,11 +137,14 @@ const PanelView = (props) => {
     // if so, is a landmark
     setIsLandmark(scrapedData.hasOwnProperty('description'))
 
+    console.log(filesContent)
+
     if (filesContent) {
+      filesContent[0].type = 'audio/mpeg'
       setAudioFileName(uuidv4())
 
       ReactS3Client
-        .uploadFile(filesContent[0].content, audioFileName)
+        .uploadFile(filesContent[0], audioFileName)
         .then(data => console.log(data))
         .catch(err => console.error(err))
     }
@@ -169,7 +172,7 @@ const PanelView = (props) => {
         setScrapedData();
         setIsLandmark(false);
         setAudioFileName("");
-        filesContent = null
+        //filesContent = null
       })
       .catch((err) => console.error(err));
   };
@@ -216,7 +219,9 @@ const PanelView = (props) => {
             <Button onClick={() => openFileSelector()}>
               Select Audio File (Optional)
             </Button>
-            <Button variant="primary" type="submit">
+            <br />
+            <br />
+            <Button disabled={loading} variant="primary" type="submit">
               Submit
             </Button>
           </Form>
@@ -232,7 +237,7 @@ const PanelView = (props) => {
             <GoogleMap
               zoom={15}
               center={wwuCenter}
-              tilt="0"
+              tilt={0}
               mapTypeId="hybrid"
               mapContainerClassName="map-container"
             >
