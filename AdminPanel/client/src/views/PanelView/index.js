@@ -42,10 +42,6 @@ const PanelView = (props) => {
   const [scrapedData, setScrapedData] = useState();
   const [isLandmark, setIsLandmark] = useState(false);
   const [audioFileName, setAudioFileName] = useState("");
-  const [openFileSelector, { filesContent, loading }] = useFilePicker({
-    accept: ['.mp3', '.wav', '.aac'],
-    limitFilesConfig: { max: 1 },
-  });
 
   // center point for WWU on Google map
   const wwuCenter = useMemo(
@@ -115,6 +111,11 @@ const PanelView = (props) => {
   // send manually reviewed data and coords to database
   const handleSecondSubmit = (e) => {
     e.preventDefault();
+    console.log(e)
+    const formData = new FormData(e.target)
+    console.log(formData)
+    const formProps = Object.fromEntries(formData)
+    console.log(formProps)
 
     // calculate center point of building
     let centerPointX = 0;
@@ -137,16 +138,17 @@ const PanelView = (props) => {
     // if so, is a landmark
     setIsLandmark(scrapedData.hasOwnProperty('description'))
 
-    console.log(filesContent)
-
-    if (filesContent) {
-      filesContent[0].type = 'audio/mpeg'
+    if (formProps.audio.size > 0) {
       setAudioFileName(uuidv4())
 
       ReactS3Client
-        .uploadFile(filesContent[0], audioFileName)
+        .uploadFile(formProps.audio, audioFileName)
         .then(data => console.log(data))
         .catch(err => console.error(err))
+
+      setAudioFileName(audioFileName + ".mpeg")
+    } else {
+      setAudioFileName("")
     }
     
 
@@ -216,12 +218,11 @@ const PanelView = (props) => {
             </Form.Group>
             {/* display all errors */}
             {error && <Error error={error} />}
-            <Button onClick={() => openFileSelector()}>
-              Select Audio File (Optional)
-            </Button>
+            <Form.Label>Select Audio File (Optional)</Form.Label>
+            <input name="audio" type="file" accept="audio/mpeg" />
             <br />
             <br />
-            <Button disabled={loading} variant="primary" type="submit">
+            <Button variant="primary" type="submit">
               Submit
             </Button>
           </Form>
