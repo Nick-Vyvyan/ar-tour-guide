@@ -110,7 +110,8 @@ class UpdateStructures : AppCompatActivity() {
                         landmarks.add(
                             // TODO: FILL IN REMAINING FIELDS
                             SculptureData(currentScrapedData.getString("buildingName"),
-                                "", "", websiteLink
+                                currentScrapedData.getJSONArray("description").toString(),
+                                "", websiteLink
                             )
                         )
                     }
@@ -124,8 +125,7 @@ class UpdateStructures : AppCompatActivity() {
                                 currentScrapedData.getJSONArray("departmentsOffices").toString(),
                                 currentScrapedData.getJSONArray("accessibilityInfo").toString(),
                                 currentScrapedData.getJSONArray("genderNeutralRestrooms").toString(),
-                                currentScrapedData.getJSONArray("computerLabs").toString(),
-                                "", websiteLink
+                                currentScrapedData.getJSONArray("computerLabs").toString(), websiteLink
                             )
                         )
                     }

@@ -7,7 +7,6 @@ class BuildingData( private val title: String?,
                     private val accessibilityInfo: String?,
                     private val genderNeutralRestrooms: String?,
                     private val computerLabs: String?,
-                    private val parkingInfo: String?,
                     private val url: String?) {
 
 
@@ -39,10 +38,6 @@ class BuildingData( private val title: String?,
         return computerLabs
     }
 
-    fun getParkingInfo(): String? {
-        return parkingInfo
-    }
-
     fun getURL(): String? {
         return url
     }
@@ -55,7 +50,6 @@ class BuildingData( private val title: String?,
                 + "\naccessibilityInfo: " + accessibilityInfo
                 + "\ngenderNeutralRestrooms: " + genderNeutralRestrooms
                 + "\ncomputerLabs: " + computerLabs
-                + "\nparkingInfo: " + parkingInfo
                 + "\nurl: " + url)
     }
 }
