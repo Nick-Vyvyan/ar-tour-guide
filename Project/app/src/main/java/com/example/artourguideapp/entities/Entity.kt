@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.google.ar.core.Anchor
 import com.google.ar.sceneform.Node
+import com.google.ar.sceneform.rendering.Color
 import com.google.ar.sceneform.rendering.ViewRenderable
 
 abstract class Entity(
@@ -19,13 +20,15 @@ abstract class Entity(
     private var dialogFragment: DialogFragment,
 ) {
 //    lateinit var anchor: Anchor
-    private lateinit var node: Node
+    private var node: Node = Node()
 
     fun initNode(activity: AppCompatActivity) {
-        node = Node()
+//        node = Node()
         // Programmatically build an ar button without a XML
         val arButton = Button(activity)
         arButton.text = name
+//        arButton.setPadding(3, 0, 3, 0)
+        arButton.setBackgroundColor(0xffae3de3.toInt())
         arButton.setOnClickListener {
             dialogFragment.show(activity.supportFragmentManager, name)
         }

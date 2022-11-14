@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
+            // TODO: handle permission denial
 //            0 -> {
 //                if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
 //                    ActivityCompat.requestPermissions(

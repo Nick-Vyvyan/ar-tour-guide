@@ -1,6 +1,7 @@
 package com.example.artourguideapp
 
 import android.location.Location
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.entities.DummyBuildingEntities
@@ -23,8 +24,8 @@ import kotlin.math.sin
 class AnchorHelper {
 
     companion object {
-        val PROXIMTY_DISTANCE = 125
-        val DISTANCE_MULTIPLIER = 2
+        val PROXIMTY_DISTANCE = 150
+        val DISTANCE_MULTIPLIER = 0.5f
 
         fun attemptSetAnchor(entity: Entity, arSceneView: ArSceneView) {
             val earth = arSceneView.session?.earth
@@ -41,7 +42,7 @@ class AnchorHelper {
                     val entityAnchor = earth.createAnchor(
                         entity.getCentralLocation().latitude,
                         entity.getCentralLocation().longitude,
-                        earth.cameraGeospatialPose.altitude + 1,
+                        earth.cameraGeospatialPose.altitude + 0.5f,
                         0f,0f,0f,1f
                     )
 
@@ -52,19 +53,26 @@ class AnchorHelper {
                     updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose)
 
                     arAnchorNode.parent = arSceneView.scene
-                    println("DEBUG - ANCHOR NODE CREATED AND SET FOR ${entity.getName()}")
+                    Log.d("AnchorHelper", "Node for ${entity.getName()} has been ATTACHED")
                 } else if (entityInProximity(distance) && entity.nodeIsAttached()) {
                     // TODO: update anchor rotation
                     updateNodeScale(entity.getNode(), distance)
                     updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose)
+                    Log.d("AnchorHelper", "Node for ${entity.getName()} has been UPDATED")
                 } else {
                     removeAnchor(entity)
+                    Log.d("AnchorHelper", "Node for ${entity.getName()} has been DETACHED")
                 }
             }
         }
 
         private fun updateNodeScale(node: Node, distance: Float) {
-            node.localScale = Vector3(distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER)
+            if (distance < 35) {
+                node.localScale = Vector3(distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER)
+            } else
+                node.localScale = Vector3(100f, 100f, 100f)
+
+            Log.d("AnchorHelper", "Node Scale Updated")
         }
 
         private fun updateNodeRotation(node: Node, pose: GeospatialPose) {
@@ -74,6 +82,7 @@ class AnchorHelper {
                 0f,
                 cos((PI - Math.toRadians(pose.heading)) / 2).toFloat()
             )
+            node.setLookDirection(Vector3(0f, 0f, pose.heading.toFloat()))
         }
 
         private fun removeAnchor(entity: Entity) {
