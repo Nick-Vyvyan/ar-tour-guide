@@ -40,8 +40,6 @@ const PanelView = (props) => {
   const [websiteLink, setWebsiteLink] = useState("");
   const [coordinates, setCoordinates] = useState("");
   const [scrapedData, setScrapedData] = useState();
-  const [isLandmark, setIsLandmark] = useState(false);
-  const [audioFileName, setAudioFileName] = useState("");
 
   // center point for WWU on Google map
   const wwuCenter = useMemo(
@@ -134,26 +132,22 @@ const PanelView = (props) => {
           centerPointY / (coordArray.length / 2) +
           ")";
 
-    // check for presence of description key
-    // if so, is a landmark
-    setIsLandmark(scrapedData.hasOwnProperty('description'))
+    let audioFileName = ""
 
     if (formProps.audio.size > 0) {
-      setAudioFileName(uuidv4())
+      audioFileName = uuidv4()
 
       ReactS3Client
         .uploadFile(formProps.audio, audioFileName)
         .then(data => console.log(data))
         .catch(err => console.error(err))
 
-      setAudioFileName(audioFileName + ".mpeg")
-    } else {
-      setAudioFileName("")
+      audioFileName += ".mpeg"
     }
     
 
     // put all structure info together into one json
-    const requestJson = { scrapedData, isLandmark, websiteLink, centerPoint, audioFileName };
+    const requestJson = { scrapedData, isLandmark : scrapedData.hasOwnProperty('description'), websiteLink, centerPoint, audioFileName : audioFileName };
 
     // send structure info to backend to be saved to database
     axios
@@ -172,9 +166,6 @@ const PanelView = (props) => {
         setWebsiteLink("");
         setCoordinates("");
         setScrapedData();
-        setIsLandmark(false);
-        setAudioFileName("");
-        //filesContent = null
       })
       .catch((err) => console.error(err));
   };
