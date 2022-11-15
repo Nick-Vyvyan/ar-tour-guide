@@ -7,7 +7,6 @@ import {
   DrawingManager,
 } from "@react-google-maps/api";
 import S3 from "react-aws-s3";
-import { useFilePicker } from "use-file-picker";
 import { v4 as uuidv4 } from 'uuid';
 import useAuth from "../../hook/useAuth";
 import Error from "../../components/Error";
@@ -109,11 +108,8 @@ const PanelView = (props) => {
   // send manually reviewed data and coords to database
   const handleSecondSubmit = (e) => {
     e.preventDefault();
-    console.log(e)
     const formData = new FormData(e.target)
-    console.log(formData)
     const formProps = Object.fromEntries(formData)
-    console.log(formProps)
 
     // calculate center point of building
     let centerPointX = 0;
