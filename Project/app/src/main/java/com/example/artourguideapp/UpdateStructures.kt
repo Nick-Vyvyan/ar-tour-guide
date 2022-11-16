@@ -132,7 +132,7 @@ class UpdateStructures : AppCompatActivity() {
                             // TODO: FILL IN REMAINING FIELDS
                             SculptureData(currentScrapedData.getString("buildingName"),
                                 currentScrapedData.getJSONArray("description").toString(),
-                                "", websiteLink
+                                audioFileName, websiteLink
                             )
                         )
                     }
@@ -142,11 +142,14 @@ class UpdateStructures : AppCompatActivity() {
                             // TODO: FILL IN REMAINING FIELDS
                             BuildingData(
                                 currentScrapedData.getString("buildingName"),
-                                "", currentScrapedData.getJSONArray("buildingTypes").toString(),
+                                "",
+                                currentScrapedData.getJSONArray("buildingTypes").toString(),
                                 currentScrapedData.getJSONArray("departmentsOffices").toString(),
                                 currentScrapedData.getJSONArray("accessibilityInfo").toString(),
                                 currentScrapedData.getJSONArray("genderNeutralRestrooms").toString(),
-                                currentScrapedData.getJSONArray("computerLabs").toString(), websiteLink
+                                currentScrapedData.getJSONArray("computerLabs").toString(),
+                                websiteLink,
+                                audioFileName
                             )
                         )
                     }

@@ -2,7 +2,7 @@ package com.example.artourguideapp
 
 class SculptureData(private val title: String?,
                     private val description: String?,
-                    private val audioDescription: String?,
+                    private val audioFileName: String?,
                     private val url: String?) {
 
     fun getTitle(): String? {
@@ -13,8 +13,8 @@ class SculptureData(private val title: String?,
         return description
     }
 
-    fun getAudioDescription(): String? {
-        return audioDescription
+    fun getAudioFileName(): String? {
+        return audioFileName
     }
 
     fun getURL(): String? {
@@ -24,7 +24,7 @@ class SculptureData(private val title: String?,
     override fun toString(): String {
         return ("title: " + title
                 + "\ndescription: " + description
-                + "\naudioDescription: " + audioDescription
+                + "\naudioFileName: " + audioFileName
                 + "\nurl: " + url)
     }
 }

@@ -7,6 +7,7 @@ class BuildingData( private val title: String?,
                     private val accessibilityInfo: String?,
                     private val genderNeutralRestrooms: String?,
                     private val computerLabs: String?,
+                    private val audioFileName: String?,
                     private val url: String?) {
 
 
@@ -34,6 +35,10 @@ class BuildingData( private val title: String?,
         return genderNeutralRestrooms
     }
 
+    fun getAudioFileName(): String? {
+        return audioFileName
+    }
+
     fun getComputerLabs(): String? {
         return computerLabs
     }
@@ -50,6 +55,7 @@ class BuildingData( private val title: String?,
                 + "\naccessibilityInfo: " + accessibilityInfo
                 + "\ngenderNeutralRestrooms: " + genderNeutralRestrooms
                 + "\ncomputerLabs: " + computerLabs
+                + "\naudioFileName: " + audioFileName
                 + "\nurl: " + url)
     }
 }
