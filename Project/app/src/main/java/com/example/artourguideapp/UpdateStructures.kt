@@ -104,6 +104,27 @@ class UpdateStructures : AppCompatActivity() {
                     val currentStructure = structuresJsonArr.getJSONObject(i)
                     val currentScrapedData = currentStructure.getJSONObject("scrapedData")
                     val websiteLink = currentStructure.getString("websiteLink")
+                    val audioFileName = currentScrapedData.getString("audioFileName")
+
+                    // if has audio file, download from s3
+                    if (audioFileName != "") {
+                        try {
+                            val connection = URL("https://artourguide.s3.us-west-2.amazonaws.com/$audioFileName")
+                                .openConnection() as HttpURLConnection
+
+                            // set remote json string
+                            val audioData = connection.inputStream.readBytes()
+
+
+                            val outputStreamWriter =
+                                DataOutputStream(openFileOutput(audioFileName, AppCompatActivity.MODE_PRIVATE))
+                            outputStreamWriter.write(audioData)
+                            outputStreamWriter.close()
+                        } catch (ioException: IOException) {
+                            ioException.printStackTrace()
+                        }
+                    }
+
 
                     // if landmark, add to landmark list
                     if (currentStructure.getBoolean("isLandmark")) {
