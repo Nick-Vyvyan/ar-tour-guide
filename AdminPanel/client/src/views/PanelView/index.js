@@ -140,11 +140,13 @@ const PanelView = (props) => {
 
       audioFileName += ".mpeg"
     }
+
+    let reqScrapedData = scrapedData
+    reqScrapedData.audioFileName = audioFileName
     
-
     // put all structure info together into one json
-    const requestJson = { scrapedData, isLandmark : scrapedData.hasOwnProperty('description'), websiteLink, centerPoint, audioFileName : audioFileName };
-
+    const requestJson = { scrapedData, isLandmark : scrapedData.hasOwnProperty('description'), websiteLink, centerPoint};
+    
     // send structure info to backend to be saved to database
     axios
       .post(`${baseServerURL}/db/add`, {
