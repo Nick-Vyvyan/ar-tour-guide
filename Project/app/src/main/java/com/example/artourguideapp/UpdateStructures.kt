@@ -132,7 +132,7 @@ class UpdateStructures : AppCompatActivity() {
                             // TODO: FILL IN REMAINING FIELDS
                             SculptureData(currentScrapedData.getString("buildingName"),
                                 currentScrapedData.getJSONArray("description").toString(),
-                                "", websiteLink
+                                currentScrapedData.getString("audioFileName"), websiteLink
                             )
                         )
                     }
