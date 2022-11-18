@@ -11,12 +11,12 @@ class SearchActivity : AppCompatActivity() {
 
         val structureList = intent.getSerializableExtra("structureList") as List<Entity>
 
-        // insert college list fragment programmatically
-        val detailsFragment = EntityListFragment.newInstance(structureList)
+        // insert entity list fragment programmatically
+        val entityListFragment = EntityListFragment.newInstance(structureList)
 
         // create fragment
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainerView, detailsFragment, null)
+            replace(R.id.fragmentContainerView, entityListFragment, null)
             commit()
         }
     }

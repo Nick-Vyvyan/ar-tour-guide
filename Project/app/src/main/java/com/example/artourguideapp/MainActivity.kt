@@ -61,9 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
         },2000, 3000)
 
-
-        /* SEARCH BUTTON FUNCTIONALITY */
-
+        // search button on-click listener
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java).also {
