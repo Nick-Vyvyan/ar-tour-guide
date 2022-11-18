@@ -9,6 +9,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.Config
 import com.google.ar.core.Session
 import com.google.ar.core.exceptions.CameraNotAvailableException
@@ -59,6 +60,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         },2000, 3000)
+
+
+        /* SEARCH BUTTON FUNCTIONALITY */
+
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
+            val searchIntent = Intent(this, SearchActivity::class.java).also {
+                it.putExtra("structureList", DummyBuildingEntities.entityList as java.io.Serializable)
+            }
+
+            startActivity(searchIntent)
+        }
 
 
     }

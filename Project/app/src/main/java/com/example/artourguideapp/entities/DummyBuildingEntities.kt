@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
  * This class serves as a holder for Building Entities until we get data loaded in
  * from the json file
  */
-class DummyBuildingEntities() {
+class DummyBuildingEntities : java.io.Serializable {
     companion object {
         var cfLoc : Location = Location("Communications Facility")
         var wkrcLoc : Location = Location("Wade King Recreational Center")
