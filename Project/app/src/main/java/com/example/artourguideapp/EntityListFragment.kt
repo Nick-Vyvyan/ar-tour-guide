@@ -41,7 +41,10 @@ class EntityListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyEntityListRecyclerViewAdapter(structures)
+
+                // set entity data list and adapter in search activity
+                adapter = MyEntityListRecyclerViewAdapter(structures, (activity as SearchActivity))
+                adapter?.let { (activity as SearchActivity).setAdapter(it) }
             }
         }
         return view

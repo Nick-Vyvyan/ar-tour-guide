@@ -5,6 +5,7 @@ import android.Manifest.permission.*
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Parcelable
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -64,14 +65,9 @@ class MainActivity : AppCompatActivity() {
         // search button on-click listener
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
-            val searchIntent = Intent(this, SearchActivity::class.java).also {
-                it.putExtra("structureList", DummyBuildingEntities.entityList as java.io.Serializable)
-            }
-
+            val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
         }
-
-
     }
 
     override fun onRequestPermissionsResult(

@@ -15,7 +15,8 @@ import com.example.artourguideapp.entities.Entity
  * TODO: Replace the implementation with code for your data type.
  */
 class MyEntityListRecyclerViewAdapter(
-    private val values: List<Entity>
+    private val values: List<Entity>,
+    private val activity: SearchActivity
 ) : RecyclerView.Adapter<MyEntityListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
