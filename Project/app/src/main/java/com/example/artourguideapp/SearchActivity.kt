@@ -1,10 +1,11 @@
 package com.example.artourguideapp
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.artourguideapp.entities.DummyBuildingEntities
 import com.example.artourguideapp.entities.Entity
@@ -32,8 +33,21 @@ class SearchActivity : AppCompatActivity() {
         // handle search
         currentEntities.clear()
         currentEntities.addAll(originalEntities)
-        findViewById<Button>(R.id.searchButton).setOnClickListener {
+
+        val searchButton = findViewById<Button>(R.id.searchButton)
+        val searchText = findViewById<EditText>(R.id.searchText)
+
+        searchButton.setOnClickListener {
             refreshEntityList()
+        }
+        searchText.setOnEditorActionListener { _, i, _ ->
+            return@setOnEditorActionListener when (i) {
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    refreshEntityList()
+                    true
+                }
+                else -> false
+            }
         }
     }
 
@@ -42,7 +56,7 @@ class SearchActivity : AppCompatActivity() {
         currentEntities.clear()
         currentEntities.addAll(originalEntities)
 
-        val structureName = findViewById<EditText>(R.id.searchName).text.toString()
+        val structureName = findViewById<EditText>(R.id.searchText).text.toString()
         val newEntities = originalEntities.filter {
             it.getName().contains(structureName, true)
         } as ArrayList<Entity>
