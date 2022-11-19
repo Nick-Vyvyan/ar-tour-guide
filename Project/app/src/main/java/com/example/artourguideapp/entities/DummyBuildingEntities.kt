@@ -1,5 +1,6 @@
 package com.example.artourguideapp.entities
 
+import android.graphics.PointF
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 
@@ -7,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
  * This class serves as a holder for Building Entities until we get data loaded in
  * from the json file
  */
-class DummyBuildingEntities() {
+class DummyBuildingEntities {
     companion object {
         var cfLoc : Location = Location("Communications Facility")
         var wkrcLoc : Location = Location("Wade King Recreational Center")
@@ -25,11 +26,10 @@ class DummyBuildingEntities() {
 
         var commFacilityEntity = BuildingEntity(
             "Communications Facility",
-            ArrayList<Location>(),
+            PointF(),
             cfLoc,
             BuildingData(
             "Communications Facility",
-            "CF",
             "Academic",
             "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
             "Button activated entrances are located on the east and west sides of the building" +
@@ -51,11 +51,10 @@ class DummyBuildingEntities() {
 
         var wadeKingEntity = BuildingEntity(
                 "Wade King Recreational Center",
-        ArrayList<Location>(),
+            PointF(),
         wkrcLoc,
                 BuildingData(
         "Wade King Recreation Center",
-        "SV",
         "Events\nRecreation",
         "Campus Recreation Services\n" +
         "Sport Clubs",
@@ -70,7 +69,7 @@ class DummyBuildingEntities() {
         "https://www.wwu.edu/building/sv")
         )
 
-        var handel = LandmarkEntity("Mark di Suvero, For Handel, 1975", ArrayList<Location>(), Location("Mark di Suvero, For Handel, 1975"), LandmarkData(
+        var handel = LandmarkEntity("Mark di Suvero, For Handel, 1975", PointF(), Location("Mark di Suvero, For Handel, 1975"), LandmarkData(
             "Mark di Suvero, For Handel, 1975", "Di Suvero's knowledge of music and sensitivity to the relationship of art and architecture led him to create a soaring sculpture dedicated to the " +
                     "composer George Frederic Handel. Di Suvero's work rises not only from the roof of the rehearsal hall below but also projects beyond this roof/plaza and against a " +
                     "magnificent view of water, mountains and sky. Sometimes di Suvero is considered an \"action sculptor\" in the way he draws directly with the steel I- beams. In " +
@@ -89,7 +88,7 @@ class DummyBuildingEntities() {
 
         var stairsToNowhere = LandmarkEntity(
             "Stairs To Nowhere",
-            ArrayList<Location>(),
+            PointF(),
             stairLoc,
             LandmarkData(
                 "Stairs to Nowhere",
@@ -102,11 +101,10 @@ class DummyBuildingEntities() {
 
         var house1 = BuildingEntity(
             "house1",
-            ArrayList<Location>(),
+            PointF(),
             h1Loc,
             BuildingData(
                 "house1",
-                "H1",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -128,11 +126,10 @@ class DummyBuildingEntities() {
 
         var house2 = BuildingEntity(
             "house2",
-            ArrayList<Location>(),
+            PointF(),
             h2Loc,
             BuildingData(
                 "house2",
-                "H2",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -154,10 +151,9 @@ class DummyBuildingEntities() {
 
         var house3 = BuildingEntity(
             "house3",
-            ArrayList<Location>(),
+            PointF(),
             h3Loc,
             BuildingData(
-                "3",
                 "3",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
@@ -180,10 +176,9 @@ class DummyBuildingEntities() {
 
         var house4 = BuildingEntity(
             "house4",
-            ArrayList<Location>(),
+            PointF(),
             h4Loc,
             BuildingData(
-                "4",
                 "4",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
@@ -205,10 +200,9 @@ class DummyBuildingEntities() {
         )
         var house5 = BuildingEntity(
             "house5",
-            ArrayList<Location>(),
+            PointF(),
             h5Loc,
             BuildingData(
-                "5",
                 "5",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
@@ -231,11 +225,10 @@ class DummyBuildingEntities() {
 
         var academicWest = BuildingEntity(
             "Academic West",
-            ArrayList<Location>(),
+            PointF(),
             awLoc,
             BuildingData(
                 "Academic West",
-                "AW",
                 "Educational",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -257,11 +250,10 @@ class DummyBuildingEntities() {
 
         var environmentalStudies = BuildingEntity(
             "Environmental Studies",
-            ArrayList<Location>(),
+            PointF(),
             esLoc,
             BuildingData(
                 "Environmental Studies",
-                "AW",
                 "Educational",
                 "Environmental Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +

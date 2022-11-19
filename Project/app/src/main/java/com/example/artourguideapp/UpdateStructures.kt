@@ -130,33 +130,31 @@ class UpdateStructures : AppCompatActivity() {
                     val centerPoint = PointF(centerPointArr[0].toFloat(), centerPointArr[1].toFloat())
 
                     // set name and location info
-                    val buildingName = currentScrapedData.getString("buildingName")
-                    val location = Location(buildingName)
+                    val structureName = currentScrapedData.getString("structureName")
+                    val location = Location(structureName)
                     location.latitude = centerPoint.x.toDouble()
                     location.longitude = centerPoint.y.toDouble()
 
-                    // if landmark, add to landmark list
+                    // if landmark, add as LandmarkEntity
                     if (currentStructure.getBoolean("isLandmark")) {
                         structures.add(
                             LandmarkEntity(
-                                currentScrapedData.getString("structureName"),
-                                centerPoint, location,
+                                structureName, centerPoint, location,
                                 LandmarkData(
-                                    currentScrapedData.getString("structureName"),
+                                    structureName,
                                     currentScrapedData.getJSONArray("description").toString(),
                                     audioFileName, websiteLink
                                 )
                             )
                         )
                     }
-                    // otherwise it's a building so add to building list
+                    // otherwise it's a building, so add as BuildingEntity
                     else {
                         structures.add(
                             BuildingEntity(
-                                currentScrapedData.getString("structureName"),
-                                centerPoint, location,
+                                structureName, centerPoint, location,
                                 BuildingData(
-                                    currentScrapedData.getString("structureName"),
+                                    structureName,
                                     currentScrapedData.getJSONArray("structureTypes").toString(),
                                     currentScrapedData.getJSONArray("departmentsOffices").toString(),
                                     currentScrapedData.getJSONArray("accessibilityInfo").toString(),
