@@ -13,26 +13,22 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
 
 
-private const val DEFAULT_UPDATE_INTERVAL : Long= 15
-private const val FAST_UPDATE_INTERVAL : Long = 5
+// private const val DEFAULT_UPDATE_INTERVAL : Long = 5
+private const val FAST_UPDATE_INTERVAL : Long = 2
 private const val PERMISSIONS_FINE_LOCATION = 101
 
 class UserLocation(
     private val context: Context
 ){
     private var currentLocation : Location = Location("user")
-    private var locationRequest: LocationRequest = LocationRequest()
+    private var locationRequest: LocationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000 * FAST_UPDATE_INTERVAL).build()
     private var locationCallback: LocationCallback
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var fusedLocationProviderClient: FusedLocationProviderClient
 
     private var onLocationUpdate: ((LocationResult) -> Unit)? = null
 
     init {
         // config location request
-        locationRequest.interval = 1000 * DEFAULT_UPDATE_INTERVAL
-        locationRequest.fastestInterval = 1000 * FAST_UPDATE_INTERVAL
-        locationRequest.priority = Priority.PRIORITY_HIGH_ACCURACY
-
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
                 super.onLocationResult(result)
@@ -64,33 +60,10 @@ class UserLocation(
         ) != PackageManager.PERMISSION_GRANTED) {
             // permissions not granted
            requestPermissions(context as Activity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_FINE_LOCATION)
-1        }
+        }
 
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
-
-
-
-    /**WILL BE NEEDED IN (MAIN ACTIVITY??)**/
-//    fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//
-//        when (requestCode) {
-//            PERMISSIONS_FINE_LOCATION -> {
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    updateGPS()
-//                } else {
-//                    Toast.makeText(this, "This app requires location permissions to function properly", Toast.LENGTH_SHORT).show()
-//                    finish()
-//                }
-//            }
-//        }
-//    }
-
 
     fun stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)

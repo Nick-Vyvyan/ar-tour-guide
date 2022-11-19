@@ -6,15 +6,11 @@ import android.location.Location
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
+import com.example.artourguideapp.entities.*
 
 
-private const val DEFAULT_UPDATE_INTERVAL : Long = 30
-private const val FAST_UPDATE_INTERVAL : Long = 5
 private const val PERMISSIONS_FINE_LOCATION = 101
 
 class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
@@ -35,6 +31,7 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
 
     lateinit var tv_nearby : TextView
     lateinit var tv_looking : TextView
+    lateinit var ll_interactable: LinearLayout
 
     // COMPASS
     private val accelerometerReading = FloatArray(3)
@@ -67,6 +64,7 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
 
         tv_looking = findViewById(R.id.tv_lookingat)
         tv_nearby = findViewById(R.id.tv_nearby)
+        ll_interactable = findViewById(R.id.interactable_buildings)
 
         // initialize sensor Listening
         accelerometer.startListening()
@@ -137,18 +135,28 @@ class GpsActivity : AppCompatActivity() /*SensorEventListener*/ {
             tv_altitude.text = "Not Available"
         }
 
-        val nearbyList : ArrayList<Location> = user.detectNearbyEntities()
+        val nearbyList : ArrayList<Entity> = user.detectNearbyEntities()
         var nearby = ""
         nearbyList.forEach{
-            nearby += it.provider + "\n"
+            nearby += it.getName() + "\n"
         }
         tv_nearby.text = nearby
 
         val lookingAtList = user.getInView()
         var lookingAt = ""
+        ll_interactable.removeAllViews()
         lookingAtList.forEach {
-            lookingAt += it.provider + "\n"
-            println("added ${it.provider} to looking at list")
+            val name = it.getName()
+            lookingAt += name + "\n"
+            println("added $name to looking at list")
+            var button: Button = Button(this)
+            var dialogFragment = it.getDialogFragment()
+            button.text = it.getName()
+            button.setOnClickListener() {
+                dialogFragment.show(supportFragmentManager, name)
+            }
+
+            ll_interactable.addView(button)
         }
         tv_looking.text = lookingAt
     }

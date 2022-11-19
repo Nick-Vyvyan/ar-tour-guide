@@ -1,19 +1,21 @@
 package com.example.artourguideapp.cucumber.steps
 
-import android.graphics.PointF
+import android.graphics.Point
 import android.location.Location
 import com.example.artourguideapp.*
+import com.example.artourguideapp.entities.Entity
+import com.example.artourguideapp.entities.LandmarkData
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
 
 class AudioRecordingSteps {
     val model = Model()
-    val view = View()
+    val view = UserView()
     lateinit var user : User
     val controller = Controller("", model, view, user)
-    var sculpture = Entity("", 0, PointF(), "", Location("SculptureTest"))
-    var sculptureData = SculptureData("","","","")
+    var sculpture = Entity("", 0, ArrayList<Point>(), "", Location("SculptureTest"))
+    var landmarkData = LandmarkData("","","","")
 
     @Given("^Sarah has brought up a menu for a specific building$")
     fun camera_looking_at_building() {

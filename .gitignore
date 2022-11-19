@@ -84,8 +84,9 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-Project/.idea/deploymentTargetDropDown.xml
 
 # node
 node_modules/
 Project/.idea/deploymentTargetDropDown.xml
+Project/app/src/main/java/com/example/artourguideapp/arcore/res/values/api_key.xml
+Project/app/src/main/res/values/api_key.xml
