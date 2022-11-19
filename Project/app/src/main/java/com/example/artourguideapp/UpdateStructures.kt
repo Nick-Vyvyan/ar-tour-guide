@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.artourguideapp.entities.*
 import org.json.JSONArray
 import java.io.*
 import java.net.HttpURLConnection
@@ -15,7 +16,7 @@ import kotlin.concurrent.thread
 class UpdateStructures : AppCompatActivity() {
     val server: String = ""
     val model = Model()
-    val view = View()
+    val view = UserView()
     val user = null
     val controller = Controller(server, model, view, user)
 
@@ -23,9 +24,9 @@ class UpdateStructures : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         updateStructures()
 
-        // load gps activity
-        val gpsActivityIntent = Intent(this, GpsActivity::class.java)
-        startActivity(gpsActivityIntent)
+        // load main activity after structures are updated
+        val mainActivityIntent = Intent(this, MainActivity::class.java)
+        startActivity(mainActivityIntent)
     }
 
     // update structures json file if needed, and create java objects of each json entry if remote json is different
@@ -56,7 +57,7 @@ class UpdateStructures : AppCompatActivity() {
                     // otherwise, create empty structures json file
                     try {
                         val outputStreamWriter =
-                            OutputStreamWriter(openFileOutput("structures.json", AppCompatActivity.MODE_PRIVATE))
+                            OutputStreamWriter(openFileOutput("structures.json", MODE_PRIVATE))
                         outputStreamWriter.write("")
                         localStructuresJsonStr = ""
                         outputStreamWriter.close()
@@ -86,7 +87,7 @@ class UpdateStructures : AppCompatActivity() {
                 if (localStructuresJsonStr != remoteStructuresJsonStr) {
                     try {
                         val outputStreamWriter =
-                            OutputStreamWriter(openFileOutput("structures.json", AppCompatActivity.MODE_PRIVATE))
+                            OutputStreamWriter(openFileOutput("structures.json", MODE_PRIVATE))
                         outputStreamWriter.write(remoteStructuresJsonStr)
                         outputStreamWriter.close()
                     } catch (ioException: IOException) {
@@ -95,9 +96,7 @@ class UpdateStructures : AppCompatActivity() {
                 }
 
                 // create structure objects for each object in JSONArray to be used by the app
-                val buildings: MutableList<BuildingData> = mutableListOf()
-                val landmarks: MutableList<SculptureData> = mutableListOf()
-                val entities: MutableList<Entity> = mutableListOf()
+                val structures: MutableList<Entity> = mutableListOf()
 
                 val structuresJsonArr = JSONArray(remoteStructuresJsonStr)
                 for (i in 0 until structuresJsonArr.length()) {
@@ -115,46 +114,14 @@ class UpdateStructures : AppCompatActivity() {
                             // set remote json string
                             val audioData = connection.inputStream.readBytes()
 
-
                             val outputStreamWriter =
-                                DataOutputStream(openFileOutput(audioFileName, AppCompatActivity.MODE_PRIVATE))
+                                DataOutputStream(openFileOutput(audioFileName, MODE_PRIVATE))
                             outputStreamWriter.write(audioData)
                             outputStreamWriter.close()
                         } catch (ioException: IOException) {
                             ioException.printStackTrace()
                         }
                     }
-
-
-                    // if landmark, add to landmark list
-                    if (currentStructure.getBoolean("isLandmark")) {
-                        landmarks.add(
-                            // TODO: FILL IN REMAINING FIELDS
-                            SculptureData(currentScrapedData.getString("buildingName"),
-                                currentScrapedData.getJSONArray("description").toString(),
-                                currentScrapedData.getString("audioFileName"), websiteLink
-                            )
-                        )
-                    }
-                    // otherwise it's a building so add to building list
-                    else {
-                        buildings.add(
-                            // TODO: FILL IN REMAINING FIELDS
-                            BuildingData(
-                                currentScrapedData.getString("buildingName"),
-                                "",
-                                currentScrapedData.getJSONArray("buildingTypes").toString(),
-                                currentScrapedData.getJSONArray("departmentsOffices").toString(),
-                                currentScrapedData.getJSONArray("accessibilityInfo").toString(),
-                                currentScrapedData.getJSONArray("genderNeutralRestrooms").toString(),
-                                currentScrapedData.getJSONArray("computerLabs").toString(),
-                                websiteLink,
-                                audioFileName
-                            )
-                        )
-                    }
-
-                    /* in addition, create abstract entity objects for each structure */
 
                     // create center point object
                     var centerPointStr = currentStructure.getString("centerPoint")
@@ -168,35 +135,51 @@ class UpdateStructures : AppCompatActivity() {
                     location.latitude = centerPoint.x.toDouble()
                     location.longitude = centerPoint.y.toDouble()
 
-                    // add entity object to list
-                    entities.add(
-                        // TODO: FILL IN REMAINING FIELDS
-                        Entity(buildingName, 0L, centerPoint, websiteLink, location)
-                    )
+                    // if landmark, add to landmark list
+                    if (currentStructure.getBoolean("isLandmark")) {
+                        structures.add(
+                            LandmarkEntity(
+                                currentScrapedData.getString("structureName"),
+                                centerPoint, location,
+                                LandmarkData(
+                                    currentScrapedData.getString("structureName"),
+                                    currentScrapedData.getJSONArray("description").toString(),
+                                    audioFileName, websiteLink
+                                )
+                            )
+                        )
+                    }
+                    // otherwise it's a building so add to building list
+                    else {
+                        structures.add(
+                            BuildingEntity(
+                                currentScrapedData.getString("structureName"),
+                                centerPoint, location,
+                                BuildingData(
+                                    currentScrapedData.getString("structureName"),
+                                    currentScrapedData.getJSONArray("structureTypes").toString(),
+                                    currentScrapedData.getJSONArray("departmentsOffices").toString(),
+                                    currentScrapedData.getJSONArray("accessibilityInfo").toString(),
+                                    currentScrapedData.getJSONArray("genderNeutralRestrooms").toString(),
+                                    currentScrapedData.getJSONArray("computerLabs").toString(),
+                                    currentScrapedData.getJSONArray("dining").toString(),
+                                    audioFileName, websiteLink
+                                )
+                            )
+                        )
+                    }
 
-                    // pass off lists to controller to give to model
-                    controller.addBuildings(buildings)
-                    controller.addLandmarks(landmarks)
-                    controller.addEntities(entities)
+                    // add structure entities to app
+                    controller.addEntities(structures)
 
-                    // get lists from model
-                    val modelBuildings: MutableList<BuildingData> = controller.getBuildings()
-                    val modelLandmarks: MutableList<SculptureData> = controller.getLandmarks()
+                    /* DEBUGGING CODE */
+
+                    // get entities list from model
                     val modelEntities: MutableList<Entity> = controller.getEntities()
 
-                    // print all buildings from model
-                    for (j in 0 until modelBuildings.size) {
-                        Log.d("building", modelBuildings[j].toString())
-                    }
-
-                    // print all landmarks from model
-                    for (j in 0 until modelLandmarks.size) {
-                        Log.d("landmark", modelLandmarks[j].toString())
-                    }
-
-                    // print all entities from model
+                    // print all structure entities from model
                     for (j in 0 until modelEntities.size) {
-                        Log.d("entity", modelEntities[j].toString())
+                        Log.d("structure", modelEntities[j].toString())
                     }
                 }
             } catch (ioException: IOException) {
