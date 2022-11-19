@@ -19,6 +19,7 @@
         android:layout_marginBottom="32dp"
         android:clickable="true"
         android:focusable="true"
+        android:contentDescription="Search Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_search_24" />

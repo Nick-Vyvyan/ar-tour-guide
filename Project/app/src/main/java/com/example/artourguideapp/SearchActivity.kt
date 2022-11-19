@@ -14,6 +14,7 @@ var originalEntities: ArrayList<Entity> = DummyBuildingEntities.entityList
 var currentEntities: ArrayList<Entity> = ArrayList()
 
 class SearchActivity : AppCompatActivity() {
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -29,6 +30,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // handle search
+        currentEntities.clear()
         currentEntities.addAll(originalEntities)
         findViewById<Button>(R.id.searchButton).setOnClickListener {
             refreshEntityList()
