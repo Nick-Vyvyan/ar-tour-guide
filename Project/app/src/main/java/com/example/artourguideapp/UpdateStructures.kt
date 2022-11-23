@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.PointF
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.entities.*
 import org.json.JSONArray
@@ -14,19 +13,9 @@ import java.net.URL
 import kotlin.concurrent.thread
 
 class UpdateStructures : AppCompatActivity() {
-    val server: String = ""
-    val model = Model()
-    val view = UserView()
-    val user = null
-    val controller = Controller(server, model, view, user)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         updateStructures()
-
-        // load main activity after structures are updated
-        val mainActivityIntent = Intent(this, MainActivity::class.java)
-        startActivity(mainActivityIntent)
     }
 
     // update structures json file if needed, and create java objects of each json entry if remote json is different
@@ -137,52 +126,74 @@ class UpdateStructures : AppCompatActivity() {
 
                     // if landmark, add as LandmarkEntity
                     if (currentStructure.getBoolean("isLandmark")) {
-                        structures.add(
-                            LandmarkEntity(
-                                structureName, centerPoint, location,
-                                LandmarkData(
-                                    structureName,
-                                    currentScrapedData.getJSONArray("description").toString(),
-                                    audioFileName, websiteLink
+                        runOnUiThread {
+                            structures.add(
+                                LandmarkEntity(
+                                    structureName, centerPoint, location,
+                                    LandmarkData(
+                                        structureName,
+                                        currentScrapedData.getJSONArray("description").toString(),
+                                        audioFileName, websiteLink
+                                    )
                                 )
                             )
-                        )
+                        }
                     }
                     // otherwise it's a building, so add as BuildingEntity
                     else {
-                        structures.add(
-                            BuildingEntity(
-                                structureName, centerPoint, location,
-                                BuildingData(
-                                    structureName,
-                                    currentScrapedData.getJSONArray("structureTypes").toString(),
-                                    currentScrapedData.getJSONArray("departmentsOffices").toString(),
-                                    currentScrapedData.getJSONArray("accessibilityInfo").toString(),
-                                    currentScrapedData.getJSONArray("genderNeutralRestrooms").toString(),
-                                    currentScrapedData.getJSONArray("computerLabs").toString(),
-                                    currentScrapedData.getJSONArray("dining").toString(),
-                                    audioFileName, websiteLink
+                        runOnUiThread {
+                            structures.add(
+                                BuildingEntity(
+                                    structureName, centerPoint, location,
+                                    BuildingData(
+                                        structureName,
+                                        currentScrapedData.getJSONArray("structureTypes")
+                                            .toString(),
+                                        currentScrapedData.getJSONArray("departmentsOffices")
+                                            .toString(),
+                                        currentScrapedData.getJSONArray("accessibilityInfo")
+                                            .toString(),
+                                        currentScrapedData.getJSONArray("genderNeutralRestrooms")
+                                            .toString(),
+                                        currentScrapedData.getJSONArray("computerLabs").toString(),
+                                        currentScrapedData.getJSONArray("dining").toString(),
+                                        audioFileName, websiteLink
+                                    )
                                 )
                             )
-                        )
+                        }
                     }
 
                     // add structure entities to app
                     controller.addEntities(structures)
 
-                    /* DEBUGGING CODE */
+//                    /* DEBUGGING CODE */
+//
+//                    // get entities list from model
+//                    val modelEntities: MutableList<Entity> = controller.getEntities()
+//
+//                    // print all structure entities from model
+//                    for (j in 0 until modelEntities.size) {
+//                        Log.d("structure", modelEntities[j].toString())
+//                    }
 
-                    // get entities list from model
-                    val modelEntities: MutableList<Entity> = controller.getEntities()
-
-                    // print all structure entities from model
-                    for (j in 0 until modelEntities.size) {
-                        Log.d("structure", modelEntities[j].toString())
+                    runOnUiThread {
+                        // load main activity after structures are updated
+                        val mainActivityIntent = Intent(this, MainActivity::class.java)
+                        startActivity(mainActivityIntent)
                     }
                 }
             } catch (ioException: IOException) {
                 ioException.printStackTrace()
             }
         }
+    }
+
+    companion object {
+        val server: String = ""
+        val model = Model()
+        val view = UserView()
+        val user = null
+        val controller = Controller(server, model, view, user)
     }
 }

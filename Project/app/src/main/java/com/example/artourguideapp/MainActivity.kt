@@ -1,23 +1,17 @@
 package com.example.artourguideapp
 
-import android.Manifest
 import android.Manifest.permission.*
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Parcelable
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.example.artourguideapp.entities.*
+import com.example.artourguideapp.entities.DummyBuildingEntities
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.Config
 import com.google.ar.core.Session
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import com.google.ar.core.exceptions.UnavailableException
-import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ArSceneView
-import com.google.ar.sceneform.rendering.ViewRenderable
 import java.util.*
 
 class MainActivity : AppCompatActivity() {

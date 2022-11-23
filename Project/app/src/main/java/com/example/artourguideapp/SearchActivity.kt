@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.artourguideapp.entities.*
 
 lateinit var structureListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-var originalEntities: ArrayList<Entity> = DummyBuildingEntities.entityList
+var originalEntities: ArrayList<Entity> = ArrayList(UpdateStructures.controller.getEntities())
 var currentEntities: ArrayList<Entity> = ArrayList()
 
 class SearchActivity : AppCompatActivity() {
@@ -20,7 +20,6 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         // insert entity list fragment programmatically
-        DummyBuildingEntities.initialize(this)
         val entityListFragment = EntityListFragment.newInstance(currentEntities)
 
         // create fragment
