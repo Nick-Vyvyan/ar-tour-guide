@@ -43,7 +43,7 @@ abstract class AndroidSensor (
             return
         }
         if (event?.sensor?.type == sensorType) {
-            onSensorValueChanged?.invoke(event?.values.toList())
+            onSensorValueChanged?.invoke(event?.values!!.toList())
         }
     }
 

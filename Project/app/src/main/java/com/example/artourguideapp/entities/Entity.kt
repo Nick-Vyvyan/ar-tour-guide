@@ -1,19 +1,16 @@
 package com.example.artourguideapp.entities
 
-import android.app.Activity
-import android.content.Context
+import android.graphics.PointF
 import android.location.Location
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import com.google.ar.core.Anchor
 import com.google.ar.sceneform.Node
-import com.google.ar.sceneform.rendering.Color
 import com.google.ar.sceneform.rendering.ViewRenderable
 
 abstract class Entity(
     private var name: String,
-    private var perimeter: MutableList<Location>,
+    private var center: PointF,
     private var url: String,
     private var centralLocation : Location,
     private var entityData: EntityData,
@@ -24,6 +21,8 @@ abstract class Entity(
 
     fun initNode(activity: AppCompatActivity) {
 //        node = Node()
+        node.name = name;
+
         // Programmatically build an ar button without a XML
         val arButton = Button(activity)
         arButton.text = name
@@ -46,12 +45,12 @@ abstract class Entity(
         return name
     }
 
-    fun getPerimeter(): MutableList<Location> {
-        return perimeter
+    fun getCenter(): PointF {
+        return center
     }
 
-    fun setPerimeter(points: MutableList<Location>) {
-        perimeter = points
+    fun setCenter(center: PointF) {
+        this.center = center
     }
 
     fun getURL(): String {

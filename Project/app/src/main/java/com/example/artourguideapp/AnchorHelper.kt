@@ -43,7 +43,7 @@ class AnchorHelper {
                         entity.getCentralLocation().latitude,
                         entity.getCentralLocation().longitude,
                         earth.cameraGeospatialPose.altitude + 0.5f,
-                        0f,0f,0f,1f
+                        0f, 0f, 0f, 1f
                     )
 
                     val arAnchorNode = AnchorNode(entityAnchor)
@@ -54,35 +54,38 @@ class AnchorHelper {
 
                     arAnchorNode.parent = arSceneView.scene
                     Log.d("AnchorHelper", "Node for ${entity.getName()} has been ATTACHED")
-                } else if (entityInProximity(distance) && entity.nodeIsAttached()) {
+                } else if (entityInProximity(distance) && entity.nodeIsAttached() && entity.getNode().isActive && entity.getNode().isEnabled) {
                     // TODO: update anchor rotation
                     updateNodeScale(entity.getNode(), distance)
                     updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose)
-                    Log.d("AnchorHelper", "Node for ${entity.getName()} has been UPDATED")
                 } else {
                     removeAnchor(entity)
-                    Log.d("AnchorHelper", "Node for ${entity.getName()} has been DETACHED")
+                    Log.d("AnchorHelper", "Node for ${entity.getName()} is DETACHED")
                 }
             }
         }
 
         private fun updateNodeScale(node: Node, distance: Float) {
-            if (distance < 35) {
+            if (distance < 30) {
                 node.localScale = Vector3(distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER)
             } else
-                node.localScale = Vector3(100f, 100f, 100f)
+                node.localScale = Vector3(30f, 30f, 30f)
 
-            Log.d("AnchorHelper", "Node Scale Updated")
+            Log.d("AnchorHelper", "Node Scale Updated for ${node.name}")
         }
 
         private fun updateNodeRotation(node: Node, pose: GeospatialPose) {
-            node.worldRotation = Quaternion(
-                0f,
-                sin((PI - Math.toRadians(pose.heading)) / 2).toFloat(),
-                0f,
-                cos((PI - Math.toRadians(pose.heading)) / 2).toFloat()
-            )
-            node.setLookDirection(Vector3(0f, 0f, pose.heading.toFloat()))
+//            node.worldRotation = Quaternion(
+//                0f,
+//                sin((PI - Math.toRadians(pose.heading)) / 2).toFloat(),
+//                0f,
+//                cos((PI - Math.toRadians(pose.heading)) / 2).toFloat()
+//            )
+            if (pose.headingAccuracy < 10) {
+                node.worldRotation = Quaternion.eulerAngles(Vector3(0f,0f,pose.heading.toFloat()))
+//            node.setLookDirection(Vector3(0f, 0f, pose.heading.toFloat()))
+                Log.d("AnchorHelper", "Updated rotation and look direction for ${node.name}")
+            }
         }
 
         private fun removeAnchor(entity: Entity) {

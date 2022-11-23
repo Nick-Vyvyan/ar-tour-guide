@@ -1,5 +1,6 @@
 package com.example.artourguideapp.entities
 
+import android.graphics.PointF
 import android.location.Location
 import androidx.fragment.app.DialogFragment
 
@@ -12,12 +13,12 @@ import androidx.fragment.app.DialogFragment
  */
 class BuildingEntity(
     name: String,
-    perimeter: MutableList<Location>,
+    center: PointF,
     location : Location,
     buildingData: BuildingData
 ) : Entity(
     name,
-    perimeter,
+    center,
     buildingData.getURL(),
     location,
     buildingData,

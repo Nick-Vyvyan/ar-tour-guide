@@ -1,16 +1,16 @@
 package com.example.artourguideapp.entities
 
+import android.graphics.PointF
 import android.location.Location
-import androidx.fragment.app.DialogFragment
 
 class LandmarkEntity(
     name: String,
-    perimeter: MutableList<Location>,
+    center: PointF,
     location : Location,
     landmarkData: LandmarkData
 ) : Entity(
     name,
-    perimeter,
+    center,
     landmarkData.getURL(),
     location,
     landmarkData,

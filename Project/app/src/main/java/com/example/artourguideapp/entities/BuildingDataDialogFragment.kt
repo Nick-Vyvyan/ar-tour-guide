@@ -58,7 +58,7 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
 
 
         /* SET ALL UI ELEMENTS */
-        nameAndCode.text = buildingData.getTitle() + " (" + buildingData.getCode() + ")"
+        nameAndCode.text = buildingData.getTitle() + " (" + ")"
         types.text = buildingData.getTypes()
         departments.text = buildingData.getDepartments()
 
@@ -80,7 +80,6 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
 
         genderNeutralRestrooms.text = buildingData.getGenderNeutralRestrooms()
         computerLabs.text = buildingData.getComputerLabs()
-        parkingInfo.text = buildingData.getParkingInfo()
         dining.text = buildingData.getDining()
 
         // Build html website link in a string
