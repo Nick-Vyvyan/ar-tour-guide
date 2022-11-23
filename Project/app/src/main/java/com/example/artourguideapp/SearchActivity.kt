@@ -7,8 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.artourguideapp.entities.DummyBuildingEntities
-import com.example.artourguideapp.entities.Entity
+import com.example.artourguideapp.entities.*
 
 lateinit var structureListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
 var originalEntities: ArrayList<Entity> = DummyBuildingEntities.entityList
@@ -69,5 +68,14 @@ class SearchActivity : AppCompatActivity() {
     // get recyclerview adapter context
     fun setAdapter(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
         structureListAdapter = adapter
+    }
+
+    fun createDialog(structure: Entity) {
+        if (structure is BuildingEntity)
+            BuildingDataDialogFragment(structure.getEntityData() as BuildingData)
+                .show(supportFragmentManager, structure.getName())
+        else if (structure is LandmarkEntity)
+            LandmarkDataDialogFragment(structure.getEntityData() as LandmarkData)
+                .show(supportFragmentManager, structure.getName())
     }
 }

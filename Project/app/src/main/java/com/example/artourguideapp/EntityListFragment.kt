@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.artourguideapp.entities.Entity
-import com.example.artourguideapp.placeholder.PlaceholderContent
 
 private lateinit var structures: List<Entity>
 
