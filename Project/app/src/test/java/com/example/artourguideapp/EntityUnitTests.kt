@@ -54,13 +54,13 @@ class EntityUnitTests {
 
     @Test
     fun getPerimeter() {
-        assertTrue(buildingEntity.getPerimeter() == perimeter)
+        assertTrue(buildingEntity.getCenter() == perimeter)
     }
 
     @Test
     fun setPerimeter() {
-        buildingEntity.setPerimeter(perimeter2)
-        assertTrue(buildingEntity.getPerimeter() == perimeter2)
+        buildingEntity.setCenter(perimeter2)
+        assertTrue(buildingEntity.getCenter() == perimeter2)
     }
 
     @Test

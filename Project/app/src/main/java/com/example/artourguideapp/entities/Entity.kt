@@ -1,41 +1,68 @@
 package com.example.artourguideapp.entities
 
+import android.graphics.PointF
 import android.location.Location
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import com.google.ar.core.Anchor
+import com.google.ar.sceneform.Node
+import com.google.ar.sceneform.rendering.ViewRenderable
 
 abstract class Entity(
     private var name: String,
-    private var perimeter: MutableList<Location>,
+    private var center: PointF,
     private var url: String,
     private var centralLocation : Location,
     private var entityData: EntityData,
     private var dialogFragment: DialogFragment,
-    private var anchor: Anchor?
 ) {
+//    lateinit var anchor: Anchor
+    private var node: Node = Node()
+
+    fun initNode(activity: AppCompatActivity) {
+//        node = Node()
+        node.name = name;
+
+        // Programmatically build an ar button without a XML
+        val arButton = Button(activity)
+        arButton.text = name
+//        arButton.setPadding(3, 0, 3, 0)
+        arButton.setBackgroundColor(0xffae3de3.toInt())
+        arButton.setOnClickListener {
+            dialogFragment.show(activity.supportFragmentManager, name)
+        }
+
+        ViewRenderable.builder().setView(activity, arButton).build()
+            .thenAccept {renderable ->
+                node.renderable = renderable }
+    }
+
+    fun nodeIsAttached() : Boolean {
+        return node != null && node.parent != null
+    }
 
     fun getName(): String {
         return name
     }
 
-    fun getPerimeter(): MutableList<Location> {
-        return perimeter
+    fun getCenter(): PointF {
+        return center
     }
 
-    fun setPerimeter(points: MutableList<Location>) {
-        perimeter = points
+    fun setCenter(center: PointF) {
+        this.center = center
     }
 
     fun getURL(): String {
         return url
     }
 
-    fun setAnchor(anchor: Anchor) {
-        this.anchor = anchor
-    }
+//    fun setNode(anchor: Anchor) {
+////        this.anchor = anchor
+//    }
 
-    fun getAnchor() : Anchor? {
-        return anchor
+    fun getNode() : Node {
+        return node
     }
 
 

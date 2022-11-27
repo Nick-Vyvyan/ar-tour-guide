@@ -1,6 +1,6 @@
 package com.example.artourguideapp.cucumber.steps
 
-import android.graphics.Point
+import android.graphics.PointF
 import android.location.Location
 import com.example.artourguideapp.*
 import com.example.artourguideapp.entities.BuildingData
@@ -15,7 +15,7 @@ class BuildingDepartmentsSteps {
     val view = UserView()
     private lateinit var user : User
     val controller = Controller("", model, view, user)
-    var building = Entity("", 0, ArrayList<Point>(), "", Location("BuildingTest"))
+    var building = Entity("", 0, PointF(), "", Location("BuildingTest"))
     var buildingData = BuildingData("","","","","","","","","")
 
     @Given("^Tom has found a building on campus$")
@@ -25,7 +25,7 @@ class BuildingDepartmentsSteps {
     }
     @And("^he has brought up the menu for the building information$")
     fun get_nearest_building_name() {
-        buildingData = controller.getBuildingData(building.getURL())
+        buildingData = controller.getBuildings()[0]
     }
     @When("^he reads through the content of the menu$")
     fun how_much_menu_is_read() {

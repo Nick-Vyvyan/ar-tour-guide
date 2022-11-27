@@ -110,7 +110,7 @@ class P0_1_UnitTests {
 
     @Test
     fun getPerimeter() {
-        assertTrue(entity.getPerimeter().equals(ArrayList<Point>()))
+        assertTrue(entity.getCenter().equals(ArrayList<Point>()))
     }
 
     @Test
@@ -121,8 +121,8 @@ class P0_1_UnitTests {
     @Test
     fun setPerimeter() {
         val newPoints = ArrayList<Point>()
-        entity.setPerimeter(newPoints)
-        assertTrue(entity.getPerimeter().equals(ArrayList<Point>()))
+        entity.setCenter(newPoints)
+        assertTrue(entity.getCenter().equals(ArrayList<Point>()))
     }
 
     @Test
