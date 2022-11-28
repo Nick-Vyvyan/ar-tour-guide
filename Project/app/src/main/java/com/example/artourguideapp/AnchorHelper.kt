@@ -57,6 +57,7 @@ class AnchorHelper {
                     Log.d("AnchorHelper", "Node for ${entity.getName()} has been ATTACHED")
                 } else if (entityInProximity(distance) && entity.nodeIsAttached() && entity.getNode().isActive && entity.getNode().isEnabled) {
                     // TODO: update anchor rotation
+                    Log.d("AnchorHelper", "NODE LOCATION FOR ${entity.getName()} = ${entity.getNode().worldPosition}")
                     updateNodeScale(entity.getNode(), distance)
                     updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose)
                 } else {
@@ -67,10 +68,10 @@ class AnchorHelper {
         }
 
         private fun updateNodeScale(node: Node, distance: Float) {
-            if (distance < 40) {
-                node.localScale = Vector3(distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER)
+            if (distance < 35) {
+                node.worldScale = Vector3(distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER)
             } else
-                node.localScale = Vector3(50f, 50f, 50f)
+                node.worldScale = Vector3(40f, 40f, 40f)
 
             Log.d("AnchorHelper", "Node Scale Updated for ${node.name}")
         }

@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
                     return;
                 } else {
                     arSceneView.session = session;
+                    arSceneView.scene.camera.farClipPlane = AnchorHelper.PROXIMTY_DISTANCE.toFloat()
                 }
             } catch (e: UnavailableException) {
                 //DemoUtils.handleSessionException(this, e);
