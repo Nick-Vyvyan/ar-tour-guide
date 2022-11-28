@@ -36,7 +36,7 @@ class AnchorHelper {
 
                 val distance = userLocation.distanceTo(entity.getCentralLocation())
                 val angle =  userLocation.bearingTo(entity.getCentralLocation())
-                println("DISTANCE TO ${entity.getName()} = $distance")
+                Log.d("AnchorHelper", "DISTANCE TO ${entity.getName()} = $distance")
 
                 if (entityInProximity(distance) && !entity.nodeIsAttached()) {
                     val entityAnchor = earth.createAnchor(
@@ -66,7 +66,7 @@ class AnchorHelper {
         }
 
         private fun updateNodeScale(node: Node, distance: Float) {
-            if (distance < 30) {
+            if (distance < 40) {
                 node.localScale = Vector3(distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER)
             } else
                 node.localScale = Vector3(30f, 30f, 30f)
@@ -75,15 +75,12 @@ class AnchorHelper {
         }
 
         private fun updateNodeRotation(node: Node, pose: GeospatialPose) {
-//            node.worldRotation = Quaternion(
-//                0f,
-//                sin((PI - Math.toRadians(pose.heading)) / 2).toFloat(),
-//                0f,
-//                cos((PI - Math.toRadians(pose.heading)) / 2).toFloat()
-//            )
             if (pose.headingAccuracy < 10) {
-                node.worldRotation = Quaternion.eulerAngles(Vector3(0f,0f,pose.heading.toFloat()))
-//            node.setLookDirection(Vector3(0f, 0f, pose.heading.toFloat()))
+                val cameraPosition : Vector3 = Vector3(pose.latitude.toFloat(), pose.altitude.toFloat(), pose.longitude.toFloat())
+                val buttonPosition : Vector3 = Vector3(node.worldPosition)
+                val direction : Vector3 = Vector3.subtract(cameraPosition, buttonPosition)
+                val lookRotation = Quaternion.lookRotation(direction, Vector3.up())
+                node.worldRotation = lookRotation
                 Log.d("AnchorHelper", "Updated rotation and look direction for ${node.name}")
             }
         }
