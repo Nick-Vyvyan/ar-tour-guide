@@ -22,6 +22,7 @@ abstract class Entity(
     fun initNode(activity: AppCompatActivity) {
 //        node = Node()
         node.name = name;
+        node.parent = null
 
         // Programmatically build an ar button without a XML
         val arButton = Button(activity)

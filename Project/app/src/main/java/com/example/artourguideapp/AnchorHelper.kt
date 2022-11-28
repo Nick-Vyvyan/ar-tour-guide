@@ -26,6 +26,7 @@ class AnchorHelper {
     companion object {
         val PROXIMTY_DISTANCE = 150
         val DISTANCE_MULTIPLIER = 0.5f
+        val LOCATION_ACCURACY_LIMIT = 20
 
         fun attemptSetAnchor(entity: Entity, arSceneView: ArSceneView) {
             val earth = arSceneView.session?.earth
@@ -69,14 +70,15 @@ class AnchorHelper {
             if (distance < 40) {
                 node.localScale = Vector3(distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER, distance * DISTANCE_MULTIPLIER)
             } else
-                node.localScale = Vector3(30f, 30f, 30f)
+                node.localScale = Vector3(50f, 50f, 50f)
 
             Log.d("AnchorHelper", "Node Scale Updated for ${node.name}")
         }
 
         private fun updateNodeRotation(node: Node, pose: GeospatialPose) {
-            if (pose.headingAccuracy < 10) {
-                val cameraPosition : Vector3 = Vector3(pose.latitude.toFloat(), pose.altitude.toFloat(), pose.longitude.toFloat())
+            Log.d("AnchorHelper", "Inside updateNodeRotation - Location Accuracy = ${pose.horizontalAccuracy}")
+            if (pose.horizontalAccuracy < LOCATION_ACCURACY_LIMIT) {
+                val cameraPosition : Vector3 = Vector3(pose.latitude.toFloat(), 0f, pose.longitude.toFloat())
                 val buttonPosition : Vector3 = Vector3(node.worldPosition)
                 val direction : Vector3 = Vector3.subtract(cameraPosition, buttonPosition)
                 val lookRotation = Quaternion.lookRotation(direction, Vector3.up())
