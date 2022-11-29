@@ -1,10 +1,12 @@
 package com.example.artourguideapp
 
 import android.Manifest.permission.*
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.DummyBuildingEntities
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.Config
 import com.google.ar.core.Session
 import com.google.ar.core.exceptions.CameraNotAvailableException
@@ -54,7 +56,12 @@ class MainActivity : AppCompatActivity() {
             }
         },2000, 3000)
 
-
+        // search button on-click listener
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
+            val searchIntent = Intent(this, SearchActivity::class.java)
+            startActivity(searchIntent)
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -96,7 +103,6 @@ class MainActivity : AppCompatActivity() {
                 config.updateMode = Config.UpdateMode.LATEST_CAMERA_IMAGE
                 config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
                 config.geospatialMode = Config.GeospatialMode.ENABLED
-                config.depthMode = Config.DepthMode.DISABLED
                 session.configure(config)
 
                 if (session == null) {

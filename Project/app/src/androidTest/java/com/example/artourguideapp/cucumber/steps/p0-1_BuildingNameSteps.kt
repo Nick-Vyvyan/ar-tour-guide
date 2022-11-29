@@ -1,22 +1,23 @@
 package com.example.artourguideapp.cucumber.steps
 
-import android.graphics.Point
+import android.graphics.PointF
 import android.location.Location
 import com.example.artourguideapp.*
 import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.entities.LandmarkData
+import com.example.artourguideapp.entities.LandmarkEntity
 import cucumber.api.java.en.And
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
 
 class BuildingNameSteps {
-    val model = Model()
-    val camera = UserView()
+    private val model = Model()
+    private val camera = UserView()
     lateinit var user : User
     val controller = Controller("", model, camera, user)
-    var sculpture = Entity("", 0, ArrayList<Point>(), "", Location("BuildingName"))
-    var landmarkData = LandmarkData("","","","")
+    private var landmark = LandmarkEntity("", PointF(), Location("SculptureTest"),
+        LandmarkData("", "", "", ""))
 
     @Given("^John is using his smartphone camera to view the WWU campus in the app$")
     fun turn_on_camera() {
@@ -32,7 +33,7 @@ class BuildingNameSteps {
     }
     @Then("^the screen displays a tooltip with the name of the building$")
     fun display_tooltip() {
-        camera.displayEntityTooltips(ArrayList<Entity>())
+        camera.displayEntityTooltips(ArrayList())
         assert(camera.toolTipsDisplayed() > 0)
     }
     @And("^positions it near the center of the building to be clicked$")

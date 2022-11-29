@@ -8,6 +8,10 @@ import androidx.fragment.app.DialogFragment
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.rendering.ViewRenderable
 
+/**
+ * An abstract class which is used as the template for BuildingEntity and LandmarkEntity objects,
+ * so that they can be stored and displayed together.
+ */
 abstract class Entity(
     private var name: String,
     private var center: PointF,

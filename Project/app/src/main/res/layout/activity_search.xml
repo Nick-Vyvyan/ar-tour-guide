@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchActivity">
+
+  <EditText
+      android:id="@+id/searchText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="32dp"
+      android:layout_marginEnd="32dp"
+      android:ems="10"
+      android:hint="Structure Name"
+      android:imeOptions="actionSearch"
+      android:inputType="textPersonName"
+      android:minHeight="48dp"
+      app:layout_constraintEnd_toStartOf="@+id/searchButton"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <com.google.android.material.button.MaterialButton
+      android:id="@+id/searchButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="32dp"
+      android:layout_marginEnd="32dp"
+      android:contentDescription="Search Button"
+      android:gravity="center"
+      android:minWidth="0dp"
+      app:icon="@drawable/ic_baseline_search_24"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toEndOf="@+id/searchText"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/fragmentContainerView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="32dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/searchText"
+      tools:layout="@layout/fragment_entity_list_list" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
