@@ -44,12 +44,9 @@ class ExampleInstrumentedTest {
 
     @Test
     fun getOrientation() {
-        var orientation : Orientation = Orientation(appContext)
-        var array = orientation.getOrientation()
+        val orientation = Orientation(appContext)
+        val array = orientation.getOrientation()
         orientation.stopUpdates()
         assertTrue(array.isNotEmpty())
     }
-
-
-
 }

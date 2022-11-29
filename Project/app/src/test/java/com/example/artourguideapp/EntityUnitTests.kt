@@ -1,5 +1,6 @@
 package com.example.artourguideapp
 
+import android.graphics.PointF
 import android.location.Location
 import com.example.artourguideapp.entities.BuildingData
 import com.example.artourguideapp.entities.BuildingEntity
@@ -8,12 +9,10 @@ import org.junit.Before
 import org.junit.Test
 
 class EntityUnitTests {
-
     lateinit var buildingEntity: BuildingEntity
 
-    var testBuildingData: BuildingData = BuildingData(
+    private var testBuildingData: BuildingData = BuildingData(
         "Name",
-        "Code",
         "Types",
         "Departments",
         "Accessibility Info",
@@ -24,24 +23,15 @@ class EntityUnitTests {
         "URL"
     )
 
-    var perimeter = ArrayList<Location>()
-    var testPerimeterLocation = Location("Test Perimeter Location")
-
-    var perimeter2 = ArrayList<Location>()
-    var testPerimeterLocation2 = Location("Test Perimeter Location 2")
-
+    var center1 = PointF(4.0f, 20.0f)
+    var center2 = PointF(5.0f, 30.0f)
     var testLocation = Location("Test Location")
-
 
     @Before
     fun setup() {
-        perimeter.clear()
-        perimeter2.clear()
-        perimeter.add(testPerimeterLocation)
-        perimeter2.add(testPerimeterLocation2)
         testLocation.latitude = 4.0
         testLocation.longitude = 20.0
-        buildingEntity = BuildingEntity("Test Entity", perimeter, testLocation, testBuildingData)
+        buildingEntity = BuildingEntity("Test Entity", center1, testLocation, testBuildingData)
     }
 
     /**
@@ -53,14 +43,14 @@ class EntityUnitTests {
     }
 
     @Test
-    fun getPerimeter() {
-        assertTrue(buildingEntity.getCenter() == perimeter)
+    fun getCenter() {
+        assertTrue(buildingEntity.getCenter() == center1)
     }
 
     @Test
-    fun setPerimeter() {
-        buildingEntity.setCenter(perimeter2)
-        assertTrue(buildingEntity.getCenter() == perimeter2)
+    fun setCenter() {
+        buildingEntity.setCenter(center2)
+        assertTrue(buildingEntity.getCenter() == center2)
     }
 
     @Test
