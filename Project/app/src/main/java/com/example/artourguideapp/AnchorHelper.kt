@@ -24,9 +24,9 @@ import kotlin.math.sin
 class AnchorHelper {
 
     companion object {
-        val PROXIMTY_DISTANCE = 150
-        val DISTANCE_MULTIPLIER = 0.5f
-        val LOCATION_ACCURACY_LIMIT = 30
+        const val PROXIMITY_DISTANCE = 150
+        const val DISTANCE_MULTIPLIER = 0.5f
+        const val LOCATION_ACCURACY_LIMIT = 30
 
         fun attemptSetAnchor(entity: Entity, arSceneView: ArSceneView) {
             val earth = arSceneView.session?.earth
@@ -36,8 +36,8 @@ class AnchorHelper {
                 userLocation.longitude = earth.cameraGeospatialPose.longitude
 
                 val distance = userLocation.distanceTo(entity.getCentralLocation())
-                val angle =  userLocation.bearingTo(entity.getCentralLocation())
-                Log.d("AnchorHelper", "DISTANCE TO ${entity.getName()} = $distance")
+                val direction = Vector3.subtract(arSceneView.scene.camera.worldPosition, entity.getNode().worldPosition)
+//                Log.d("AnchorHelper", "DISTANCE TO ${entity.getName()} = $distance")
 
                 if (entityInProximity(distance) && !entity.nodeIsAttached()) {
                     val entityAnchor = earth.createAnchor(
@@ -51,18 +51,17 @@ class AnchorHelper {
                     entity.getNode().parent = arAnchorNode
 
                     updateNodeScale(entity.getNode(), distance)
-                    updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose)
+                    updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose, direction)
 
                     arAnchorNode.parent = arSceneView.scene
-                    Log.d("AnchorHelper", "Node for ${entity.getName()} has been ATTACHED")
+//                    Log.d("AnchorHelper", "Node for ${entity.getName()} has been ATTACHED")
                 } else if (entityInProximity(distance) && entity.nodeIsAttached() && entity.getNode().isActive && entity.getNode().isEnabled) {
-                    // TODO: update anchor rotation
-                    Log.d("AnchorHelper", "NODE LOCATION FOR ${entity.getName()} = ${entity.getNode().worldPosition}")
+//                    Log.d("AnchorHelper", "NODE LOCATION FOR ${entity.getName()} = ${entity.getNode().worldPosition}")
                     updateNodeScale(entity.getNode(), distance)
-                    updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose)
+                    updateNodeRotation(entity.getNode(), earth.cameraGeospatialPose, direction)
                 } else {
                     removeAnchor(entity)
-                    Log.d("AnchorHelper", "Node for ${entity.getName()} is DETACHED")
+//                    Log.d("AnchorHelper", "Node for ${entity.getName()} is DETACHED")
                 }
             }
         }
@@ -73,18 +72,15 @@ class AnchorHelper {
             } else
                 node.worldScale = Vector3(25f, 25f, 25f)
 
-            Log.d("AnchorHelper", "Node Scale Updated for ${node.name}")
+//            Log.d("AnchorHelper", "Node Scale Updated for ${node.name}")
         }
 
-        private fun updateNodeRotation(node: Node, pose: GeospatialPose) {
-            Log.d("AnchorHelper", "Inside updateNodeRotation - Location Accuracy = ${pose.horizontalAccuracy}")
+        private fun updateNodeRotation(node: Node, pose: GeospatialPose, direction: Vector3) {
+//            Log.d("AnchorHelper", "Inside updateNodeRotation - Location Accuracy = ${pose.horizontalAccuracy}")
             if (pose.horizontalAccuracy < LOCATION_ACCURACY_LIMIT) {
-                val cameraPosition : Vector3 = Vector3(pose.latitude.toFloat(), 0f, pose.longitude.toFloat())
-                val buttonPosition : Vector3 = node.worldPosition
-                val direction : Vector3 = Vector3.subtract(cameraPosition, buttonPosition)
                 val lookRotation = Quaternion.lookRotation(direction, Vector3.up())
                 node.worldRotation = lookRotation
-                Log.d("AnchorHelper", "Updated rotation for ${node.name}")
+//                Log.d("AnchorHelper", "Updated rotation for ${node.name}")
             }
         }
 
@@ -98,7 +94,7 @@ class AnchorHelper {
         }
 
         private fun entityInProximity(distance : Float) : Boolean {
-            return distance < PROXIMTY_DISTANCE
+            return distance < PROXIMITY_DISTANCE
         }
 
     }
