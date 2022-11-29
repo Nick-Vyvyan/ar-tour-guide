@@ -12,6 +12,14 @@ import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.concurrent.thread
 
+/**
+ * Updates the locally-stored list of structures on the mobile phone, by checking the external database
+ * for updates upon app startup. If the two JSON results differ, the local version is replaced by the remote
+ * version.
+ *
+ * This class also creates proper Entity objects for each structure present in the remote JSON, which is
+ * subsequently used by the app.
+ */
 class UpdateStructures : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

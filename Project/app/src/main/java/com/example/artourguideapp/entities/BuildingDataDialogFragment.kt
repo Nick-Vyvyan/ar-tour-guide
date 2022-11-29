@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.artourguideapp.R
 
 /**
- * This is a custom Dialog that can be used to display building info
+ * This is a custom Dialog that can be used to display building info.
  *
  * To use:
  *      Construct a BuildingEntity

@@ -2,6 +2,9 @@ package com.example.artourguideapp
 
 import com.example.artourguideapp.entities.*
 
+/**
+ * A class that stores structure information passed from a specific view class through a Controller.
+ */
 class Model {
     private var entities: MutableList<Entity>
     private var buildings: MutableList<BuildingEntity> = mutableListOf()
