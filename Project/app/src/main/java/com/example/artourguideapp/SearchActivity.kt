@@ -13,6 +13,12 @@ lateinit var structureListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
 var originalEntities: ArrayList<Entity> = ArrayList(UpdateStructures.controller.getEntities())
 var currentEntities: ArrayList<Entity> = ArrayList()
 
+/**
+ * Allows the user to search for structures by name, using a search bar and dynamic list of structures.
+ *
+ * When a structure name is clicked on, either a [BuildingDataDialogFragment] or [LandmarkDataDialogFragment]
+ * is shown, depending on the type of structure.
+ */
 class SearchActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -12,6 +12,14 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.example.artourguideapp.R
 
+/**
+ * This is a custom Dialog that can be used to display landmark info.
+ *
+ * To use:
+ *      Construct a LandmarkEntity
+ *      Get the LandmarkEntity's Dialog Fragment (.getDialogFragment())
+ *      call landmarkInfoDialogFragment.show(supportFragmentManager, "custom tag")
+ */
 class LandmarkDataDialogFragment(var landmarkData: LandmarkData): DialogFragment() {
 
     override fun onCreateView(

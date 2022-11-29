@@ -10,6 +10,7 @@ import com.example.artourguideapp.entities.Entity
 
 /**
  * [RecyclerView.Adapter] that can display an [Entity].
+ * This is used for the app's structure search functionality.
  */
 class MyEntityListRecyclerViewAdapter(
     private val values: List<Entity>,

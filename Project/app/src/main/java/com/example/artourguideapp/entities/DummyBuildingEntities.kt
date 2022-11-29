@@ -5,8 +5,8 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 
 /**
- * This class serves as a holder for Building Entities until we get data loaded in
- * from the json file
+ * This class serves as a placeholder and/or alternative for the BuildingEntities loaded in
+ * from the structures JSON file.
  */
 class DummyBuildingEntities {
     companion object {

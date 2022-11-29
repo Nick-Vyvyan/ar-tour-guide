@@ -2,6 +2,9 @@ package com.example.artourguideapp
 
 import com.example.artourguideapp.entities.*
 
+/**
+ * A class that passes information to the Model class from a specific view class, or vice-versa.
+ */
 class Controller(private var server: String,
                  private var model: Model,
                  private var view: UserView,

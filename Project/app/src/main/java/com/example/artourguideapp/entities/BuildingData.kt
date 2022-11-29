@@ -1,6 +1,11 @@
 package com.example.artourguideapp.entities
 
-class BuildingData( title: String,
+/**
+ * A class that represents the data of a BuildingEntity, which is shown in the structure popup dialog.
+ *
+ * This class is a subclass of EntityData.
+ */
+class BuildingData(title: String,
                     private val types: String,
                     private val departments: String,
                     private val accessibilityInfo: String,
