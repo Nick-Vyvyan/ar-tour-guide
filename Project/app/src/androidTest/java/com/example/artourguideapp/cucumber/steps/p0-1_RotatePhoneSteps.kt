@@ -10,7 +10,7 @@ import cucumber.api.java.en.When
 
 class RotatePhoneSteps {
     lateinit var user : User
-    val camera = UserView()
+    private val camera = UserView()
 
     @Given("^Sean has already seen the buildings he is currently looking at$")
     fun camera_looking_at_building() {
