@@ -34,7 +34,8 @@ abstract class Entity(
 //        arButton.setPadding(3, 0, 3, 0)
         arButton.setBackgroundColor(0xffae3de3.toInt())
         arButton.setOnClickListener {
-            dialogFragment.show(activity.supportFragmentManager, name)
+            if (!dialogFragment.isVisible)
+                dialogFragment.show(activity.supportFragmentManager, name)
         }
 
         ViewRenderable.builder().setView(activity, arButton).build()
