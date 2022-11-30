@@ -157,7 +157,7 @@ class UpdateStructures : AppCompatActivity() {
                                         structureName,
                                         currentScrapedData.getJSONArray("structureTypes")
                                             .toString(),
-                                        currentScrapedData.getJSONArray("departmentsOffices")
+                                        currentScrapedData.getString("departmentsOffices")
                                             .toString(),
                                         currentScrapedData.getJSONArray("accessibilityInfo")
                                             .toString(),

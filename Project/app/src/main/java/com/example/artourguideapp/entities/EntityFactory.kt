@@ -148,7 +148,7 @@ class EntityFactory {
                                                 // TODO: Pass scraped building code
                                                 currentScrapedData.getJSONArray("structureTypes")
                                                     .toString(),
-                                                currentScrapedData.getJSONArray("departmentsOffices")
+                                                currentScrapedData.getString("departmentsOffices")
                                                     .toString(),
                                                 currentScrapedData.getJSONArray("accessibilityInfo")
                                                     .toString(),
