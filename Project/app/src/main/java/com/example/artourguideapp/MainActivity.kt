@@ -108,6 +108,7 @@ class MainActivity : AppCompatActivity() {
                 config.updateMode = Config.UpdateMode.LATEST_CAMERA_IMAGE
                 config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
                 config.geospatialMode = Config.GeospatialMode.ENABLED
+                config.planeFindingMode = Config.PlaneFindingMode.DISABLED
                 session.configure(config)
 
                 if (session == null) {
