@@ -15,4 +15,11 @@ abstract class EntityData(
     fun getURL(): String {
         return url
     }
+
+    protected fun formatArrayString(arrayString: String) : String {
+        return if (arrayString.length >= 2 && arrayString[0] == '[')
+            arrayString.substring(1, arrayString.length - 1).replace("\",\"", "\n").replace("\"", "")
+        else
+            arrayString
+    }
 }
