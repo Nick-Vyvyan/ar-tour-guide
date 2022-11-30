@@ -6,9 +6,13 @@ package com.example.artourguideapp.entities
  * This class is a subclass of EntityData.
  */
 class LandmarkData(title: String,
-                   private val description: String,
+                   private var description: String,
                    private val audioDescription: String,
                    url: String): EntityData(title, url) {
+
+    init {
+        description = formatArrayString(description)
+    }
 
     fun getDescription(): String {
         return description

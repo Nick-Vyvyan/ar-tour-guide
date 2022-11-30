@@ -6,14 +6,24 @@ package com.example.artourguideapp.entities
  * This class is a subclass of EntityData.
  */
 class BuildingData(title: String,
-                    private val types: String,
-                    private val departments: String,
-                    private val accessibilityInfo: String,
-                    private val genderNeutralRestrooms: String,
-                    private val computerLabs: String,
-                    private val dining: String,
-                    private val audioFileName: String,
+                    private var types: String,
+                    private var departments: String,
+                    private var accessibilityInfo: String,
+                    private var genderNeutralRestrooms: String,
+                    private var computerLabs: String,
+                    private var dining: String,
+                    private var audioFileName: String,
                     url: String): EntityData(title, url) {
+
+    init {
+        types = formatArrayString(types)
+        departments = formatArrayString(departments)
+        accessibilityInfo = formatArrayString(accessibilityInfo)
+        genderNeutralRestrooms = formatArrayString(genderNeutralRestrooms)
+        computerLabs = formatArrayString(computerLabs)
+        dining = formatArrayString(dining)
+    }
+
     fun getTypes(): String {
         return types
     }
