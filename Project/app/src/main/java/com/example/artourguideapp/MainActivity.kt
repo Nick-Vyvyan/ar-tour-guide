@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         // Init Entity Objects
         DummyBuildingEntities.initialize(this)
         controller.addEntities(DummyBuildingEntities.entityList)
-        EntityFactory.updateStructures(model, controller, this)
+        // EntityFactory.updateStructures(model, controller, this)
 
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)
