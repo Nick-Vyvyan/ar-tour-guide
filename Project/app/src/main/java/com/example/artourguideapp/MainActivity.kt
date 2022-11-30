@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.DummyBuildingEntities
+import com.example.artourguideapp.entities.EntityFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.Config
 import com.google.ar.core.Session
@@ -29,10 +30,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        // update structures for app
+//        val updateStructuresIntent = Intent(this, UpdateStructures::class.java)
+//        startActivity(updateStructuresIntent)
+
         // Init Entity Objects
         DummyBuildingEntities.initialize(this)
         controller.addEntities(DummyBuildingEntities.entityList)
-//        EntityFactory.updateStructures(model, controller, this)
+        EntityFactory.updateStructures(model, controller, this)
 
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)
