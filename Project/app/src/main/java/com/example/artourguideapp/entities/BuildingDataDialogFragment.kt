@@ -1,8 +1,12 @@
 package com.example.artourguideapp.entities
 
 import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.PointF
+import android.location.Location
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.Log
@@ -14,7 +18,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
@@ -33,7 +36,7 @@ import java.net.URL
  *      Get the BuildingEntity's Dialog Fragment (.getDialogFragment())
  *      call buildingInfoDialogFragment.show(supportFragmentManager, "custom tag")
  */
-class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment() {
+class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Location): DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +61,7 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
         var genderNeutralRestrooms: TextView = view.findViewById(R.id.genderNeutralRestrooms)
         var computerLabs: TextView = view.findViewById(R.id.computerLabs)
         var audioButton: Button = view.findViewById(R.id.buildingMediaButton)
+        var navButton: Button = view.findViewById(R.id.buildingNavigationButton)
 
         // Allow links in parking info
         var parkingInfo: TextView = view.findViewById(R.id.parkingInfo)
@@ -114,16 +118,22 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
 
             audioButton.setOnClickListener {
                 if (player!!.isPlaying) {
-                    audioButton.text = "Pause Audio"
+                    audioButton.text = "Play Audio"
                     player!!.pause()
                 } else {
-                    audioButton.text = "Play Audio"
+                    audioButton.text = "Pause Audio"
                     player!!.start()
                 }
             }
             // Log.d("DEBUG","Made to has audio")
         } else {
             audioButton.visibility = INVISIBLE
+        }
+
+        navButton.setOnClickListener {
+            var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + center.latitude + "%2C" + center.longitude)
+            Log.d("DEBUG", "" + center.latitude + " " + center.longitude)
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
         }
 
         genderNeutralRestrooms.text = buildingData.getGenderNeutralRestrooms()

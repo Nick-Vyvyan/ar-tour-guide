@@ -35,11 +35,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Init Entity Objects
-        /*DummyBuildingEntities.initialize(this)
+        DummyBuildingEntities.initialize(this)
         lifecycleScope.launch {
             DummyBuildingEntities.downloadDummyAudio(this@MainActivity)
         }
-        controller.addEntities(DummyBuildingEntities.entityList)*/
+        controller.addEntities(DummyBuildingEntities.entityList)
 
         // EntityFactory.updateStructures(model, controller, this)
 

@@ -85,6 +85,13 @@
                 android:layout_marginTop="10dp"
                 android:text="Play Audio" />
 
+            <Button
+                android:id="@+id/buildingNavigationButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Directions to Building" />
+
             <TextView
                 android:id="@+id/accessibilityInfoLabel"
                 android:layout_width="wrap_content"

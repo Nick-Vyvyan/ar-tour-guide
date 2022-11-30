@@ -2,7 +2,6 @@ package com.example.artourguideapp.entities
 
 import android.graphics.PointF
 import android.location.Location
-import androidx.fragment.app.DialogFragment
 
 /**
  * A BuildingEntity is a subclass of Entity and is constructed with a name, center,
@@ -22,5 +21,5 @@ class BuildingEntity(
     buildingData.getURL(),
     location,
     buildingData,
-    BuildingDataDialogFragment(buildingData)) {
+    BuildingDataDialogFragment(buildingData, location)) {
 }
