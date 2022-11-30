@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.artourguideapp.entities.DummyBuildingEntities
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.Config
@@ -12,6 +13,10 @@ import com.google.ar.core.Session
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import com.google.ar.core.exceptions.UnavailableException
 import com.google.ar.sceneform.ArSceneView
+import kotlinx.coroutines.launch
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -30,9 +35,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Init Entity Objects
-        DummyBuildingEntities.initialize(this)
-        controller.addEntities(DummyBuildingEntities.entityList)
-//        EntityFactory.updateStructures(model, controller, this)
+        /*DummyBuildingEntities.initialize(this)
+        lifecycleScope.launch {
+            DummyBuildingEntities.downloadDummyAudio(this@MainActivity)
+        }
+        controller.addEntities(DummyBuildingEntities.entityList)*/
+
+        // EntityFactory.updateStructures(model, controller, this)
 
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)
