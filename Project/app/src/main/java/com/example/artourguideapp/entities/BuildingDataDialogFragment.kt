@@ -15,6 +15,7 @@ import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import android.widget.Button
@@ -42,6 +43,7 @@ import java.net.URL
 class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Location): DialogFragment() {
 
     private val sizePercentageOfScreen = .95f
+    var player: MediaPlayer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +53,6 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         var rootView = inflater.inflate(R.layout.building_data_dialog, container, false)
         return rootView
     }
-
-    lateinit var player: MediaPlayer
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -132,7 +132,7 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
             }
             // Log.d("DEBUG","Made to has audio")
         } else {
-            audioButton.visibility = INVISIBLE
+            audioButton.visibility = GONE
         }
 
         navButton.setOnClickListener {
@@ -165,10 +165,8 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
 
-        if (player != null) {
-            player.stop()
-            player.release()
-        }
+        player?.stop()
+        player?.release()
 
         // Set ScrollView back to top so opening it again will appear as a fresh view
         view?.findViewById<ScrollView>(R.id.landmark_data_scrollview)?.scrollY = 0

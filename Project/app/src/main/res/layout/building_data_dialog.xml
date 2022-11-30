@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.ARTourGuideApp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -20,16 +21,44 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buildingNavigationButton"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:text="Directions"
+            android:textColor="?attr/colorPrimary" />
+
+        <Button
+            android:id="@+id/buildingMediaButton"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorOnPrimary"
+
+            android:layout_marginHorizontal="10dp"
+            android:text="Play Audio"
+            android:textColor="?attr/colorPrimary" />
+
+    </LinearLayout>
+
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_marginTop="20dp"
-        android:background="?android:attr/listDivider" />
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        android:background="?attr/colorOnPrimary" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:background="#00FFFFFF"
         android:id="@+id/landmark_data_scrollview"
         tools:visibility="visible">
@@ -78,20 +107,6 @@
                 android:text="DEP 1\nDEP 2\nDEP3\nDEP4\nDEP5"
                 android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/buildingMediaButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Play Audio" />
-
-            <Button
-                android:id="@+id/buildingNavigationButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Directions to Building" />
-
             <TextView
                 android:id="@+id/accessibilityInfoLabel"
                 android:layout_width="wrap_content"
@@ -116,7 +131,8 @@
                 android:layout_marginTop="30dp"
                 android:text="Gender Neutral Restrooms:"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
 
             <TextView
                 android:id="@+id/genderNeutralRestrooms"
