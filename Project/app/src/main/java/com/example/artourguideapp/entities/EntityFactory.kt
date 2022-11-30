@@ -145,6 +145,7 @@ class EntityFactory {
                                             structureName, centerPoint, location,
                                             BuildingData(
                                                 structureName,
+                                                // TODO: Pass scraped building code
                                                 currentScrapedData.getJSONArray("structureTypes")
                                                     .toString(),
                                                 currentScrapedData.getJSONArray("departmentsOffices")
@@ -174,11 +175,15 @@ class EntityFactory {
     //                    for (j in 0 until modelEntities.size) {
     //                        Log.d("structure", modelEntities[j].toString())
     //                    }
+
+                        }
+
+                        activity.runOnUiThread {
                             for (entity: Entity in model.getEntities()) {
                                 entity.initNode(activity)
                             }
-
                         }
+
                     } catch (ioException: IOException) {
                         ioException.printStackTrace()
                     }
