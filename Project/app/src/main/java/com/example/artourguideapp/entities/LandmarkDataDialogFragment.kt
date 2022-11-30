@@ -1,8 +1,12 @@
 package com.example.artourguideapp.entities
 
 import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.PointF
+import android.location.Location
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -25,15 +29,14 @@ import java.io.File
  *      Get the LandmarkEntity's Dialog Fragment (.getDialogFragment())
  *      call landmarkInfoDialogFragment.show(supportFragmentManager, "custom tag")
  */
-class LandmarkDataDialogFragment(var landmarkData: LandmarkData): DialogFragment() {
+class LandmarkDataDialogFragment(var landmarkData: LandmarkData, var center: Location): DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var rootView = inflater.inflate(R.layout.landmark_data_dialog, container, false)
-        return rootView
+        return inflater.inflate(R.layout.landmark_data_dialog, container, false)
     }
 
     lateinit var player: MediaPlayer
@@ -46,6 +49,7 @@ class LandmarkDataDialogFragment(var landmarkData: LandmarkData): DialogFragment
         var landmarkScrollView : ScrollView = view.findViewById(R.id.landmark_data_scrollview)
         var description: TextView = view.findViewById(R.id.landmark_data_description)
         var audioButton: Button = view.findViewById(R.id.landmarkMediaButton)
+        var navButton: Button = view.findViewById(R.id.landmarkNavigationButton)
 
         // TODO: Initialize audio embedding variable here
 
@@ -58,6 +62,11 @@ class LandmarkDataDialogFragment(var landmarkData: LandmarkData): DialogFragment
         /* SET ALL UI ELEMENTS */
         name.text = landmarkData.getTitle()
         description.text = landmarkData.getDescription()
+
+        navButton.setOnClickListener {
+            var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + center.latitude + "%2C" + center.longitude)
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        }
 
         if (landmarkData.getAudioFileName().isNotEmpty()) {
             context?.let {
@@ -83,10 +92,10 @@ class LandmarkDataDialogFragment(var landmarkData: LandmarkData): DialogFragment
 
             audioButton.setOnClickListener {
                 if (player!!.isPlaying) {
-                    audioButton.text = "Pause Audio"
+                    audioButton.text = "Play Audio"
                     player!!.pause()
                 } else {
-                    audioButton.text = "Play Audio"
+                    audioButton.text = "Pause Audio"
                     player!!.start()
                 }
             }
@@ -94,8 +103,6 @@ class LandmarkDataDialogFragment(var landmarkData: LandmarkData): DialogFragment
         } else {
             audioButton.visibility = View.INVISIBLE
         }
-
-        // TODO: Embed audio here
 
         // Build html website link in a string
         var hyperlinkText = "<a href='" + landmarkData.getURL() + "'> Link to website </a>"
