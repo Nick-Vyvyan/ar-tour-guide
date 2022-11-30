@@ -164,7 +164,7 @@ class EntityFactory {
                             }
 
                             // add structure entities to app
-                            UpdateStructures.controller.addEntities(structures)
+                            controller.addEntities(structures)
 
     //                    /* DEBUGGING CODE */
     //
