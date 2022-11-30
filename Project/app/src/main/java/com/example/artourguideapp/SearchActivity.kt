@@ -35,6 +35,8 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // handle search
+        originalEntities = ArrayList(EntityFactory.entityList)
+
         currentEntities.clear()
         currentEntities.addAll(originalEntities)
 
