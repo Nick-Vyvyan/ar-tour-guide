@@ -1,14 +1,22 @@
 package com.example.artourguideapp.entities
 
+import android.content.Context
 import android.graphics.PointF
 import android.location.Location
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.DataOutputStream
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 
 /**
  * This class serves as a placeholder and/or alternative for the BuildingEntities loaded in
  * from the structures JSON file.
  */
-class DummyBuildingEntities {
+class DummyBuildingEntities{
     companion object {
         var cfLoc : Location = Location("Communications Facility")
         var wkrcLoc : Location = Location("Wade King Recreational Center")
@@ -20,6 +28,7 @@ class DummyBuildingEntities {
         var h3Loc : Location = Location("House 3")
         var h4Loc : Location = Location("House 4")
         var h5Loc : Location = Location("House 5")
+        var shLoc : Location = Location("SlowHouse")
         var stairLoc : Location = Location("Stairs")
 
         var entityList = ArrayList<Entity>()
@@ -273,6 +282,30 @@ class DummyBuildingEntities {
                 "https://www.wwu.edu/building/es")
         )
 
+        var slowhouse = BuildingEntity(
+            "Slowhouse",
+            PointF(),
+            shLoc,
+            BuildingData(
+                "Slowhouse",
+                "Educational",
+                "Environmental Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
+                "Button activated entrances are located on the east and west sides of the building" +
+                        "\nThere are accessible restrooms located on all floors" +
+                        "\nCentrally located elevators provide access to all floors" +
+                        "\nAccessible parking is available to the east (Lot 17 G)",
+                "CF 157",
+                "CF 21\n" +
+                        "CF 24\n" +
+                        "CF 26\n" +
+                        "CF 161\n" +
+                        "CF 165\n" +
+                        "CF 167\n" +
+                        "CF 312",
+                "",
+                "8a0fa330-7995-4323-a489-86408aadb6f6.mpeg",
+                "https://www.wwu.edu/building/es")
+        )
 
         fun initialize(activity: AppCompatActivity) {
             cfLoc.latitude = 48.7327738818
@@ -302,6 +335,9 @@ class DummyBuildingEntities {
             h5Loc.latitude = 48.76244375674259
             h5Loc.longitude = -122.45055761431342
 
+            shLoc.latitude = 48.7458610000001
+            shLoc.longitude = -122.440000001
+
             stairLoc.latitude = 48.73259523326817
             stairLoc.longitude = -122.48624102397639
 
@@ -315,10 +351,39 @@ class DummyBuildingEntities {
             entityList.add(house4)
             entityList.add(house5)
             entityList.add(stairsToNowhere)
+            entityList.add(slowhouse)
+
+
+
 
             for (entity in entityList) {
                 entity.initNode(activity)
             }
         }
+
+        suspend fun downloadDummyAudio(context: Context) {
+            withContext(Dispatchers.IO) {
+                try {
+
+                    val audioFileName = "8a0fa330-7995-4323-a489-86408aadb6f6.mpeg"
+                    val connection = URL("https://artourguide.s3.us-west-2.amazonaws.com/$audioFileName")
+                        .openConnection() as HttpURLConnection
+
+                    // set remote json string
+                    val audioData = connection.inputStream.readBytes()
+
+                    val outputStreamWriter =
+                        DataOutputStream(context?.openFileOutput(audioFileName, AppCompatActivity.MODE_PRIVATE))
+                    outputStreamWriter.write(audioData)
+                    outputStreamWriter.close()
+
+                    Log.d("DEBUG", "Downloaded Audio")
+                } catch (ioException: IOException) {
+                    ioException.printStackTrace()
+                }
+            }
+        }
+
+
     }
 }
