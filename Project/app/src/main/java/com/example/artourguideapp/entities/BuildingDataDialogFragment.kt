@@ -1,6 +1,9 @@
 package com.example.artourguideapp.entities
 
 import android.content.DialogInterface
+import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -22,6 +25,8 @@ import com.example.artourguideapp.R
  *      call buildingInfoDialogFragment.show(supportFragmentManager, "custom tag")
  */
 class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment() {
+
+    private val sizePercentageOfScreen = .95f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,7 +92,17 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
         additionalInfo.text = HtmlCompat.fromHtml(hyperlinkText, HtmlCompat.FROM_HTML_MODE_COMPACT)
 
         buildingScrollView.scrollY = 0
+
+        // Set dialog width and height
+        val dm = Resources.getSystem().displayMetrics
+        val rect = dm.run { Rect(0, 0, widthPixels, heightPixels) }
+        val percentWidth = rect.width() * sizePercentageOfScreen
+        dialog?.window?.setLayout(percentWidth.toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Set dialog color
+        view.setBackgroundColor(Color.BLACK)
     }
+
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)

@@ -2,11 +2,14 @@ package com.example.artourguideapp.entities
 
 import android.graphics.PointF
 import android.location.Location
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.rendering.ViewRenderable
+
 
 /**
  * An abstract class which is used as the template for BuildingEntity and LandmarkEntity objects,
@@ -30,12 +33,15 @@ abstract class Entity(
 
         // Programmatically build an ar button without a XML
         val arButton = Button(activity)
+        arButton.setBackgroundColor(0xff000000.toInt())
+        arButton.setTextColor(0xffffffff.toInt())
         arButton.text = name
-//        arButton.setPadding(3, 0, 3, 0)
-        arButton.setBackgroundColor(0xffae3de3.toInt())
+
         arButton.setOnClickListener {
-            if (!dialogFragment.isVisible)
+            if (!dialogFragment.isVisible) {
                 dialogFragment.show(activity.supportFragmentManager, name)
+            }
+
         }
 
         ViewRenderable.builder().setView(activity, arButton).build()
