@@ -4,17 +4,32 @@ import android.content.DialogInterface
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
+import android.content.Intent
+import android.graphics.PointF
+import android.location.Location
+import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.example.artourguideapp.R
+import java.io.DataOutputStream
+import java.io.File
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 
 /**
  * This is a custom Dialog that can be used to display building info.
@@ -24,7 +39,7 @@ import com.example.artourguideapp.R
  *      Get the BuildingEntity's Dialog Fragment (.getDialogFragment())
  *      call buildingInfoDialogFragment.show(supportFragmentManager, "custom tag")
  */
-class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment() {
+class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Location): DialogFragment() {
 
     private val sizePercentageOfScreen = .95f
 
@@ -37,6 +52,8 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
         return rootView
     }
 
+    lateinit var player: MediaPlayer
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -48,6 +65,8 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
         var accessibilityLayout: LinearLayout = view.findViewById(R.id.accessibilityLayout)
         var genderNeutralRestrooms: TextView = view.findViewById(R.id.genderNeutralRestrooms)
         var computerLabs: TextView = view.findViewById(R.id.computerLabs)
+        var audioButton: Button = view.findViewById(R.id.buildingMediaButton)
+        var navButton: Button = view.findViewById(R.id.buildingNavigationButton)
 
         // Allow links in parking info
         var parkingInfo: TextView = view.findViewById(R.id.parkingInfo)
@@ -61,13 +80,10 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
         additionalInfo.isClickable = true
         additionalInfo.movementMethod = LinkMovementMethod.getInstance()
 
-
         /* SET ALL UI ELEMENTS */
         nameAndCode.text = buildingData.getTitle() + " (" + ")"
         types.text = buildingData.getTypes()
         departments.text = buildingData.getDepartments()
-
-
 
         //accessibilityLayout.removeAllViews()
         var accessibilityInfo: String = buildingData.getAccessibilityInfo()
@@ -81,6 +97,48 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
                 newView.text = "-    $section"
                 accessibilityLayout.addView(newView)
             }
+        }
+
+        if (buildingData.getAudioFileName().isNotEmpty()) {
+            context?.let {
+                var uri =
+                    FileProvider.getUriForFile(it.applicationContext,
+                        it.applicationContext.packageName + ".provider",
+                        File(it.applicationContext.filesDir, buildingData.getAudioFileName())
+                    )
+
+                player = MediaPlayer().apply {
+                    setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .build()
+                    )
+                    if (uri != null) {
+                        setDataSource(it.applicationContext, uri)
+                    }
+                    prepare()
+                }
+            }
+
+            audioButton.setOnClickListener {
+                if (player!!.isPlaying) {
+                    audioButton.text = "Play Audio"
+                    player!!.pause()
+                } else {
+                    audioButton.text = "Pause Audio"
+                    player!!.start()
+                }
+            }
+            // Log.d("DEBUG","Made to has audio")
+        } else {
+            audioButton.visibility = INVISIBLE
+        }
+
+        navButton.setOnClickListener {
+            var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + center.latitude + "%2C" + center.longitude)
+            Log.d("DEBUG", "" + center.latitude + " " + center.longitude)
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
         }
 
         genderNeutralRestrooms.text = buildingData.getGenderNeutralRestrooms()
@@ -106,6 +164,11 @@ class BuildingDataDialogFragment(var buildingData: BuildingData): DialogFragment
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+
+        if (player != null) {
+            player.stop()
+            player.release()
+        }
 
         // Set ScrollView back to top so opening it again will appear as a fresh view
         view?.findViewById<ScrollView>(R.id.landmark_data_scrollview)?.scrollY = 0

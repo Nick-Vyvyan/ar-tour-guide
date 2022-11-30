@@ -77,10 +77,10 @@ class SearchActivity : AppCompatActivity() {
 
     fun createDialog(structure: Entity) {
         if (structure is BuildingEntity)
-            BuildingDataDialogFragment(structure.getEntityData() as BuildingData)
+            BuildingDataDialogFragment(structure.getEntityData() as BuildingData, structure.getCentralLocation())
                 .show(supportFragmentManager, structure.getName())
         else if (structure is LandmarkEntity)
-            LandmarkDataDialogFragment(structure.getEntityData() as LandmarkData)
+            LandmarkDataDialogFragment(structure.getEntityData() as LandmarkData, structure.getCentralLocation())
                 .show(supportFragmentManager, structure.getName())
     }
 }
