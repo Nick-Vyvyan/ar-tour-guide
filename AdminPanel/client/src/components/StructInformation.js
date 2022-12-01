@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import ListStruct from './ListStruct/ListStruct';
+import React, { useEffect, useState } from "react";
+import ListStruct from "./ListStruct/ListStruct";
 
 const axios = require("axios").default;
 
@@ -9,7 +9,7 @@ export default function StructInformation() {
   useEffect(() => {
     //const baseServerURL = "http://localhost:5000";
     const baseServerURL =
-    "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+      "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
 
     axios
       .get(`${baseServerURL}/db`, {
@@ -21,34 +21,38 @@ export default function StructInformation() {
           const message = `An error occurred: ${res.statusText}`;
           return window.alert(message);
         }
-        console.log(res.data)
-        setStructInformation(Array.from(res.data))
+        console.log(res.data);
+        setStructInformation(Array.from(res.data));
       })
       .catch((err) => console.error(err));
-  }, [])
+  }, []);
 
-  let structures = null
+  let structures = null;
 
   if (structInformation.length) {
-    structures = structInformation.map((data, id)=> {
-      return <ListStruct name={data.scrapedData.buildingName.toString()} id={data._id.toString()} key={id} />
-    })
+    structures = structInformation.map((data, id) => {
+      return (
+        <ListStruct
+          name={data.scrapedData.structureName.toString()}
+          id={data._id.toString()}
+          key={id}
+        />
+      );
+    });
   } else {
-    structures = <h3> loading... </h3>
+    structures = <h3> loading... </h3>;
   }
 
   let listStyle = {
-    display: 'flex',
-    gap: '10px',
-    flexDirection: 'column'
-  }
-  
-  return(
+    display: "flex",
+    gap: "10px",
+    flexDirection: "column",
+  };
+
+  return (
     <div>
       <h2>Structures</h2>
-      <div style={listStyle}>
-        {structures}
-      </div>
+      <div style={listStyle}>{structures}</div>
     </div>
-  )
+  );
 }

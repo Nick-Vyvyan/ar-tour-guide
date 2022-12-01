@@ -7,8 +7,7 @@ import {
   DrawingManager,
 } from "@react-google-maps/api";
 import S3 from "react-aws-s3";
-import { useFilePicker } from "use-file-picker";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import useAuth from "../../hook/useAuth";
 import Error from "../../components/Error";
 
@@ -40,8 +39,6 @@ const PanelView = (props) => {
   const [websiteLink, setWebsiteLink] = useState("");
   const [coordinates, setCoordinates] = useState("");
   const [scrapedData, setScrapedData] = useState();
-  const [isLandmark, setIsLandmark] = useState(false);
-  const [audioFileName, setAudioFileName] = useState("");
 
   // center point for WWU on Google map
   const wwuCenter = useMemo(
@@ -52,15 +49,13 @@ const PanelView = (props) => {
     []
   );
 
-  
-
   // create new s3 interface
   const ReactS3Client = new S3({
-    bucketName: 'artourguide',
-    region: 'us-west-2',
-    accessKeyId: 'AKIAQ2YDNUK4NJBCNGOB',
-    secretAccessKey: '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'
-  })
+    bucketName: "artourguide",
+    region: "us-west-2",
+    accessKeyId: "AKIAQ2YDNUK4NJBCNGOB",
+    secretAccessKey: "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",
+  });
 
   // load in google map with required libraries
   const { isLoaded } = useLoadScript({
@@ -111,49 +106,48 @@ const PanelView = (props) => {
   // send manually reviewed data and coords to database
   const handleSecondSubmit = (e) => {
     e.preventDefault();
-    console.log(e)
-    const formData = new FormData(e.target)
-    console.log(formData)
-    const formProps = Object.fromEntries(formData)
-    console.log(formProps)
+    const formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
 
     // calculate center point of building
     let centerPointX = 0;
     let centerPointY = 0;
-    let coordArray = coordinates.split(',');
+    let coordArray = coordinates.split(",");
 
-    for (let i = 0; i < coordArray.length; i+=2) {
+    for (let i = 0; i < coordArray.length; i += 2) {
       centerPointX += parseFloat(coordArray[i].substring(1));
-      centerPointY += parseFloat(coordArray[i+1]);
+      centerPointY += parseFloat(coordArray[i + 1]);
     }
 
     const centerPoint =
-          "(" +
-          centerPointX / (coordArray.length / 2) +
-          "," +
-          centerPointY / (coordArray.length / 2) +
-          ")";
+      "(" +
+      centerPointX / (coordArray.length / 2) +
+      "," +
+      centerPointY / (coordArray.length / 2) +
+      ")";
 
-    // check for presence of description key
-    // if so, is a landmark
-    setIsLandmark(scrapedData.hasOwnProperty('description'))
+    let audioFileName = "";
 
     if (formProps.audio.size > 0) {
-      setAudioFileName(uuidv4())
+      audioFileName = uuidv4();
 
-      ReactS3Client
-        .uploadFile(formProps.audio, audioFileName)
-        .then(data => console.log(data))
-        .catch(err => console.error(err))
+      ReactS3Client.uploadFile(formProps.audio, audioFileName)
+        .then((data) => console.log(data))
+        .catch((err) => console.error(err));
 
-      setAudioFileName(audioFileName + ".mpeg")
-    } else {
-      setAudioFileName("")
+      audioFileName += ".mpeg";
     }
-    
+
+    let reqScrapedData = scrapedData;
+    reqScrapedData.audioFileName = audioFileName;
 
     // put all structure info together into one json
-    const requestJson = { scrapedData, isLandmark, websiteLink, centerPoint, audioFileName };
+    const requestJson = {
+      scrapedData,
+      isLandmark: scrapedData.hasOwnProperty("description"),
+      websiteLink,
+      centerPoint,
+    };
 
     // send structure info to backend to be saved to database
     axios

@@ -1,7 +1,8 @@
 function parseWeb(data) {
-
-  // determine if sculpture or regular building
-  if (data.includes('<link rel="canonical" href="https://westerngallery.wwu.edu')) {
+  // determine if landmark or building
+  if (
+    data.includes('<link rel="canonical" href="https://westerngallery.wwu.edu')
+  ) {
     return parseLandmark(data);
   } else {
     return parseBuilding(data);
@@ -11,23 +12,36 @@ function parseWeb(data) {
 function parseLandmark(data) {
   const output = {};
 
-  output.buildingName = 
-    getContentBetweenTags('<span>', '</span>', 
-      getContentBetweenTags('<h1 class="page-title">', '</h1>', data)
+  output.structureName = getContentBetweenTags(
+    "<span>",
+    "</span>",
+    getContentBetweenTags('<h1 class="page-title">', "</h1>", data)
+  );
+
+  data = data.substring(data.search('<h1 class="page-title"'));
+
+  var descriptionElements = cleanString(
+    getContentBetweenTags(
+      '<div class="field field--name-body field--type-text-with-summary field--label-hidden field-item">',
+      "</div>",
+      data
     )
+  );
 
-  data = data.substring(data.search('<h1 class="page-title"'))
+  output.description = [];
 
-  var descriptionElements = cleanString(getContentBetweenTags('<div class="field field--name-body field--type-text-with-summary field--label-hidden field-item">', '</div>', data))
-
-  output.description = []
-
-  while (descriptionElements.search('<p>') === 0) {
-    const parsedData = cleanString(removeTagsFromString(getContentBetweenTags('<p>', '</p>', descriptionElements)))
+  while (descriptionElements.search("<p>") === 0) {
+    const parsedData = cleanString(
+      removeTagsFromString(
+        getContentBetweenTags("<p>", "</p>", descriptionElements)
+      )
+    );
     if (parsedData) {
-      output.description.push(parsedData)
+      output.description.push(parsedData);
     }
-    descriptionElements = descriptionElements.substring(descriptionElements.search('</p>') + 4)
+    descriptionElements = descriptionElements.substring(
+      descriptionElements.search("</p>") + 4
+    );
   }
 
   output.description = output.description.join(", ")
@@ -39,13 +53,13 @@ function parseBuilding(data) {
   const output = {};
 
   // get general building info
-  output.buildingName = getContentBetweenTags(
+  output.structureName = getContentBetweenTags(
     "<span>",
     "</span>",
     getContentBetweenTags('<h1 class="page-title">', "</h1>", data)
   );
 
-  output.buildingTypes = getContentBetweenTags(
+  output.structureTypes = getContentBetweenTags(
     '<span class="field-content">',
     "</span",
     data
@@ -150,12 +164,12 @@ function parseBuilding(data) {
 }
 
 function cleanString(data) {
-  let retData = data.replace(/(\r\n)/g, '').replace(/(&nbsp;)/g, ' ')
+  let retData = data.replace(/(\r\n)/g, "").replace(/(&nbsp;)/g, " ");
 
   if (retData.length === 1) {
-    return null
+    return null;
   } else {
-    return retData
+    return retData;
   }
 }
 
