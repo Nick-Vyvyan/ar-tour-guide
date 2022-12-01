@@ -174,7 +174,6 @@ const PanelView = (props) => {
         setScrapedData();
         setIsLandmark(false);
         setAudioFileName("");
-        //filesContent = null
       })
       .catch((err) => console.error(err));
   };
