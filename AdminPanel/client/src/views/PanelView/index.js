@@ -166,8 +166,6 @@ const PanelView = (props) => {
         setWebsiteLink("");
         setCoordinates("");
         setScrapedData();
-        setIsLandmark(false);
-        setAudioFileName("");
       })
       .catch((err) => console.error(err));
   };
