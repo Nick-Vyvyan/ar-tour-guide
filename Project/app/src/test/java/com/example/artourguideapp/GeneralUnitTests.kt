@@ -1,64 +1,53 @@
 package com.example.artourguideapp
 
-import android.content.Context
 import android.graphics.PointF
 import android.location.Location
-import androidx.test.platform.app.InstrumentationRegistry
 import com.example.artourguideapp.entities.BuildingData
 import com.example.artourguideapp.entities.BuildingEntity
 import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.entities.LandmarkData
+import org.junit.Assert.*
 import org.junit.Test
 
-import org.junit.Assert.*
-import org.junit.Before
-
 class GeneralUnitTests {
-    private lateinit var appContext : Context
-    @Before
-    fun createAppContext() {
-        appContext = InstrumentationRegistry.getInstrumentation().targetContext
-    }
-
     /**
      * BuildingData Unit Tests
      */
-
     private val buildingData = BuildingData("","","","","","","","","")
 
     @Test
     fun getTitle() {
-        assertTrue(buildingData.getTitle() != "")
+        assertTrue(buildingData.getTitle() == "")
     }
 
     @Test
     fun getTypes() {
-        assertTrue(buildingData.getTypes() != "")
+        assertTrue(buildingData.getTypes() == "")
     }
 
     @Test
     fun getDepartments() {
-        assertTrue(buildingData.getDepartments() != "")
+        assertTrue(buildingData.getDepartments() == "")
     }
 
     @Test
     fun getAccessibilityInfo() {
-        assertTrue(buildingData.getAccessibilityInfo() != "")
+        assertTrue(buildingData.getAccessibilityInfo() == "")
     }
 
     @Test
     fun getGenderNeutralRestrooms() {
-        assertTrue(buildingData.getGenderNeutralRestrooms() != "")
+        assertTrue(buildingData.getGenderNeutralRestrooms() == "")
     }
 
     @Test
     fun getComputerLabs() {
-        assertTrue(buildingData.getComputerLabs() != "")
+        assertTrue(buildingData.getComputerLabs() == "")
     }
 
     @Test
     fun getDataURL() {
-        assertTrue(buildingData.getURL() != "")
+        assertTrue(buildingData.getURL() == "")
     }
 
     /**
@@ -67,7 +56,7 @@ class GeneralUnitTests {
     private val server: String = ""
     private val model = Model()
     private val view = UserView()
-    private val user = User(appContext)
+    private lateinit var user: User
     private val controller = Controller(server, model, view, user)
 
     @Test
@@ -148,7 +137,7 @@ class GeneralUnitTests {
     /**
      * Orientation Unit Tests
      */
-    private val orientation = Orientation(appContext)
+    private lateinit var orientation: Orientation
 
     @Test
     fun getOrientation() {

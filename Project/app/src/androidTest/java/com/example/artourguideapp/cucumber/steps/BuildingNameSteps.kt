@@ -3,7 +3,6 @@ package com.example.artourguideapp.cucumber.steps
 import android.graphics.PointF
 import android.location.Location
 import com.example.artourguideapp.*
-import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.entities.LandmarkData
 import com.example.artourguideapp.entities.LandmarkEntity
 import cucumber.api.java.en.And
