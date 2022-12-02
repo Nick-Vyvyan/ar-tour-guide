@@ -172,7 +172,7 @@ class GeneralUnitTests {
 
     @Test
     fun getAudioDescription(){
-        assertTrue(landmarkData.getAudioDescription() == "")
+        assertTrue(landmarkData.getAudioFileName() == "")
     }
 
     @Test
