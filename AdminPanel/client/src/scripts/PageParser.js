@@ -157,7 +157,7 @@ function parseBuilding(data) {
   output.departmentsOffices = output.departmentsOffices.join(', ')
   output.accessibilityInfo = output.accessibilityInfo.join(', ')
   output.dining = output.dining.join(', ')
-  output.buildingTypes = output.buildingTypes.join(', ')
+  output.structureTypes = output.structureTypes.join(', ')
   output.genderNeutralRestrooms = output.genderNeutralRestrooms.join(', ')
 
   return output;
