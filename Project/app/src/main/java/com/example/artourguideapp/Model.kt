@@ -10,6 +10,10 @@ class Model {
     companion object {
         private var entities: MutableList<Entity> = mutableListOf()
 
+        fun getEntities(): MutableList<Entity> {
+            return entities
+        }
+
         fun clearEntities() {
             entities = mutableListOf()
         }
@@ -18,8 +22,5 @@ class Model {
             Model.entities = entities
         }
 
-        fun getEntities(): MutableList<Entity> {
-            return entities
-        }
     }
 }

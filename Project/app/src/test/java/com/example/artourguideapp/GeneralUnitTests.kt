@@ -11,189 +11,41 @@ import org.junit.Test
 
 class GeneralUnitTests {
     /**
-     * BuildingData Unit Tests
-     */
-    private val buildingData = BuildingData("","","","","","","","","")
-
-    @Test
-    fun getTitle() {
-        assertTrue(buildingData.getTitle() == "")
-    }
-
-    @Test
-    fun getTypes() {
-        assertTrue(buildingData.getTypes() == "")
-    }
-
-    @Test
-    fun getDepartments() {
-        assertTrue(buildingData.getDepartments() == "")
-    }
-
-    @Test
-    fun getAccessibilityInfo() {
-        assertTrue(buildingData.getAccessibilityInfo() == "")
-    }
-
-    @Test
-    fun getGenderNeutralRestrooms() {
-        assertTrue(buildingData.getGenderNeutralRestrooms() == "")
-    }
-
-    @Test
-    fun getComputerLabs() {
-        assertTrue(buildingData.getComputerLabs() == "")
-    }
-
-    @Test
-    fun getDataURL() {
-        assertTrue(buildingData.getURL() == "")
-    }
-
-    /**
      * Controller Unit Tests
      */
     private val controller = Controller()
 
     @Test
-    fun getBuildingData() {
-        //assertTrue(controller.getBuildings().isNotEmpty())
+    fun controllerGetEntities() {
+        assertTrue(controller.getEntities().size == 0)
     }
 
     @Test
-    fun getSculptureData() {
-        //assertTrue(controller.getLandmarks().isNotEmpty())
-    }
-
-    @Test
-    fun updateView() {
-//        controller.updateView()
-//        assertTrue(view == UserView())
-    }
-
-    /**
-     * BuildingEntity Unit Tests
-     */
-    private val buildingEntity = BuildingEntity(Location(""),
-        BuildingData("Wilson Library", "", "", "", "",
-            "", "", "", ""))
-
-    @Test
-    fun getName() {
-        assertTrue(buildingEntity.getName() == "Wilson Library")
-    }
-
-
-    @Test
-    fun getEntityURL() {
-        assertTrue(buildingEntity.getURL() == "")
-    }
-
-    @Test
-    fun setLocation() {
-        val CFLat = 48.73266494618646
-        val CFLon = -122.48524954354191
-        assertTrue(buildingEntity.setLocation(CFLat, CFLon) == 0)
-    }
-
-    @Test
-    fun getEntityLocation() {
-        val CFLat = 48.73266494618646
-        val CFLon = -122.48524954354191
-
-        buildingEntity.setLocation(CFLat, CFLon)
-        assertTrue(buildingEntity.getCentralLocation().latitude.equals(CFLat))
-        assertTrue(buildingEntity.getCentralLocation().longitude.equals(CFLon))
+    fun controllerSetEntities() {
+        controller.setEntities(mutableListOf())
+        assertTrue(controller.getEntities().size == 0)
     }
 
     /**
      * Model Unit Tests
      */
+    private val model = Model()
+
     @Test
-    fun addEntity() {
-//        model.addEntity(buildingEntity)
-//        assertTrue(model.getEntitiesInView(user.getOrientation()) == ArrayList<Entity>())
+    fun modelGetEntities() {
+        assertTrue(Model.getEntities().size == 0)
     }
 
     @Test
-    fun getEntitiesInView() {
-//        assertTrue(model.getEntitiesInView(user.getOrientation()) == ArrayList<Entity>())
-    }
-
-    /**
-     * Orientation Unit Tests
-     */
-    private lateinit var orientation: Orientation
-
-    @Test
-    fun getOrientation() {
-        assertTrue(orientation.getOrientation().equals(""))
-    }
-
-    /**
-     * LandmarkData Unit Tests
-     */
-    private val landmarkData = LandmarkData("", "", "", "")
-
-    @Test
-    fun getLandmarkTitle(){
-        assertTrue(landmarkData.getTitle() == "")
+    fun modelClearEntities() {
+        Model.clearEntities()
+        assertTrue(Model.getEntities().size == 0)
     }
 
     @Test
-    fun getDescription(){
-        assertTrue(landmarkData.getDescription() == "")
-    }
-
-    @Test
-    fun getAudioDescription(){
-        assertTrue(landmarkData.getAudioFileName() == "")
-    }
-
-    @Test
-    fun getLandmarkURL(){
-        assertTrue(landmarkData.getURL() == "")
-    }
-
-    /**
-     * User Unit Tests
-     */
-    @Test
-    fun getHeading(){
-//        assertTrue(user.getOrientation() == orientation)
-    }
-
-    /**
-     * View Unit Tests
-     */
-    @Test
-    fun displayBuildingData() {
-        assertTrue(false)
-    }
-
-    @Test
-    fun displaySculptureData() {
-        assertTrue(false)
-    }
-
-    @Test
-    fun displayEntityTooltips() {
-        assertTrue(false)
-    }
-
-    @Test
-    fun entityPressed() {
-        assertTrue(false)
-    }
-
-    @Test
-    fun getCurrentScrollPosition(){
-        assertTrue(false)
-    }
-
-    @Test
-    fun update() {
-        assertTrue(false)
+    fun modelSetEntities() {
+        Model.setEntities(mutableListOf())
+        assertTrue(Model.getEntities().size == 0)
     }
 
     /**
