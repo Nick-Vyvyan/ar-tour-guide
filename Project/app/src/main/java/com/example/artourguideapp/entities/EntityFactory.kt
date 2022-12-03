@@ -123,8 +123,7 @@ class EntityFactory {
                             if (currentStructure.getBoolean("isLandmark")) {
                                 activity.runOnUiThread {
                                     structures.add(
-                                        LandmarkEntity(
-                                            structureName, centerPoint, location,
+                                        LandmarkEntity(location,
                                             LandmarkData(
                                                 structureName,
                                                 currentScrapedData.getJSONArray("description").toString(),
@@ -138,8 +137,7 @@ class EntityFactory {
                             else {
                                 activity.runOnUiThread {
                                     structures.add(
-                                        BuildingEntity(
-                                            structureName, centerPoint, location,
+                                        BuildingEntity(location,
                                             BuildingData(
                                                 structureName,
                                                 // TODO: Pass scraped building code

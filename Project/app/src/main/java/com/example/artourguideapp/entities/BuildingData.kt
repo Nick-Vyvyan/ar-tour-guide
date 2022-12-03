@@ -12,8 +12,8 @@ class BuildingData(title: String,
                     private var genderNeutralRestrooms: String,
                     private var computerLabs: String,
                     private var dining: String,
-                    private var audioFileName: String,
-                    url: String): EntityData(title, url) {
+                    audioFileName: String,
+                    url: String): EntityData(title, audioFileName, url) {
 
     init {
         types = formatArrayString(types)
@@ -48,10 +48,6 @@ class BuildingData(title: String,
         return dining
     }
 
-    fun getAudioFileName(): String {
-        return audioFileName
-    }
-
     override fun toString(): String {
         return ("title: " + getTitle()
                 + "\ntypes: " + types
@@ -60,7 +56,7 @@ class BuildingData(title: String,
                 + "\ngenderNeutralRestrooms: " + genderNeutralRestrooms
                 + "\ncomputerLabs: " + computerLabs
                 + "\ndining: " + dining
-                + "\naudioFileName: " + audioFileName
+                + "\naudioFileName: " + getAudioFileName()
                 + "\nurl: " + getURL())
     }
 }

@@ -74,7 +74,7 @@ class GeneralUnitTests {
     /**
      * BuildingEntity Unit Tests
      */
-    private val buildingEntity = BuildingEntity("Wilson Library", PointF(), Location(""),
+    private val buildingEntity = BuildingEntity(Location(""),
         BuildingData("Wilson Library", "", "", "", "",
             "", "", "", ""))
 
@@ -83,20 +83,10 @@ class GeneralUnitTests {
         assertTrue(buildingEntity.getName() == "Wilson Library")
     }
 
-    @Test
-    fun getPerimeter() {
-        assertTrue(buildingEntity.getCenter() == PointF())
-    }
 
     @Test
     fun getEntityURL() {
         assertTrue(buildingEntity.getURL() == "")
-    }
-
-    @Test
-    fun setPerimeter() {
-        buildingEntity.setCenter(PointF())
-        assertTrue(buildingEntity.getCenter() == PointF())
     }
 
     @Test

@@ -11,13 +11,10 @@ import android.location.Location
  * activity is desired.
  */
 class LandmarkEntity(
-    name: String,
-    center: PointF,
     location : Location,
     landmarkData: LandmarkData
 ) : Entity(
-    name,
-    center,
+    landmarkData.getTitle(),
     landmarkData.getURL(),
     location,
     landmarkData,

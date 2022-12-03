@@ -15,7 +15,6 @@ import com.google.ar.sceneform.rendering.ViewRenderable
  */
 abstract class Entity(
     private var name: String,
-    private var center: PointF,
     private var url: String,
     private var centralLocation : Location,
     private var entityData: EntityData,
@@ -55,21 +54,9 @@ abstract class Entity(
         return name
     }
 
-    fun getCenter(): PointF {
-        return center
-    }
-
-    fun setCenter(center: PointF) {
-        this.center = center
-    }
-
     fun getURL(): String {
         return url
     }
-
-//    fun setNode(anchor: Anchor) {
-////        this.anchor = anchor
-//    }
 
     fun getNode() : Node {
         return node

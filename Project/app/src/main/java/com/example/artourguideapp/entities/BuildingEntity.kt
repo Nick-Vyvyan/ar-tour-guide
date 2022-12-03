@@ -11,13 +11,10 @@ import android.location.Location
  * activity is desired.
  */
 class BuildingEntity(
-    name: String,
-    center: PointF,
     location : Location,
     buildingData: BuildingData
 ) : Entity(
-    name,
-    center,
+    buildingData.getTitle(),
     buildingData.getURL(),
     location,
     buildingData,

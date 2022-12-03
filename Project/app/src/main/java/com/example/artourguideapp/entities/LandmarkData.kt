@@ -7,8 +7,8 @@ package com.example.artourguideapp.entities
  */
 class LandmarkData(title: String,
                    private var description: String,
-                   private val audioFileName: String,
-                   url: String): EntityData(title, url) {
+                   audioFileName: String,
+                   url: String): EntityData(title, audioFileName, url) {
 
     init {
         description = formatArrayString(description)
@@ -18,14 +18,10 @@ class LandmarkData(title: String,
         return description
     }
 
-    fun getAudioFileName(): String {
-        return audioFileName
-    }
-
     override fun toString(): String {
         return ("title: " + getTitle()
                 + "\ndescription: " + description
-                + "\naudioDescription: " + audioFileName
+                + "\naudioFileName: " + getAudioFileName()
                 + "\nurl: " + getURL())
     }
 }

@@ -6,10 +6,15 @@ package com.example.artourguideapp.entities
  */
 abstract class EntityData(
     private var title: String,
+    private val audioFileName: String,
     private var url: String
 ) {
     fun getTitle(): String {
         return title
+    }
+
+    fun getAudioFileName(): String {
+        return audioFileName
     }
 
     fun getURL(): String {

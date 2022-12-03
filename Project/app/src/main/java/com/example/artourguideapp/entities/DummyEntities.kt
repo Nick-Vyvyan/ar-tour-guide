@@ -34,8 +34,6 @@ class DummyEntities{
         var entityList = ArrayList<Entity>()
 
         var commFacilityEntity = BuildingEntity(
-            "Communications Facility",
-            PointF(),
             cfLoc,
             BuildingData(
             "Communications Facility",
@@ -59,8 +57,6 @@ class DummyEntities{
         )
 
         var wadeKingEntity = BuildingEntity(
-                "Wade King Recreational Center",
-            PointF(),
         wkrcLoc,
                 BuildingData(
         "Wade King Recreation Center",
@@ -78,7 +74,7 @@ class DummyEntities{
         "https://www.wwu.edu/building/sv")
         )
 
-        var handel = LandmarkEntity("Mark di Suvero, For Handel, 1975", PointF(), Location("Mark di Suvero, For Handel, 1975"), LandmarkData(
+        var handel = LandmarkEntity( Location("Mark di Suvero, For Handel, 1975"), LandmarkData(
             "Mark di Suvero, For Handel, 1975", "Di Suvero's knowledge of music and sensitivity to the relationship of art and architecture led him to create a soaring sculpture dedicated to the " +
                     "composer George Frederic Handel. Di Suvero's work rises not only from the roof of the rehearsal hall below but also projects beyond this roof/plaza and against a " +
                     "magnificent view of water, mountains and sky. Sometimes di Suvero is considered an \"action sculptor\" in the way he draws directly with the steel I- beams. In " +
@@ -96,8 +92,6 @@ class DummyEntities{
         )
 
         var stairsToNowhere = LandmarkEntity(
-            "Stairs To Nowhere",
-            PointF(),
             stairLoc,
             LandmarkData(
                 "Stairs to Nowhere",
@@ -109,8 +103,6 @@ class DummyEntities{
 
 
         var house1 = BuildingEntity(
-            "house1",
-            PointF(),
             h1Loc,
             BuildingData(
                 "house1",
@@ -134,8 +126,6 @@ class DummyEntities{
         )
 
         var house2 = BuildingEntity(
-            "house2",
-            PointF(),
             h2Loc,
             BuildingData(
                 "house2",
@@ -159,8 +149,6 @@ class DummyEntities{
         )
 
         var house3 = BuildingEntity(
-            "house3",
-            PointF(),
             h3Loc,
             BuildingData(
                 "3",
@@ -184,8 +172,6 @@ class DummyEntities{
         )
 
         var house4 = BuildingEntity(
-            "house4",
-            PointF(),
             h4Loc,
             BuildingData(
                 "4",
@@ -208,8 +194,6 @@ class DummyEntities{
                 "https://www.wwu.edu/building/cf")
         )
         var house5 = BuildingEntity(
-            "house5",
-            PointF(),
             h5Loc,
             BuildingData(
                 "5",
@@ -233,8 +217,6 @@ class DummyEntities{
         )
 
         var academicWest = BuildingEntity(
-            "Academic West",
-            PointF(),
             awLoc,
             BuildingData(
                 "Academic West",
@@ -258,8 +240,6 @@ class DummyEntities{
         )
 
         var environmentalStudies = BuildingEntity(
-            "Environmental Studies",
-            PointF(),
             esLoc,
             BuildingData(
                 "Environmental Studies",
@@ -283,8 +263,6 @@ class DummyEntities{
         )
 
         var slowhouse = BuildingEntity(
-            "Slowhouse",
-            PointF(),
             shLoc,
             BuildingData(
                 "Slowhouse",
