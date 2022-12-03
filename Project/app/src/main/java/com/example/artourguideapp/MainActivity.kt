@@ -16,11 +16,7 @@ import com.google.ar.sceneform.ArSceneView
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private val server: String = ""
-    private val model = Model()
-    private val view = UserView()
-    private val user = null
-    private val controller = Controller(server, model, view, user)
+    private val controller = Controller()
 
     // AR SceneForm Variables
     lateinit var arSceneView: ArSceneView
@@ -30,14 +26,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        // update structures for app
-//        val updateStructuresIntent = Intent(this, UpdateStructures::class.java)
-//        startActivity(updateStructuresIntent)
-
         // Init Entity Objects
-//        DummyBuildingEntities.initialize(this)
-//        controller.addEntities(DummyBuildingEntities.entityList)
-        EntityFactory.updateStructures(model, controller, this)
+        DummyBuildingEntities.initialize(this)
+        controller.addEntities(DummyBuildingEntities.entityList)
+        //EntityFactory.updateStructures(controller, this)
 
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)
@@ -52,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         Timer().schedule(object: TimerTask() {
             override fun run() {
-                for (entity in model.getEntities()) {
+                for (entity in controller.getEntities()) {
                     runOnUiThread {
                         println("DEBUG - ATTEMPTING TO SET ANCHOR FOR ${entity.getName()}")
                         AnchorHelper.attemptSetAnchor(entity, arSceneView)

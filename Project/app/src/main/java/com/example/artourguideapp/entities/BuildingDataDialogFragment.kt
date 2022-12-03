@@ -5,7 +5,6 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
 import android.content.Intent
-import android.graphics.PointF
 import android.location.Location
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -16,7 +15,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
-import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
@@ -26,11 +24,7 @@ import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.example.artourguideapp.R
-import java.io.DataOutputStream
 import java.io.File
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.URL
 
 /**
  * This is a custom Dialog that can be used to display building info.

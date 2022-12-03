@@ -2,8 +2,6 @@ package com.example.artourguideapp.entities
 
 import android.graphics.PointF
 import android.location.Location
-import android.util.DisplayMetrics
-import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment

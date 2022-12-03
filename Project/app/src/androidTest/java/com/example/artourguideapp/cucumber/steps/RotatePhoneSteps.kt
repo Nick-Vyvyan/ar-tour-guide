@@ -2,7 +2,7 @@ package com.example.artourguideapp.cucumber.steps
 
 import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.User
-import com.example.artourguideapp.UserView
+import com.example.artourguideapp.previouswork.UserView
 import cucumber.api.java.en.And
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then

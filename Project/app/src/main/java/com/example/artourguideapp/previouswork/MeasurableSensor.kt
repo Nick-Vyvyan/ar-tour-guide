@@ -1,4 +1,4 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.previouswork
 
 abstract class MeasurableSensor (
     protected val sensorType : Int

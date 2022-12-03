@@ -4,7 +4,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
-import android.graphics.PointF
 import android.graphics.Rect
 import android.location.Location
 import android.media.AudioAttributes

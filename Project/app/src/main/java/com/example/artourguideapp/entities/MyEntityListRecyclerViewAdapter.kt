@@ -1,4 +1,4 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.entities
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import com.example.artourguideapp.databinding.FragmentEntityListBinding
-import com.example.artourguideapp.entities.Entity
+import com.example.artourguideapp.R
+import com.example.artourguideapp.SearchActivity
 
 /**
  * [RecyclerView.Adapter] that can display an [Entity].

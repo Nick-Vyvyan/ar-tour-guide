@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.artourguideapp.entities.*
 
 lateinit var structureListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-var originalEntities: ArrayList<Entity> = ArrayList(UpdateStructures.controller.getEntities())
+var controller: Controller = Controller();
+var originalEntities: ArrayList<Entity> = ArrayList(controller.getEntities())
 var currentEntities: ArrayList<Entity> = ArrayList()
 
 /**
@@ -35,7 +36,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // handle search
-        originalEntities = ArrayList(EntityFactory.entityList)
+        originalEntities = ArrayList(controller.getEntities())
 
         currentEntities.clear()
         currentEntities.addAll(originalEntities)

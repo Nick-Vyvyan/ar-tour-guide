@@ -3,6 +3,7 @@ package com.example.artourguideapp
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
+import com.example.artourguideapp.previouswork.AndroidSensor
 
 class Accelerometer(
     context : Context

@@ -1,7 +1,9 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.previouswork
 
 import android.content.Context
 import android.hardware.SensorManager
+import com.example.artourguideapp.Accelerometer
+import com.example.artourguideapp.Magnetometer
 
 class Orientation(
     context : Context

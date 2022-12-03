@@ -5,39 +5,23 @@ import com.example.artourguideapp.entities.*
 /**
  * A class that passes information to the Model class from a specific view class, or vice-versa.
  */
-class Controller(private var server: String,
-                 private var model: Model,
-                 private var view: UserView,
-                 private var user: User?)
+class Controller()
 {
     fun addEntities(entities: MutableList<Entity>) {
-        model.clearEntities()
-        model.setEntities(entities)
-//        for (entity in entities) {
-//            model.addEntity(entity)
-//        }
-    }
-
-    fun addBuildings(buildings: MutableList<BuildingEntity>) {
-        model.clearBuildings()
-        model.setBuildings(buildings)
-    }
-
-    fun addLandmarks(landmarks: MutableList<LandmarkEntity>) {
-        model.clearLandmarks()
-        model.setLandmarks(landmarks)
+        Model.clearEntities()
+        Model.setEntities(entities)
     }
 
     fun getEntities(): MutableList<Entity> {
-        return model.getEntities()
+        return Model.getEntities()
     }
 
     fun getBuildings(): MutableList<BuildingEntity> {
-        return model.getBuildings()
+        return Model.getBuildings()
     }
 
     fun getLandmarks(): MutableList<LandmarkEntity> {
-        return model.getLandmarks()
+        return Model.getLandmarks()
     }
 
     fun updateView() {

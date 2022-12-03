@@ -1,4 +1,4 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.entities
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.artourguideapp.entities.Entity
+import com.example.artourguideapp.R
+import com.example.artourguideapp.SearchActivity
 
 private lateinit var structures: List<Entity>
 

@@ -2,11 +2,9 @@ package com.example.artourguideapp.entities
 
 import android.graphics.PointF
 import android.location.Location
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.Controller
 import com.example.artourguideapp.Model
-import com.example.artourguideapp.UpdateStructures
 import org.json.JSONArray
 import java.io.*
 import java.net.HttpURLConnection
@@ -17,7 +15,7 @@ class EntityFactory {
     companion object {
         var entityList: MutableList<Entity> = mutableListOf()
         // update structures json file if needed, and create java objects of each json entry if remote json is different
-        fun updateStructures(model: Model, controller: Controller, activity: AppCompatActivity) {
+        fun updateStructures(controller: Controller, activity: AppCompatActivity) {
 
                 thread {
                     var localStructuresJsonStr = ""
@@ -180,7 +178,7 @@ class EntityFactory {
                         }
 
                         activity.runOnUiThread {
-                            for (entity: Entity in model.getEntities()) {
+                            for (entity: Entity in controller.getEntities()) {
                                 entity.initNode(activity)
                             }
                         }

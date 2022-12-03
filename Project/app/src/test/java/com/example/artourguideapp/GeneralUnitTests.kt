@@ -6,6 +6,8 @@ import com.example.artourguideapp.entities.BuildingData
 import com.example.artourguideapp.entities.BuildingEntity
 import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.entities.LandmarkData
+import com.example.artourguideapp.previouswork.Orientation
+import com.example.artourguideapp.previouswork.UserView
 import org.junit.Assert.*
 import org.junit.Test
 

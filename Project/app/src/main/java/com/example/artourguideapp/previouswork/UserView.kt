@@ -1,4 +1,4 @@
-package com.example.artourguideapp
+package com.example.artourguideapp.previouswork
 
 import com.example.artourguideapp.entities.*
 

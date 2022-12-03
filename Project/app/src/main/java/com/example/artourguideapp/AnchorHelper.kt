@@ -1,25 +1,14 @@
 package com.example.artourguideapp
 
 import android.location.Location
-import android.util.Log
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import com.example.artourguideapp.entities.DummyBuildingEntities
 import com.example.artourguideapp.entities.Entity
-import com.google.android.gms.maps.model.LatLng
-import com.google.ar.core.Anchor
-import com.google.ar.core.Earth
 import com.google.ar.core.GeospatialPose
-import com.google.ar.core.Session
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ArSceneView
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
 
 class AnchorHelper {
 
