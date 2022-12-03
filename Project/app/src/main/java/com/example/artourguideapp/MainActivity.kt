@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.EntityFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.ar.core.Config
-import com.google.ar.core.Session
 import com.google.ar.core.exceptions.CameraNotAvailableException
-import com.google.ar.core.exceptions.UnavailableException
 import com.google.ar.sceneform.ArSceneView
 import java.util.*
 
@@ -33,14 +30,22 @@ class MainActivity : AppCompatActivity() {
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)
 
-        // Request permissions for AR and Geospatial
-        ActivityCompat.requestPermissions(
-            this, arrayOf(
-                CAMERA,
-                ACCESS_FINE_LOCATION,
-                ACCESS_COARSE_LOCATION
-            ), 0)
 
+        requestAppPermissions();
+        scheduleAnchorUpdates()
+        createSearchButton()
+    }
+
+    private fun createSearchButton() {
+        // search button on-click listener
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
+            val searchIntent = Intent(this, SearchActivity::class.java)
+            startActivity(searchIntent)
+        }
+    }
+
+    private fun scheduleAnchorUpdates() {
         Timer().schedule(object: TimerTask() {
             override fun run() {
                 for (entity in controller.getEntities()) {
@@ -51,13 +56,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         },2000, 3000)
+    }
 
-        // search button on-click listener
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
-            val searchIntent = Intent(this, SearchActivity::class.java)
-            startActivity(searchIntent)
-        }
+    private fun requestAppPermissions() {
+        // Request permissions for AR and Geospatial
+        ActivityCompat.requestPermissions(
+            this, arrayOf(
+                CAMERA,
+                ACCESS_FINE_LOCATION,
+                ACCESS_COARSE_LOCATION
+            ), 0)
     }
 
     override fun onRequestPermissionsResult(
@@ -89,37 +97,16 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        if (arSceneView.getSession() == null) {
-            // If the session wasn't created yet, don't resume rendering.
-            // This can happen if ARCore needs to be updated or permissions are not granted yet.
-            try {
-                var session = Session(this)
-                // IMPORTANT!!!  ArSceneView requires the `LATEST_CAMERA_IMAGE` non-blocking update mode.
-                var config = Config(session)
-                config.updateMode = Config.UpdateMode.LATEST_CAMERA_IMAGE
-                config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
-                config.geospatialMode = Config.GeospatialMode.ENABLED
-                config.planeFindingMode = Config.PlaneFindingMode.DISABLED
-                session.configure(config)
-
-                if (session == null) {
-                    // cameraPermissionRequested = DemoUtils.hasCameraPermission(this);
-                    return;
-                } else {
-                    arSceneView.session = session;
-                    arSceneView.scene.camera.farClipPlane = AnchorHelper.PROXIMITY_DISTANCE.toFloat()
-                }
-            } catch (e: UnavailableException) {
-                //DemoUtils.handleSessionException(this, e);
-            }
+        if (arSceneView.session == null) {
+            ArSessionFactory.createArSession(this, arSceneView)
         }
 
         try {
-            arSceneView.resume();
+            arSceneView.resume()
         } catch (ex: CameraNotAvailableException) {
             // DemoUtils.displayError(this, "Unable to get camera", ex);
-            finish();
-            return;
+            finish()
+            return
         }
 
     }

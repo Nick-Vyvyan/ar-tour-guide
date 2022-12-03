@@ -7,7 +7,7 @@ import com.example.artourguideapp.entities.*
  */
 class Controller()
 {
-    fun addEntities(entities: MutableList<Entity>) {
+    fun setEntities(entities: MutableList<Entity>) {
         Model.clearEntities()
         Model.setEntities(entities)
     }

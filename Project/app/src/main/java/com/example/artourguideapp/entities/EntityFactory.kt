@@ -4,7 +4,6 @@ import android.graphics.PointF
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.Controller
-import com.example.artourguideapp.Model
 import org.json.JSONArray
 import java.io.*
 import java.net.HttpURLConnection
@@ -162,7 +161,7 @@ class EntityFactory {
                             }
 
                             // add structure entities to app
-                            controller.addEntities(structures)
+                            controller.setEntities(structures)
 
     //                    /* DEBUGGING CODE */
     //
