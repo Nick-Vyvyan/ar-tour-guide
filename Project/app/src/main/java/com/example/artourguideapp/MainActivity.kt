@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.example.artourguideapp.entities.DummyEntities
 import com.example.artourguideapp.entities.EntityFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.exceptions.CameraNotAvailableException
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 //        DummyEntities.initialize(this)
-//        controller.addEntities(DummyEntities.entityList)
+//        controller.setEntities(DummyEntities.entityList)
 
         // Init Entity Objects
         EntityFactory.updateStructures(controller, this)
