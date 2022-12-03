@@ -150,9 +150,6 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         val rect = dm.run { Rect(0, 0, widthPixels, heightPixels) }
         val percentWidth = rect.width() * sizePercentageOfScreen
         dialog?.window?.setLayout(percentWidth.toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
-
-        // Set dialog color
-        view.setBackgroundColor(Color.BLACK)
     }
 
 

@@ -2,17 +2,20 @@
     <!-- Base application theme. -->
     <style name="Theme.ARTourGuideApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/black</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/wwu_blue</item>
+        <item name="colorPrimaryVariant">@color/wwu_blue</item>
+        <item name="colorOnPrimary">@color/wwu_white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/wwu_blue2</item>
+        <item name="colorSecondaryVariant">@color/wwu_blue2</item>
+        <item name="colorOnSecondary">@color/wwu_white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:fontFamily">@font/proxima_nova</item>
+        <item name="android:fontFamily">@font/roboto</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:textColor">@color/wwu_white</item>
+        <item name="android:textColorLink">@color/teal_200</item>
+        <item name="android:backgroundTint">@color/wwu_blue</item>
     </style>
 </resources>

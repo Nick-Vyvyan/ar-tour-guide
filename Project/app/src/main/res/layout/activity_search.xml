@@ -13,6 +13,7 @@
       android:layout_marginStart="32dp"
       android:layout_marginTop="32dp"
       android:layout_marginEnd="32dp"
+      android:backgroundTint="?attr/colorAccent"
       android:ems="10"
       android:hint="Structure Name"
       android:imeOptions="actionSearch"
