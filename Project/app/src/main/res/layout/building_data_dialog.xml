@@ -23,6 +23,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         android:gravity="center">
 
         <Button
@@ -52,9 +53,10 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="1dp"
         android:layout_marginTop="15dp"
-        android:background="?attr/colorOnPrimary" />
+        android:background="?attr/colorOnPrimary"
+        android:backgroundTint="?attr/colorOnPrimary" />
 
     <ScrollView
         android:id="@+id/landmark_data_scrollview"
