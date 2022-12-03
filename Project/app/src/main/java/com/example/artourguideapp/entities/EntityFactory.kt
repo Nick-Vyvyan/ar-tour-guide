@@ -13,7 +13,6 @@ import kotlin.concurrent.thread
 
 class EntityFactory {
     companion object {
-        var entityList: MutableList<Entity> = mutableListOf()
         // update structures json file if needed, and create java objects of each json entry if remote json is different
         fun updateStructures(controller: Controller, activity: AppCompatActivity) {
 
@@ -124,7 +123,7 @@ class EntityFactory {
                             // if landmark, add as LandmarkEntity
                             if (currentStructure.getBoolean("isLandmark")) {
                                 activity.runOnUiThread {
-                                    entityList.add(
+                                    structures.add(
                                         LandmarkEntity(
                                             structureName, centerPoint, location,
                                             LandmarkData(
@@ -139,7 +138,7 @@ class EntityFactory {
                             // otherwise it's a building, so add as BuildingEntity
                             else {
                                 activity.runOnUiThread {
-                                    entityList.add(
+                                    structures.add(
                                         BuildingEntity(
                                             structureName, centerPoint, location,
                                             BuildingData(
@@ -163,7 +162,7 @@ class EntityFactory {
                             }
 
                             // add structure entities to app
-                            controller.addEntities(entityList)
+                            controller.addEntities(structures)
 
     //                    /* DEBUGGING CODE */
     //

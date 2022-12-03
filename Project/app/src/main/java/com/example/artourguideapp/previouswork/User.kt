@@ -18,8 +18,8 @@ class User(
     private var entityList : ArrayList<Entity> = ArrayList()
 
     init {
-        entityList.add(DummyBuildingEntities.commFacilityEntity)
-        entityList.add(DummyBuildingEntities.wadeKingEntity)
+        entityList.add(DummyEntities.commFacilityEntity)
+        entityList.add(DummyEntities.wadeKingEntity)
     }
 
     fun getOrientation(): Orientation {

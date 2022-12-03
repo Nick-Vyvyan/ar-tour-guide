@@ -16,7 +16,7 @@ import java.net.URL
  * This class serves as a placeholder and/or alternative for the BuildingEntities loaded in
  * from the structures JSON file.
  */
-class DummyBuildingEntities{
+class DummyEntities{
     companion object {
         var cfLoc : Location = Location("Communications Facility")
         var wkrcLoc : Location = Location("Wade King Recreational Center")
