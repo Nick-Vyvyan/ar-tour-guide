@@ -16,12 +16,4 @@ class Controller
         return Model.getEntities()
     }
 
-    fun getBuildings(): MutableList<BuildingEntity> {
-        return Model.getBuildings()
-    }
-
-    fun getLandmarks(): MutableList<LandmarkEntity> {
-        return Model.getLandmarks()
-    }
-
 }
