@@ -5,7 +5,7 @@ import com.example.artourguideapp.entities.*
 /**
  * A class that passes information to the Model class from a specific view class, or vice-versa.
  */
-class Controller()
+class Controller
 {
     fun setEntities(entities: MutableList<Entity>) {
         Model.clearEntities()
@@ -24,7 +24,4 @@ class Controller()
         return Model.getLandmarks()
     }
 
-    fun updateView() {
-
-    }
 }

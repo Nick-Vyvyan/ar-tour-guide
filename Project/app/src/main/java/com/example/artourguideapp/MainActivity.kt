@@ -12,6 +12,8 @@ import com.google.ar.sceneform.ArSceneView
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    // Main controller for accessing entities
     private val controller = Controller()
 
     // AR SceneForm Variables
@@ -22,9 +24,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        DummyEntities.initialize(this)
+//        controller.addEntities(DummyEntities.entityList)
+
         // Init Entity Objects
-//        DummyBuildingEntities.initialize(this)
-//        controller.addEntities(DummyBuildingEntities.entityList)
         EntityFactory.updateStructures(controller, this)
 
         // get ARSceneView
@@ -45,7 +48,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun scheduleAnchorUpdates() {
+        val delay: Long = 2000 // waits this many ms before attempting
+        val period: Long = 3000 // updates after this many ms continuously
+
         Timer().schedule(object: TimerTask() {
             override fun run() {
                 for (entity in controller.getEntities()) {
@@ -55,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        },2000, 3000)
+        },delay, period)
     }
 
     private fun requestAppPermissions() {
@@ -104,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         try {
             arSceneView.resume()
         } catch (ex: CameraNotAvailableException) {
-            // DemoUtils.displayError(this, "Unable to get camera", ex);
+            // TODO: Handle CameraNotAvailableException
             finish()
             return
         }

@@ -17,23 +17,25 @@ class ArSessionFactory {
                 var session = Session(context)
                 var config = Config(session)
 
-                // Set Config parameters
-                config.updateMode = Config.UpdateMode.LATEST_CAMERA_IMAGE
-                config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
-                config.geospatialMode = Config.GeospatialMode.ENABLED
-                config.planeFindingMode = Config.PlaneFindingMode.DISABLED
+                setConfigParameters(config)
                 session.configure(config)
 
                 if (session == null) {
-                    // cameraPermissionRequested = DemoUtils.hasCameraPermission(this);
-                    return;
+                    return
                 } else {
                     arSceneView.session = session;
                     arSceneView.scene.camera.farClipPlane = AnchorHelper.PROXIMITY_DISTANCE.toFloat()
                 }
             } catch (e: UnavailableException) {
-                //DemoUtils.handleSessionException(this, e);
+                // TODO: Handle exception
             }
+        }
+
+        private fun setConfigParameters(config: Config) {
+            config.updateMode = Config.UpdateMode.LATEST_CAMERA_IMAGE
+            config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
+            config.geospatialMode = Config.GeospatialMode.ENABLED
+            config.planeFindingMode = Config.PlaneFindingMode.DISABLED
         }
 
     }
