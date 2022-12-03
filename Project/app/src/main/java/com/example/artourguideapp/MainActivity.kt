@@ -2,6 +2,7 @@ package com.example.artourguideapp
 
 import android.Manifest.permission.*
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat

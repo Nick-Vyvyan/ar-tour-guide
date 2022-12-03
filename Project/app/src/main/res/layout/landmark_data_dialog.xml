@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00000000"
     android:gravity="center"
     android:orientation="vertical"
-    android:theme="@style/Theme.ARTourGuideApp"
     android:paddingLeft="30dp"
-    android:paddingRight="30dp">
+    android:paddingRight="30dp"
+    android:theme="@style/Theme.ARTourGuideApp">
 
     <TextView
         android:id="@+id/landmark_data_name"
@@ -18,7 +17,7 @@
         android:layout_marginTop="30dp"
         android:text="Building Name (CODE)"
         android:textAlignment="viewStart"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -28,21 +27,23 @@
 
         <Button
             android:id="@+id/landmarkNavigationButton"
-            android:layout_width="130dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:backgroundTint="?attr/colorOnPrimary"
+            android:text="Directions"
             android:textColor="?attr/colorPrimary"
-            android:text="Directions" />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/landmarkMediaButton"
-            android:layout_width="130dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:backgroundTint="?attr/colorOnPrimary"
+            android:text="Play Audio"
             android:textColor="?attr/colorPrimary"
-            android:text="Play Audio" />
+            android:textStyle="bold" />
 
 
     </LinearLayout>
@@ -52,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:layout_marginTop="20dp"
-        android:background="?attr/colorOnPrimary"/>
+        android:background="?attr/colorOnPrimary" />
 
     <ScrollView
         android:id="@+id/landmark_data_scrollview"
@@ -103,7 +104,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:text="Link to website"
-                android:textColor="#0074CB"
+                android:textColor="?android:attr/textColorLink"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>

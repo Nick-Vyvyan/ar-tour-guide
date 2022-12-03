@@ -119,8 +119,6 @@ class LandmarkDataDialogFragment(var landmarkData: LandmarkData, var center: Loc
         val rect = dm.run { Rect(0, 0, widthPixels, heightPixels) }
         val percentWidth = rect.width() * sizePercentageOfScreen
         dialog?.window?.setLayout(percentWidth.toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
-
-        view.setBackgroundColor(Color.BLACK)
     }
 
     override fun onDismiss(dialog: DialogInterface) {
