@@ -2,6 +2,7 @@ package com.example.artourguideapp.entities
 
 import android.graphics.PointF
 import android.location.Location
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.Controller
 import com.example.artourguideapp.Model
@@ -14,7 +15,7 @@ import kotlin.concurrent.thread
 
 class EntityFactory {
     companion object {
-
+        var entityList: MutableList<Entity> = mutableListOf()
         // update structures json file if needed, and create java objects of each json entry if remote json is different
         fun updateStructures(model: Model, controller: Controller, activity: AppCompatActivity) {
 
@@ -125,7 +126,7 @@ class EntityFactory {
                             // if landmark, add as LandmarkEntity
                             if (currentStructure.getBoolean("isLandmark")) {
                                 activity.runOnUiThread {
-                                    structures.add(
+                                    entityList.add(
                                         LandmarkEntity(
                                             structureName, centerPoint, location,
                                             LandmarkData(
@@ -140,7 +141,7 @@ class EntityFactory {
                             // otherwise it's a building, so add as BuildingEntity
                             else {
                                 activity.runOnUiThread {
-                                    structures.add(
+                                    entityList.add(
                                         BuildingEntity(
                                             structureName, centerPoint, location,
                                             BuildingData(
@@ -164,17 +165,17 @@ class EntityFactory {
                             }
 
                             // add structure entities to app
-                            controller.addEntities(structures)
+                            controller.addEntities(entityList)
 
     //                    /* DEBUGGING CODE */
     //
     //                    // get entities list from model
-    //                    val modelEntities: MutableList<Entity> = controller.getEntities()
+//                        val modelEntities: MutableList<Entity> = model.getEntities()
     //
-    //                    // print all structure entities from model
-    //                    for (j in 0 until modelEntities.size) {
-    //                        Log.d("structure", modelEntities[j].toString())
-    //                    }
+                        // print all structure entities from model
+//                        for (j in 0 until modelEntities.size) {
+//                            Log.d("structure", modelEntities[j].toString())
+//                        }
 
                         }
 

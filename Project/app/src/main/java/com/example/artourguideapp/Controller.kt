@@ -13,6 +13,9 @@ class Controller(private var server: String,
     fun addEntities(entities: MutableList<Entity>) {
         model.clearEntities()
         model.setEntities(entities)
+//        for (entity in entities) {
+//            model.addEntity(entity)
+//        }
     }
 
     fun addBuildings(buildings: MutableList<BuildingEntity>) {

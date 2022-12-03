@@ -35,9 +35,9 @@ class MainActivity : AppCompatActivity() {
 //        startActivity(updateStructuresIntent)
 
         // Init Entity Objects
-        DummyBuildingEntities.initialize(this)
-        controller.addEntities(DummyBuildingEntities.entityList)
-        // EntityFactory.updateStructures(model, controller, this)
+//        DummyBuildingEntities.initialize(this)
+//        controller.addEntities(DummyBuildingEntities.entityList)
+        EntityFactory.updateStructures(model, controller, this)
 
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)

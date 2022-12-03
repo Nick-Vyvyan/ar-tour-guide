@@ -44,7 +44,9 @@ function parseLandmark(data) {
     );
   }
 
-  return output;
+  output.description = output.description.join(", ")
+
+  return output
 }
 
 function parseBuilding(data) {
@@ -138,7 +140,7 @@ function parseBuilding(data) {
     diningData.forEach((v) => {
       const diningLink = getContentBetweenTags('href="', '">', v);
       const diningName = getContentBetweenTags('">', "</a>", v).trim();
-      output.dining.push([diningName, diningLink]);
+      output.dining.push(diningName + " - " + diningLink);
     });
   }
 
@@ -150,6 +152,13 @@ function parseBuilding(data) {
       data
     )
   );
+
+  output.computerLabs = output.computerLabs.join(', ')
+  output.departmentsOffices = output.departmentsOffices.join(', ')
+  output.accessibilityInfo = output.accessibilityInfo.join(', ')
+  output.dining = output.dining.join(', ')
+  output.buildingTypes = output.buildingTypes.join(', ')
+  output.genderNeutralRestrooms = output.genderNeutralRestrooms.join(', ')
 
   return output;
 }

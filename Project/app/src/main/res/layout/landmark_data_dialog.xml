@@ -7,6 +7,7 @@
     android:background="#00000000"
     android:gravity="center"
     android:orientation="vertical"
+    android:theme="@style/Theme.ARTourGuideApp"
     android:paddingLeft="30dp"
     android:paddingRight="30dp">
 
@@ -20,12 +21,38 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/landmarkNavigationButton"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:textColor="?attr/colorPrimary"
+            android:text="Directions" />
+
+        <Button
+            android:id="@+id/landmarkMediaButton"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:textColor="?attr/colorPrimary"
+            android:text="Play Audio" />
+
+
+    </LinearLayout>
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:layout_marginTop="20dp"
-        android:background="?android:attr/listDivider" />
+        android:background="?attr/colorOnPrimary"/>
 
     <ScrollView
         android:id="@+id/landmark_data_scrollview"
@@ -79,22 +106,6 @@
                 android:textColor="#0074CB"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/landmarkNavigationButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Directions to Landmark" />
-
-            <Button
-                android:id="@+id/landmarkMediaButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Play Audio" />
-
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

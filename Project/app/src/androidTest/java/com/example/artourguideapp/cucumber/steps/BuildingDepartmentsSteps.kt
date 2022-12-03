@@ -5,7 +5,6 @@ import android.location.Location
 import com.example.artourguideapp.*
 import com.example.artourguideapp.entities.BuildingData
 import com.example.artourguideapp.entities.BuildingEntity
-import com.example.artourguideapp.entities.Entity
 import cucumber.api.java.en.And
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
