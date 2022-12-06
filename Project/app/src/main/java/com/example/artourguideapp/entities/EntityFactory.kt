@@ -141,16 +141,12 @@ class EntityFactory {
                                             BuildingData(
                                                 structureName,
                                                 // TODO: Pass scraped building code
-                                                currentScrapedData.getJSONArray("structureTypes")
-                                                    .toString(),
-                                                currentScrapedData.getString("departmentsOffices")
-                                                    .toString(),
-                                                currentScrapedData.getJSONArray("accessibilityInfo")
-                                                    .toString(),
-                                                currentScrapedData.getJSONArray("genderNeutralRestrooms")
-                                                    .toString(),
-                                                currentScrapedData.getJSONArray("computerLabs").toString(),
-                                                currentScrapedData.getJSONArray("dining").toString(),
+                                                currentScrapedData.getString("structureTypes"),
+                                                currentScrapedData.getString("departmentsOffices"),
+                                                currentScrapedData.getString("accessibilityInfo"),
+                                                currentScrapedData.getString("genderNeutralRestrooms"),
+                                                currentScrapedData.getString("computerLabs").toString(),
+                                                currentScrapedData.getString("dining").toString(),
                                                 audioFileName, websiteLink
                                             )
                                         )
