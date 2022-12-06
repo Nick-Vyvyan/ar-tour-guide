@@ -143,7 +143,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:text="RESTROOMS GO HERE"
                 android:textSize="18sp" />
 
             <TextView
@@ -162,7 +161,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Computer Labs Go Here"
                 android:textSize="18sp" />
 
             <TextView
@@ -180,7 +178,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Parking Info Goes Here"
                 android:textSize="18sp" />
 
             <TextView
@@ -198,7 +195,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Dining goes here"
                 android:textSize="18sp" />
 
             <TextView
