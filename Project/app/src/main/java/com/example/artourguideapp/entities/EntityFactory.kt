@@ -126,7 +126,7 @@ class EntityFactory {
                                         LandmarkEntity(location,
                                             LandmarkData(
                                                 structureName,
-                                                currentScrapedData.getJSONArray("description").toString(),
+                                                currentScrapedData.getString("description"),
                                                 audioFileName, websiteLink
                                             )
                                         )
@@ -145,8 +145,8 @@ class EntityFactory {
                                                 currentScrapedData.getString("departmentsOffices"),
                                                 currentScrapedData.getString("accessibilityInfo"),
                                                 currentScrapedData.getString("genderNeutralRestrooms"),
-                                                currentScrapedData.getString("computerLabs").toString(),
-                                                currentScrapedData.getString("dining").toString(),
+                                                currentScrapedData.getString("computerLabs"),
+                                                currentScrapedData.getString("dining"),
                                                 audioFileName, websiteLink
                                             )
                                         )
