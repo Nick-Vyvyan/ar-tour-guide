@@ -10,8 +10,8 @@ describe("webparsing", () => {
     );
     const returnedData = parseWeb(data);
     const expectedData = {
-      buildingName: "Arntzen Hall",
-      buildingTypes: "Academic, Campus Services",
+      structureName: "Arntzen Hall",
+      structureTypes: "Academic, Campus Services",
       floorplanLink: "https://cpd.wwu.edu/files/2020-04/AH.pdf",
       departmentsOffices: 
         "Anthropology, Environmental Studies, Urban and Environmental Planning and Policy, Political Science, Sociology",
@@ -32,8 +32,8 @@ describe("webparsing", () => {
     );
     const returnedData = parseWeb(data);
     const expectedData = {
-      buildingName: "Bond Hall",
-      buildingTypes: "Academic",
+      structureName: "Bond Hall",
+      structureTypes: "Academic",
       floorplanLink: "https://cpd.wwu.edu/files/2020-04/BH.pdf",
       departmentsOffices: "",
       computerLabs: "BH 319",
@@ -52,8 +52,8 @@ describe("webparsing", () => {
     );
     const returnedData = parseWeb(data);
     const expectedData = {
-      buildingName: "Performing Arts Center",
-      buildingTypes: "Academic, Events",
+      structureName: "Performing Arts Center",
+      structureTypes: "Academic, Events",
       floorplanLink: "https://cpd.wwu.edu/files/2020-01/PA.pdf",
       departmentsOffices: 
         `Box Office, College of Fine and Performing Arts, Music, Music Library, Dance`
@@ -74,8 +74,8 @@ describe("webparsing", () => {
     );
     const returnedData = parseWeb(data);
     const expectedData = {
-      buildingName: "Ridgeway Delta",
-      buildingTypes: "University Residence",
+      structureName: "Ridgeway Delta",
+      structureTypes: "University Residence",
       floorplanLink: "https://cpd.wwu.edu/files/2020-01/RD.pdf",
       departmentsOffices: "",
       computerLabs: "See Ridgeway Commons and Ridgeway Sigma",
@@ -95,8 +95,8 @@ describe("webparsing", () => {
     );
     const returnedData = parseWeb(data);
     const expectedData = {
-      buildingName: "Viking Union",
-      buildingTypes: "Campus Services, Events",
+      structureName: "Viking Union",
+      structureTypes: "Campus Services, Events",
       floorplanLink: "https://cpd.wwu.edu/files/2020-01/VU.pdf",
       departmentsOffices:
         `Associated Students, Bookstore, Associated Students, Ethnic Student Center, LGBTQ+ Western, Office of Student Life, Off Campus Living, Outdoor Center, Student Advocacy and Identity Resource Center`,
@@ -117,13 +117,9 @@ describe("webparsing", () => {
     );
     const returnedData = parseWeb(data);
     const expectedData = {
-      buildingName: "Sarah Sze, Split Stone (Northwest), 2019",
-      description: [
-        "As with all Sarah’s work, Split Stone (Northwest) emerges from the site and is intimately related to its location. Found along one of the campus’s central pathways, the pair of stones act like a cairn along a trail, drawing viewers to it from the many surrounding pathways. The piece creates a choreography of anticipation and surprise, as well as an intimate moment for pause and contemplation.",
-        "The pair of sculptures are fabricated from a single boulder, split in two. One half stands silhouetted against the landscape and the other sits partially submerged, as if it had always occupied that location. In the interior of both sculptures, viewers discover a photographic image constructed from fragments of color, like a split open geode revealing a world inside. The image, created by incising the cut surface of the stone with of a dot-matrix pattern mosaic, captures a scene of the sky at sunset. The same image is mirrored on the other half of the boulder, as if the stone in its core contained a fixed image of the sky set in place through the forces of gravity and pressure.",
-        "Split Stone (Northwest) explores the idea of landscape and image in many forms: images of landscapes; sculptures as landscapes in themselves; and the altered landscape of the Western Washington Campus. The project plays with landscape and sculpture, as well as painting, printmaking and the production of images. It references both the speed and ubiquity of contemporary image capture and ancient forms of mark making, bringing the painstaking process of stone engraving and a sense of physical gravity, weight, and authorship into our contemporary context, where anonymous and fleeting digital images have become a kind of debris that constantly swirls around us.",
-        "By recording images in pixels and then fixing them in stone and pigment, Sze explores the fragility of time passing and our desire for weight and permanence in the face of both overwhelming natural forces and the ubiquitous images that surround us daily."
-      ],
+      structureName: "Sarah Sze, Split Stone (Northwest), 2019",
+      description: 
+        "As with all Sarah’s work, Split Stone (Northwest) emerges from the site and is intimately related to its location. Found along one of the campus’s central pathways, the pair of stones act like a cairn along a trail, drawing viewers to it from the many surrounding pathways. The piece creates a choreography of anticipation and surprise, as well as an intimate moment for pause and contemplation., The pair of sculptures are fabricated from a single boulder, split in two. One half stands silhouetted against the landscape and the other sits partially submerged, as if it had always occupied that location. In the interior of both sculptures, viewers discover a photographic image constructed from fragments of color, like a split open geode revealing a world inside. The image, created by incising the cut surface of the stone with of a dot-matrix pattern mosaic, captures a scene of the sky at sunset. The same image is mirrored on the other half of the boulder, as if the stone in its core contained a fixed image of the sky set in place through the forces of gravity and pressure., Split Stone (Northwest) explores the idea of landscape and image in many forms: images of landscapes; sculptures as landscapes in themselves; and the altered landscape of the Western Washington Campus. The project plays with landscape and sculpture, as well as painting, printmaking and the production of images. It references both the speed and ubiquity of contemporary image capture and ancient forms of mark making, bringing the painstaking process of stone engraving and a sense of physical gravity, weight, and authorship into our contemporary context, where anonymous and fleeting digital images have become a kind of debris that constantly swirls around us., By recording images in pixels and then fixing them in stone and pigment, Sze explores the fragility of time passing and our desire for weight and permanence in the face of both overwhelming natural forces and the ubiquitous images that surround us daily.",
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
@@ -135,12 +131,8 @@ describe("webparsing", () => {
     );
     const returnedData = parseWeb(data);
     const expectedData = {
-      buildingName: "Mark di Suvero, For Handel, 1975",
-      description: [
-        "Walk around the sculpture with Google Street View",
-        "Di Suvero's knowledge of music and sensitivity to the relationship of art and architecture led him to create a soaring sculpture dedicated to the composer George Frederic Handel. Di Suvero's work rises not only from the roof of the rehearsal hall below but also projects beyond this roof/plaza and against a magnificent view of water, mountains and sky. Sometimes di Suvero is considered an \"action sculptor\" in the way he draws directly with the steel I- beams. In running his own truck cranes, in using his welding torch and in directing the blocks and cables, he attempts to build multi- dimensional structures which seem to overcome physical laws.",
-        "Di Suvero works with both the I-beams of modern buildings and the discarded materials of modern life. When he came to campus di Suvero found that a work he had been carrying around in his mind would fit the space of the newly reconstructed Music building and plaza. He has often stated that his sculptural ideas evolve in \'\'dreamtime ... pure music of the mind.\" He likes music, whether classical or jazz, because it is an example of disciplined emotion. He also can relate to the rigorous labor and challenges involved in the construction trade and engineering. Di Suvero's For Handel (1975) originally combined a hanging wooden platform or swinging bed with the steel girders of modern technology. The fact that the bed was removed soon after the sculpture was erected does not diminish the sculpture's impact or meaning."
-      ],
+      structureName: "Mark di Suvero, For Handel, 1975",
+      description: "Walk around the sculpture with Google Street View, Di Suvero's knowledge of music and sensitivity to the relationship of art and architecture led him to create a soaring sculpture dedicated to the composer George Frederic Handel. Di Suvero's work rises not only from the roof of the rehearsal hall below but also projects beyond this roof/plaza and against a magnificent view of water, mountains and sky. Sometimes di Suvero is considered an \"action sculptor\" in the way he draws directly with the steel I- beams. In running his own truck cranes, in using his welding torch and in directing the blocks and cables, he attempts to build multi- dimensional structures which seem to overcome physical laws., Di Suvero works with both the I-beams of modern buildings and the discarded materials of modern life. When he came to campus di Suvero found that a work he had been carrying around in his mind would fit the space of the newly reconstructed Music building and plaza. He has often stated that his sculptural ideas evolve in \'\'dreamtime ... pure music of the mind.\" He likes music, whether classical or jazz, because it is an example of disciplined emotion. He also can relate to the rigorous labor and challenges involved in the construction trade and engineering. Di Suvero's For Handel (1975) originally combined a hanging wooden platform or swinging bed with the steel girders of modern technology. The fact that the bed was removed soon after the sculpture was erected does not diminish the sculpture's impact or meaning.",
     };
     expect(returnedData).to.deep.equal(expectedData);
   });
