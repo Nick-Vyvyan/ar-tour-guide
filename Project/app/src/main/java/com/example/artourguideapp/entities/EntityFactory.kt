@@ -140,7 +140,7 @@ class EntityFactory {
                                         BuildingEntity(location,
                                             BuildingData(
                                                 structureName,
-                                                // TODO: Pass scraped building code
+                                                currentScrapedData.getString("buildingCode"),
                                                 currentScrapedData.getString("structureTypes"),
                                                 currentScrapedData.getString("departmentsOffices"),
                                                 currentScrapedData.getString("accessibilityInfo"),

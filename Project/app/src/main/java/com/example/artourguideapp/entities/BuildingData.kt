@@ -6,6 +6,7 @@ package com.example.artourguideapp.entities
  * This class is a subclass of EntityData.
  */
 class BuildingData(title: String,
+                    private var code: String,
                     private var types: String,
                     private var departments: String,
                     private var accessibilityInfo: String,
@@ -22,6 +23,10 @@ class BuildingData(title: String,
         genderNeutralRestrooms = formatArrayString(genderNeutralRestrooms)
         computerLabs = formatArrayString(computerLabs)
         dining = formatArrayString(dining)
+    }
+
+    fun getCode(): String {
+        return code
     }
 
     fun getTypes(): String {
@@ -50,6 +55,7 @@ class BuildingData(title: String,
 
     override fun toString(): String {
         return ("title: " + getTitle()
+                + "\ncode: " + code
                 + "\ntypes: " + types
                 + "\ndepartments: " + departments
                 + "\naccessibilityInfo: " + accessibilityInfo

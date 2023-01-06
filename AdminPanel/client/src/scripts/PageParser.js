@@ -44,9 +44,9 @@ function parseLandmark(data) {
     );
   }
 
-  output.description = output.description.join(", ")
+  output.description = output.description.join(", ");
 
-  return output
+  return output;
 }
 
 function parseBuilding(data) {
@@ -59,9 +59,15 @@ function parseBuilding(data) {
     getContentBetweenTags('<h1 class="page-title">', "</h1>", data)
   );
 
+  output.buildingCode = getContentBetweenTags(
+    '<strong class="field-content">',
+    "</strong>",
+    data
+  ).split(", ");
+
   output.structureTypes = getContentBetweenTags(
     '<span class="field-content">',
-    "</span",
+    "</span>",
     data
   ).split(", ");
 
@@ -153,12 +159,13 @@ function parseBuilding(data) {
     )
   );
 
-  output.computerLabs = output.computerLabs.join(', ')
-  output.departmentsOffices = output.departmentsOffices.join(', ')
-  output.accessibilityInfo = output.accessibilityInfo.join(', ')
-  output.dining = output.dining.join(', ')
-  output.structureTypes = output.structureTypes.join(', ')
-  output.genderNeutralRestrooms = output.genderNeutralRestrooms.join(', ')
+  output.computerLabs = output.computerLabs.join(", ");
+  output.departmentsOffices = output.departmentsOffices.join(", ");
+  output.accessibilityInfo = output.accessibilityInfo.join(", ");
+  output.dining = output.dining.join(", ");
+  output.buildingCode = output.buildingCode.join(", ");
+  output.structureTypes = output.structureTypes.join(", ");
+  output.genderNeutralRestrooms = output.genderNeutralRestrooms.join(", ");
 
   return output;
 }

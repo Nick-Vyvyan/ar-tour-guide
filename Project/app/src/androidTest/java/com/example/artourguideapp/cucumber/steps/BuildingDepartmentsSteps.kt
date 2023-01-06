@@ -12,8 +12,8 @@ import cucumber.api.java.en.When
 
 class BuildingDepartmentsSteps {
     private val controller = Controller()
-    var building = BuildingEntity("", PointF(), Location("SculptureTest"),
-        BuildingData("", "", "", "", "", "", "", "", ""))
+    var building = BuildingEntity(Location("SculptureTest"),
+        BuildingData("", "", "", "", "", "", "", "", "", ""))
 
     @Given("^Tom has found a building on campus$")
     fun get_nearest_building() {
@@ -22,7 +22,7 @@ class BuildingDepartmentsSteps {
     }
     @And("^he has brought up the menu for the building information$")
     fun get_nearest_building_name() {
-        building = controller.getBuildings()[0]
+        building = controller.getEntities()[0] as BuildingEntity
     }
     @When("^he reads through the content of the menu$")
     fun how_much_menu_is_read() {

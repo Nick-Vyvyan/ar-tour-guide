@@ -8,6 +8,7 @@ import org.junit.Test
 class EntityDataUnitTests {
     private val testBuildingData: BuildingData = BuildingData(
         "Name",
+        "Code",
         "Types",
         "Departments",
         "Accessibility Info",

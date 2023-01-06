@@ -2,7 +2,6 @@ package com.example.artourguideapp.entities
 
 import android.content.DialogInterface
 import android.content.res.Resources
-import android.graphics.Color
 import android.graphics.Rect
 import android.content.Intent
 import android.location.Location
@@ -75,7 +74,7 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         additionalInfo.movementMethod = LinkMovementMethod.getInstance()
 
         /* SET ALL UI ELEMENTS */
-        nameAndCode.text = buildingData.getTitle() + " (" + ")"
+        nameAndCode.text = buildingData.getTitle() + " (" + buildingData.getCode() + ")"
         types.text = buildingData.getTypes()
         departments.text = buildingData.getDepartments()
 

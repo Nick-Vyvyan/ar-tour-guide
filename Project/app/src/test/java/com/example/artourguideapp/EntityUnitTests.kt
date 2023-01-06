@@ -12,6 +12,7 @@ class EntityUnitTests {
 
     private var testBuildingData: BuildingData = BuildingData(
         "Name",
+        "Code",
         "Types",
         "Departments",
         "Accessibility Info",

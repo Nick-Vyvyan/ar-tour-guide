@@ -36,7 +36,7 @@ class DummyEntities{
         var commFacilityEntity = BuildingEntity(
             cfLoc,
             BuildingData(
-            "Communications Facility",
+            "Communications Facility", "CF",
             "Academic",
             "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
             "Button activated entrances are located on the east and west sides of the building" +
@@ -59,7 +59,7 @@ class DummyEntities{
         var wadeKingEntity = BuildingEntity(
         wkrcLoc,
                 BuildingData(
-        "Wade King Recreation Center",
+        "Wade King Recreation Center", "SV",
         "Events\nRecreation",
         "Campus Recreation Services\n" +
         "Sport Clubs",
@@ -105,7 +105,7 @@ class DummyEntities{
         var house1 = BuildingEntity(
             h1Loc,
             BuildingData(
-                "house1",
+                "house1", "CF",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -128,7 +128,7 @@ class DummyEntities{
         var house2 = BuildingEntity(
             h2Loc,
             BuildingData(
-                "house2",
+                "house2", "AH",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -151,7 +151,7 @@ class DummyEntities{
         var house3 = BuildingEntity(
             h3Loc,
             BuildingData(
-                "3",
+                "3", "VU",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -174,7 +174,7 @@ class DummyEntities{
         var house4 = BuildingEntity(
             h4Loc,
             BuildingData(
-                "4",
+                "4", "PH",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -196,7 +196,7 @@ class DummyEntities{
         var house5 = BuildingEntity(
             h5Loc,
             BuildingData(
-                "5",
+                "5", "CF",
                 "Residential",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -219,7 +219,7 @@ class DummyEntities{
         var academicWest = BuildingEntity(
             awLoc,
             BuildingData(
-                "Academic West",
+                "Academic West", "AW",
                 "Educational",
                 "Communication Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -242,7 +242,7 @@ class DummyEntities{
         var environmentalStudies = BuildingEntity(
             esLoc,
             BuildingData(
-                "Environmental Studies",
+                "Environmental Studies", "ES",
                 "Educational",
                 "Environmental Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
@@ -265,7 +265,7 @@ class DummyEntities{
         var slowhouse = BuildingEntity(
             shLoc,
             BuildingData(
-                "Slowhouse",
+                "Slowhouse", "ES",
                 "Educational",
                 "Environmental Studies\nComputer Science\nJournalism\nPhysics and Astronomy",
                 "Button activated entrances are located on the east and west sides of the building" +
