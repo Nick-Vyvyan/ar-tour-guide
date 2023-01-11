@@ -1,6 +1,5 @@
 package com.example.artourguideapp.entities
 
-import android.graphics.PointF
 import android.location.Location
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +34,8 @@ abstract class Entity(
 
         arButton.setBackgroundColor(ResourcesCompat.getColor(activity.resources, R.color.wwu_blue, null))
         arButton.setTextColor(ResourcesCompat.getColor(activity.resources, R.color.wwu_white, null))
+        arButton.setBackgroundResource(R.drawable.button_rounded_corners)
+        arButton.isHapticFeedbackEnabled = true
         arButton.text = name
 
         arButton.setOnClickListener {
