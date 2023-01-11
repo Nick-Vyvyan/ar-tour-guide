@@ -2,18 +2,16 @@ package com.example.artourguideapp
 
 import android.Manifest.permission.*
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.example.artourguideapp.entities.DummyEntities
-import com.example.artourguideapp.entities.EntityFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import com.google.ar.sceneform.ArSceneView
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+
+class ArActivity : AppCompatActivity() {
 
     // Main controller for accessing entities
     private val controller = Controller()
@@ -24,21 +22,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_ar)
 
-//        DummyEntities.initialize(this)
-//        controller.setEntities(DummyEntities.entityList)
-
-        // Init Entity Objects
-        EntityFactory.updateStructures(controller, this)
+        requestAppPermissions()
 
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)
 
-
-        requestAppPermissions()
+        // Schedule AR element updating
         scheduleAnchorPlacements()
         scheduleNodeUpdates()
+
+        // Create search button
         createSearchButton()
     }
 
@@ -53,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun scheduleAnchorPlacements() {
-        val delay: Long = 2000 // waits this many ms before attempting
+        val delay: Long = 0 // waits this many ms before attempting
         val interval = AnchorHelper.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
         Timer().schedule(object: TimerTask() {
@@ -144,7 +139,4 @@ class MainActivity : AppCompatActivity() {
             arSceneView.destroy()
         }
     }
-
-
-
 }
