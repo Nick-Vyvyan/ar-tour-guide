@@ -36,8 +36,9 @@ class MainActivity : AppCompatActivity() {
         arSceneView = findViewById(R.id.arSceneView)
 
 
-        requestAppPermissions();
-        scheduleAnchorUpdates()
+        requestAppPermissions()
+        scheduleAnchorPlacements()
+        scheduleNodeUpdates()
         createSearchButton()
     }
 
@@ -51,17 +52,27 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun scheduleAnchorUpdates() {
+    private fun scheduleAnchorPlacements() {
         val delay: Long = 2000 // waits this many ms before attempting
-        val period: Long = 3000 // updates after this many ms continuously
+        val interval = AnchorHelper.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
         Timer().schedule(object: TimerTask() {
             override fun run() {
-                for (entity in controller.getEntities()) {
-                    runOnUiThread {
-                        println("DEBUG - ATTEMPTING TO SET ANCHOR FOR ${entity.getName()}")
-                        AnchorHelper.attemptSetAnchor(entity, arSceneView)
-                    }
+                runOnUiThread {
+                    AnchorHelper.scheduledSetAnchors(arSceneView, controller.getEntities())
+                }
+            }
+        },delay, interval)
+    }
+
+    private fun scheduleNodeUpdates() {
+        val delay: Long = 2000 // waits this many ms before attempting
+        val period = AnchorHelper.UPDATE_NODE_INTERVAL_MS // updates after this many ms continuously
+
+        Timer().schedule(object: TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    AnchorHelper.scheduledUpdateNodes(arSceneView, controller.getEntities())
                 }
             }
         },delay, period)

@@ -24,7 +24,8 @@ class ArSessionFactory {
                     return
                 } else {
                     arSceneView.session = session;
-                    arSceneView.scene.camera.farClipPlane = AnchorHelper.PROXIMITY_DISTANCE.toFloat()
+                    // Clip anything past visible node distance
+                    arSceneView.scene.camera.farClipPlane = AnchorHelper.VISIBLE_NODE_PROXIMITY_DISTANCE
                 }
             } catch (e: UnavailableException) {
                 // TODO: Handle exception
