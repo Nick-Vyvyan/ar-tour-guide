@@ -5,6 +5,7 @@ import android.graphics.PointF
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import com.example.artourguideapp.entities.*
 import kotlin.concurrent.thread
 import org.json.JSONArray
@@ -13,9 +14,13 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class StartupActivity : AppCompatActivity() {
+    lateinit var progressText: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
+        progressText = findViewById(R.id.progressText)
+        progressText.text = ""
         loadStructuresFromJSON()
     }
 
@@ -129,6 +134,7 @@ class StartupActivity : AppCompatActivity() {
 
 
                     runOnUiThread {
+                        progressText.text = "" + i + " of " + structuresJsonArr.length()
                         // if landmark, add as LandmarkEntity
                         if (currentStructure.getBoolean("isLandmark")) {
                             structures.add(
@@ -171,6 +177,7 @@ class StartupActivity : AppCompatActivity() {
                     for (entity: Entity in controller.getEntities()) {
                         entity.initNode(this)
                     }
+                    progressText.text = "Initializing AR buttons"
 
                     var arActivityIntent = Intent(this, ArActivity::class.java)
                     startActivity(arActivityIntent)
