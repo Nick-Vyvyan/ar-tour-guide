@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.example.artourguideapp.entities.Entity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import com.google.ar.sceneform.ArSceneView
@@ -22,10 +23,14 @@ class ArActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ar)
 
         requestAppPermissions()
 
+        for (entity: Entity in controller.getEntities()) {
+            entity.initNode(this)
+        }
+
+        setContentView(R.layout.activity_ar)
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)
 
@@ -48,7 +53,7 @@ class ArActivity : AppCompatActivity() {
 
 
     private fun scheduleAnchorPlacements() {
-        val delay: Long = 0 // waits this many ms before attempting
+        val delay: Long = 2000 // waits this many ms before attempting
         val interval = AnchorHelper.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
         Timer().schedule(object: TimerTask() {

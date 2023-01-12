@@ -12,6 +12,7 @@ import org.json.JSONArray
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.*
 
 class StartupActivity : AppCompatActivity() {
     lateinit var progressText: TextView
@@ -22,6 +23,24 @@ class StartupActivity : AppCompatActivity() {
         progressText = findViewById(R.id.progressText)
         progressText.text = ""
         loadStructuresFromJSON()
+//        loadDummyEntities()
+    }
+
+    private fun startArActivity() {
+        var arActivityIntent = Intent(this, ArActivity::class.java)
+        startActivity(arActivityIntent)
+
+        Timer().schedule(object: TimerTask() {
+            override fun run() {
+                finish()
+            }
+        },5000)
+    }
+
+    private fun loadDummyEntities() {
+        DummyEntities.initialize(this)
+        controller.setEntities(DummyEntities.entityList)
+        startArActivity()
     }
 
     private fun loadStructuresFromJSON() {
@@ -174,14 +193,8 @@ class StartupActivity : AppCompatActivity() {
                 controller.setEntities(structures)
 
                 runOnUiThread {
-                    for (entity: Entity in controller.getEntities()) {
-                        entity.initNode(this)
-                    }
-                    progressText.text = "Initializing AR buttons"
-
-                    var arActivityIntent = Intent(this, ArActivity::class.java)
-                    startActivity(arActivityIntent)
-                    finish()
+                    progressText.text = "Starting AR session"
+                    startArActivity()
                 }
             } catch (ioException: IOException) {
                 ioException.printStackTrace()

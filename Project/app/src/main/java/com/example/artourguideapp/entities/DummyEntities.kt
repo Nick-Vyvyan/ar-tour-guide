@@ -96,7 +96,7 @@ class DummyEntities{
             LandmarkData(
                 "Stairs to Nowhere",
                 "tellus cras adipiscing enim eu turpis egestas pretium aenean pharetra magna ac placerat vestibulum lectus",
-                "tellus cras adipiscing enim eu turpis egestas pretium aenean pharetra magna ac placerat vestibulum lectus",
+                "",
                 "https://westerngallery.wwu.edu/mark-di-suvero-handel-1975"
             )
         )
@@ -281,7 +281,7 @@ class DummyEntities{
                         "CF 167\n" +
                         "CF 312",
                 "",
-                "8a0fa330-7995-4323-a489-86408aadb6f6.mpeg",
+                "",
                 "https://www.wwu.edu/building/es")
         )
 
