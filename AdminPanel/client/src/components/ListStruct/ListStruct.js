@@ -30,12 +30,13 @@ function ListStruct(props) {
     if (
       window.confirm("Are you sure you want to delete " + props.name + "?") ===
       false
-    ) {
+    )
       return;
-    }
 
-    axios.delete(baseServerURL + "/" + props.id);
-    navigate("/");
+    axios
+      .delete(baseServerURL + "/" + props.id)
+      .then((res) => window.location.reload())
+      .catch((err) => console.error(err));
   };
 
   return (
