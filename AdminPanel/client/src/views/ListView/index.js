@@ -14,17 +14,17 @@ const ListView = (props) => {
 
   if (user === null || user === undefined)
     return <Navigate to={{ pathname: "/login" }} />;
-  
+
   return (
     <Container>
       <h1>Add or Remove Structures</h1>
-      <a class = "linkStyle" href="/panel" > 
-        <div class = "buttonStyle">
+      <a class="linkStyle" href="/panel">
+        <div class="buttonStyle" style={{ textAlign: "center" }}>
           Add a Structure
         </div>
-      </a> 
+      </a>
       <StructInformation />
-      
+      <br />
     </Container>
   );
 };

@@ -1,6 +1,6 @@
 // react imports
 import React, { useState, useMemo } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   useLoadScript,
   GoogleMap,
@@ -24,8 +24,11 @@ const axios = require("axios").default;
 const libraries = ["drawing"];
 
 const PanelView = (props) => {
-  // auth and error
+  // hooks and error
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const { structureData } = state ? state : { structureData: {} };
 
   if (user === null || user === undefined)
     return <Navigate to={{ pathname: "/login" }} />;
@@ -37,8 +40,12 @@ const PanelView = (props) => {
   // eslint-disable-next-line
   const [error, setError] = useState(null);
   const [websiteLink, setWebsiteLink] = useState("");
-  const [coordinates, setCoordinates] = useState("");
-  const [scrapedData, setScrapedData] = useState();
+  const [coordinates, setCoordinates] = !structureData._id
+    ? useState("")
+    : useState(structureData.centerPoint);
+  const [scrapedData, setScrapedData] = !structureData._id
+    ? useState()
+    : useState(structureData.scrapedData);
 
   // center point for WWU on Google map
   const wwuCenter = useMemo(
@@ -108,24 +115,29 @@ const PanelView = (props) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
+    let centerPoint;
 
-    // calculate center point of building
-    let centerPointX = 0;
-    let centerPointY = 0;
-    let coordArray = coordinates.split(",");
+    // only calculate center point if this is a structure being added and not edited
+    if (!structureData._id) {
+      // calculate center point of structure
+      let centerPointX = 0;
+      let centerPointY = 0;
+      let coordArray = coordinates.split(",");
 
-    for (let i = 0; i < coordArray.length; i += 2) {
-      centerPointX += parseFloat(coordArray[i].substring(1));
-      centerPointY += parseFloat(coordArray[i + 1]);
+      for (let i = 0; i < coordArray.length; i += 2) {
+        centerPointX += parseFloat(coordArray[i].substring(1));
+        centerPointY += parseFloat(coordArray[i + 1]);
+      }
+
+      centerPoint =
+        "(" +
+        centerPointX / (coordArray.length / 2) +
+        "," +
+        centerPointY / (coordArray.length / 2) +
+        ")";
     }
 
-    const centerPoint =
-      "(" +
-      centerPointX / (coordArray.length / 2) +
-      "," +
-      centerPointY / (coordArray.length / 2) +
-      ")";
-
+    // upload audio file if one was supplied
     let audioFileName = "";
 
     if (formProps.audio.size > 0) {
@@ -142,19 +154,28 @@ const PanelView = (props) => {
     reqScrapedData.audioFileName = audioFileName;
 
     // put all structure info together into one json
-    const requestJson = {
-      scrapedData,
-      isLandmark: scrapedData.hasOwnProperty("description"),
-      websiteLink,
-      centerPoint,
-    };
+    const requestJson = !structureData._id
+      ? {
+          scrapedData,
+          isLandmark: scrapedData.hasOwnProperty("description"),
+          websiteLink,
+          centerPoint,
+        }
+      : {
+          scrapedData,
+        };
 
     // send structure info to backend to be saved to database
     axios
-      .post(`${baseServerURL}/db/add`, {
-        headers: { "Content-Type": "application/json" },
-        body: requestJson,
-      })
+      .post(
+        !structureData._id
+          ? `${baseServerURL}/db/add`
+          : `${baseServerURL}/update/${structureData._id}`,
+        {
+          headers: { "Content-Type": "application/json" },
+          body: requestJson,
+        }
+      )
       .then((res) => {
         // catch errors
         if (res.status !== 200) {
@@ -162,10 +183,8 @@ const PanelView = (props) => {
           return window.alert(message);
         }
 
-        // reset state info
-        setWebsiteLink("");
-        setCoordinates("");
-        setScrapedData();
+        // return to homepage
+        navigate("/");
       })
       .catch((err) => console.error(err));
   };
