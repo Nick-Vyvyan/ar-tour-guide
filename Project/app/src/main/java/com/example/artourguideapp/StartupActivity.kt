@@ -1,49 +1,156 @@
 package com.example.artourguideapp
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.PointF
 import android.location.Location
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.view.ViewManager
+import android.widget.Button
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.*
 import kotlin.concurrent.thread
 import org.json.JSONArray
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.*
 
 class StartupActivity : AppCompatActivity() {
-    lateinit var progressText: TextView
+
+    //region Private Variables
+
+    private lateinit var loadingText: TextView
+    private lateinit var progressText: TextView
+    private lateinit var appSettingsButton: Button
+    private val PERMISSION_REQUEST_CODE = 12345
+
+    //endregion
+
+    //region Activity Functions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
+
+        initializeUI()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (!hasPermissions())
+            requestPermissions()
+        else {
+            initializeEntitiesAndStart()
+        }
+    }
+
+    //endregion
+
+    //region Permissions
+
+    private fun requestPermissions() {
+        var permissionsToRequest = mutableListOf<String>()
+
+        // Check for camera and location permissions and add to list if not yet permitted
+
+        if (!hasCameraPermission()) {
+            permissionsToRequest.add(Manifest.permission.CAMERA)
+        }
+
+        if (!hasFineLocationPermission()) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+
+        if (!hasCoarseLocationPermission()) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
+
+        // Request any needed permissions
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+                if (hasPermissions()) {
+                    loadingText.text = "Loading..."
+                    loadStructuresFromJsonAndStart()
+                    //loadDummyEntitiesAndStart()
+                }
+                else {
+                    loadingText.text = "Waiting on permissions..."
+                    progressText.text = "Please open app settings"
+                }
+            }
+        }
+    }
+
+    private fun hasPermissions() = hasCameraPermission() && hasCoarseLocationPermission() && hasFineLocationPermission()
+
+    private fun hasCameraPermission() =
+        ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+    private fun hasFineLocationPermission() =
+        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+    private fun hasCoarseLocationPermission() =
+        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+    //endregion
+
+    //region Startup Functions
+
+    // Initialize all UI elements
+    private fun initializeUI() {
+        loadingText = findViewById(R.id.loadingText)
+        loadingText.text = "Requesting Camera and Location permission..."
+
         progressText = findViewById(R.id.progressText)
         progressText.text = ""
-        loadStructuresFromJSON()
-//        loadDummyEntities()
+
+        appSettingsButton = findViewById(R.id.appSettingsButton)
+        appSettingsButton.text = "App Settings"
+        appSettingsButton.setOnClickListener() {
+            //Open Permissions
+            var intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            var uri = Uri.fromParts("package", packageName, null)
+            intent.setData(uri)
+            startActivity(intent)
+        }
     }
 
-    private fun startArActivity() {
-        var arActivityIntent = Intent(this, ArActivity::class.java)
-        startActivity(arActivityIntent)
-
-        Timer().schedule(object: TimerTask() {
-            override fun run() {
-                finish()
-            }
-        },5000)
+    // Initialize entities and start AR
+    private fun initializeEntitiesAndStart() {
+        (appSettingsButton.parent as ViewManager).removeView(appSettingsButton)
+        loadingText.text = "Loading..."
+        loadStructuresFromJsonAndStart()
+//        loadDummyEntitiesAndStart()
     }
 
-    private fun loadDummyEntities() {
+    // Initialize with DummyEntities and start AR
+    private fun loadDummyEntitiesAndStart() {
         DummyEntities.initialize(this)
         controller.setEntities(DummyEntities.entityList)
         startArActivity()
     }
 
-    private fun loadStructuresFromJSON() {
+    // Initialize with JSON Entities and start AR
+    private fun loadStructuresFromJsonAndStart() {
         thread {
             var controller = Controller()
             var localStructuresJsonStr = ""
@@ -201,4 +308,13 @@ class StartupActivity : AppCompatActivity() {
             }
         }
     }
+
+    // Start AR and finish StartupActivity
+    private fun startArActivity() {
+        var arActivityIntent = Intent(this, ArActivity::class.java)
+        startActivity(arActivityIntent)
+        finish()
+    }
+
+    //endregion
 }

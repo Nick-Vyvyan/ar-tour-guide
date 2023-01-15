@@ -23,16 +23,13 @@ class ArActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        requestAppPermissions()
-
-        for (entity: Entity in controller.getEntities()) {
-            entity.initNode(this)
-        }
-
         setContentView(R.layout.activity_ar)
+
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)
+
+        // initialize all entity AR nodes
+        initializeEntityNodes()
 
         // Schedule AR element updating
         scheduleAnchorPlacements()
@@ -67,7 +64,7 @@ class ArActivity : AppCompatActivity() {
 
     private fun scheduleNodeUpdates() {
         val delay: Long = 2000 // waits this many ms before attempting
-        val period = AnchorHelper.UPDATE_NODE_INTERVAL_MS // updates after this many ms continuously
+        val interval = AnchorHelper.UPDATE_NODE_INTERVAL_MS // updates after this many ms continuously
 
         Timer().schedule(object: TimerTask() {
             override fun run() {
@@ -75,39 +72,14 @@ class ArActivity : AppCompatActivity() {
                     AnchorHelper.scheduledUpdateNodes(arSceneView, controller.getEntities())
                 }
             }
-        },delay, period)
+        },delay, interval)
     }
 
-    private fun requestAppPermissions() {
-        // Request permissions for AR and Geospatial
-        ActivityCompat.requestPermissions(
-            this, arrayOf(
-                CAMERA,
-                ACCESS_FINE_LOCATION,
-                ACCESS_COARSE_LOCATION
-            ), 0)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        when (requestCode) {
-            // TODO: handle permission denial
-//            0 -> {
-//                if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-//                    ActivityCompat.requestPermissions(
-//                        this, arrayOf(
-//                            CAMERA,
-//                            ACCESS_FINE_LOCATION,
-//                            ACCESS_COARSE_LOCATION
-//                        ), 0)
-//                }
-//            }
+    private fun initializeEntityNodes() {
+        for (entity: Entity in controller.getEntities()) {
+            entity.initNode(this)
         }
+
     }
 
     override fun onResume() {
@@ -124,7 +96,6 @@ class ArActivity : AppCompatActivity() {
         try {
             arSceneView.resume()
         } catch (ex: CameraNotAvailableException) {
-            // TODO: Handle CameraNotAvailableException
             finish()
             return
         }
