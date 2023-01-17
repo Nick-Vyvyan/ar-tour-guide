@@ -1,16 +1,15 @@
 package com.example.artourguideapp.entities
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Rect
-import android.content.Intent
 import android.location.Location
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -22,8 +21,10 @@ import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
+import com.example.artourguideapp.Navigation
 import com.example.artourguideapp.R
 import java.io.File
+
 
 /**
  * This is a custom Dialog that can be used to display building info.
@@ -33,7 +34,7 @@ import java.io.File
  *      Get the BuildingEntity's Dialog Fragment (.getDialogFragment())
  *      call buildingInfoDialogFragment.show(supportFragmentManager, "custom tag")
  */
-class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Location): DialogFragment() {
+class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Location, var entity: Entity): DialogFragment() {
 
     private val sizePercentageOfScreen = .95f
     var player: MediaPlayer? = null
@@ -43,7 +44,7 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var rootView = inflater.inflate(R.layout.building_data_dialog, container, false)
+        var rootView = inflater.inflate(R.layout.building_dialog, container, false)
         return rootView
     }
 
@@ -59,7 +60,8 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         var genderNeutralRestrooms: TextView = view.findViewById(R.id.genderNeutralRestrooms)
         var computerLabs: TextView = view.findViewById(R.id.computerLabs)
         var audioButton: Button = view.findViewById(R.id.buildingMediaButton)
-        var navButton: Button = view.findViewById(R.id.buildingNavigationButton)
+        var navButton: Button = view.findViewById(R.id.buildingArNavigationButton)
+        var mapButton: Button = view.findViewById(R.id.buildingMapButton)
 
         // Allow links in parking info
         var parkingInfo: TextView = view.findViewById(R.id.parkingInfo)
@@ -129,8 +131,17 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         }
 
         navButton.setOnClickListener {
+            if (activity?.localClassName != "ArActivity") {
+                activity?.finish()
+            }
+            Navigation.startNavigationTo(entity)
+
+            dialog?.dismiss()
+        }
+
+        mapButton.text = "Map"
+        mapButton.setOnClickListener {
             var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + center.latitude + "%2C" + center.longitude)
-            Log.d("DEBUG", "" + center.latitude + " " + center.longitude)
             startActivity(Intent(Intent.ACTION_VIEW, uri))
         }
 
@@ -149,6 +160,9 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         val rect = dm.run { Rect(0, 0, widthPixels, heightPixels) }
         val percentWidth = rect.width() * sizePercentageOfScreen
         dialog?.window?.setLayout(percentWidth.toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+
+
+
     }
 
 

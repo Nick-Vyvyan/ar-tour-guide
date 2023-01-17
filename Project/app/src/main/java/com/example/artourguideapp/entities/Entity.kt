@@ -19,10 +19,12 @@ abstract class Entity(
     private var url: String,
     private var centralLocation : Location,
     private var entityData: EntityData,
-    private var dialogFragment: DialogFragment,
 ) {
+
+    private lateinit var dialogFragment: DialogFragment
 //    lateinit var anchor: Anchor
     private var node: Node = Node()
+    private var isDestination: Boolean = false
 
     fun initNode(activity: AppCompatActivity) {
 //        node = Node()
@@ -93,8 +95,23 @@ abstract class Entity(
         return dialogFragment
     }
 
+    fun setDialogFragment(dialogFragment: DialogFragment) {
+        this.dialogFragment = dialogFragment
+    }
+
     fun getEntityData(): EntityData {
         return entityData
     }
 
+    fun setAsDestination() {
+        isDestination = true
+    }
+
+    fun clearAsDestination() {
+        isDestination = false
+    }
+
+    fun isDestination(): Boolean {
+        return isDestination
+    }
 }

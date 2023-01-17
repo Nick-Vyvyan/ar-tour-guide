@@ -3,7 +3,6 @@ package com.example.artourguideapp.entities
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Color
 import android.graphics.Rect
 import android.location.Location
 import android.media.AudioAttributes
@@ -20,6 +19,7 @@ import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
+import com.example.artourguideapp.Navigation
 import com.example.artourguideapp.R
 import java.io.File
 
@@ -31,7 +31,7 @@ import java.io.File
  *      Get the LandmarkEntity's Dialog Fragment (.getDialogFragment())
  *      call landmarkInfoDialogFragment.show(supportFragmentManager, "custom tag")
  */
-class LandmarkDataDialogFragment(var landmarkData: LandmarkData, var center: Location): DialogFragment() {
+class LandmarkDialogFragment(var landmarkData: LandmarkData, var center: Location, var entity: Entity): DialogFragment() {
 
     private val sizePercentageOfScreen = .95f
     var player: MediaPlayer? = null
@@ -41,7 +41,7 @@ class LandmarkDataDialogFragment(var landmarkData: LandmarkData, var center: Loc
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.landmark_data_dialog, container, false)
+        return inflater.inflate(R.layout.landmark_dialog, container, false)
     }
 
 
@@ -53,7 +53,8 @@ class LandmarkDataDialogFragment(var landmarkData: LandmarkData, var center: Loc
         var landmarkScrollView : ScrollView = view.findViewById(R.id.landmark_data_scrollview)
         var description: TextView = view.findViewById(R.id.landmark_data_description)
         var audioButton: Button = view.findViewById(R.id.landmarkMediaButton)
-        var navButton: Button = view.findViewById(R.id.landmarkNavigationButton)
+        var navButton: Button = view.findViewById(R.id.landmarkArNavigationButton)
+        var mapButton: Button = view.findViewById(R.id.landmarkMapButton)
 
         // TODO: Initialize audio embedding variable here
 
@@ -68,6 +69,17 @@ class LandmarkDataDialogFragment(var landmarkData: LandmarkData, var center: Loc
         description.text = landmarkData.getDescription()
 
         navButton.setOnClickListener {
+            if (activity?.localClassName == "SearchActivity") {
+                activity?.finish()
+            }
+
+            Navigation.startNavigationTo(entity)
+
+            dialog?.dismiss()
+        }
+
+        mapButton.text = "Map"
+        mapButton.setOnClickListener {
             var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + center.latitude + "%2C" + center.longitude)
             startActivity(Intent(Intent.ACTION_VIEW, uri))
         }

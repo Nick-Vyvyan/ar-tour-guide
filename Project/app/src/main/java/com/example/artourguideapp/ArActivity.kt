@@ -3,6 +3,8 @@ package com.example.artourguideapp
 import android.Manifest.permission.*
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.Entity
@@ -14,11 +16,19 @@ import java.util.*
 
 class ArActivity : AppCompatActivity() {
 
+    companion object {
+        var navigating = false
+    }
+
     // Main controller for accessing entities
     private val controller = Controller()
 
+    // Navigation component
+    private lateinit var navigation: Navigation
+    private lateinit var navButton: Button
+
     // AR SceneForm Variables
-    lateinit var arSceneView: ArSceneView
+    private lateinit var arSceneView: ArSceneView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +37,20 @@ class ArActivity : AppCompatActivity() {
 
         // get ARSceneView
         arSceneView = findViewById(R.id.arSceneView)
+        navButton = findViewById(R.id.navButton)
+
+        Navigation.init(arSceneView, this, navButton)
+
+        navButton.text = "Stop Navigation"
+        navButton.visibility = View.INVISIBLE
+        navButton.setOnClickListener {
+            if (navigating) {
+                navigating = false
+                Navigation.stopNavigation()
+            }
+            navButton.visibility = View.INVISIBLE
+        }
+
 
         // initialize all entity AR nodes
         initializeEntityNodes()

@@ -44,10 +44,12 @@ class AnchorHelper {
                     // Get distance to entity
                     val distance = userLocation.distanceTo(entity.getCentralLocation())
 
-                    // If entity in proximity but node is not yet attached
-                    if (distance > ANCHOR_PROXIMITY_DISTANCE) {
+                    // If entity is too far away or is not the destination, remove the anchor
+                    if (distance > ANCHOR_PROXIMITY_DISTANCE && !entity.isDestination()) {
                         removeAnchor(entity)
                     }
+                    // If entity in proximity or is destination, but node is not yet attached
+                    //      Create anchor, set node, and update scale and rotation
                     else if (!entity.nodeIsAttached()) {
                         createAnchorAndSetNode(earth, entity, arSceneView)
                         updateNodeScale(entity.getNode(), distance)

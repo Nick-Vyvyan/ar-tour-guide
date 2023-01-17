@@ -17,7 +17,7 @@ var currentEntities: ArrayList<Entity> = ArrayList()
 /**
  * Allows the user to search for structures by name, using a search bar and dynamic list of structures.
  *
- * When a structure name is clicked on, either a [BuildingDataDialogFragment] or [LandmarkDataDialogFragment]
+ * When a structure name is clicked on, either a [BuildingDataDialogFragment] or [LandmarkDialogFragment]
  * is shown, depending on the type of structure.
  */
 class SearchActivity : AppCompatActivity() {
@@ -79,11 +79,13 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun createDialog(structure: Entity) {
-        if (structure is BuildingEntity)
-            BuildingDataDialogFragment(structure.getEntityData() as BuildingData, structure.getCentralLocation())
-                .show(supportFragmentManager, structure.getName())
-        else if (structure is LandmarkEntity)
-            LandmarkDataDialogFragment(structure.getEntityData() as LandmarkData, structure.getCentralLocation())
-                .show(supportFragmentManager, structure.getName())
+        structure.getDialogFragment().show(supportFragmentManager, structure.getName())
+
+//        if (structure is BuildingEntity)
+//            BuildingDataDialogFragment(structure.getEntityData() as BuildingData, structure.getCentralLocation())
+//                .show(supportFragmentManager, structure.getName())
+//        else if (structure is LandmarkEntity)
+//            LandmarkDialogFragment(structure.getEntityData() as LandmarkData, structure.getCentralLocation())
+//                .show(supportFragmentManager, structure.getName())
     }
 }
