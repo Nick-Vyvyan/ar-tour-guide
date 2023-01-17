@@ -29,6 +29,7 @@ class StartupActivity : AppCompatActivity() {
     private lateinit var appSettingsButton: Button
     private val PERMISSION_REQUEST_CODE = 12345
 
+    private val loadDummyEntities: Boolean = true
     //endregion
 
     //region Activity Functions
@@ -138,8 +139,13 @@ class StartupActivity : AppCompatActivity() {
     private fun initializeEntitiesAndStart() {
         (appSettingsButton.parent as ViewManager).removeView(appSettingsButton)
         loadingText.text = "Loading..."
-        loadStructuresFromJsonAndStart()
-//        loadDummyEntitiesAndStart()
+
+        if (loadDummyEntities) {
+            loadDummyEntitiesAndStart()
+        }
+        else {
+            loadStructuresFromJsonAndStart()
+        }
     }
 
     // Initialize with DummyEntities and start AR
