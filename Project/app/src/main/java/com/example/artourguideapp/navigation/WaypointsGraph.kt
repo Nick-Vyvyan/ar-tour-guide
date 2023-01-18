@@ -119,7 +119,7 @@ class WaypointsGraph{
                     pathMap[it.vertexB]!!.clear()
                     pathMap[it.vertexB]!!.addAll(pathMap[it.vertexA] as Collection<WaypointVertex>)
                     pathMap[it.vertexB]!!.add(it.vertexA)
-                    Log.d("NAVIGATION", "Updating path to vertex (${it.vertexB.location}). Path is ${pathMap[it.vertexB]}")
+//                    Log.d("NAVIGATION", "Updating path to vertex (${it.vertexB.location}). Path is ${pathMap[it.vertexB]}")
                 }
             }
 

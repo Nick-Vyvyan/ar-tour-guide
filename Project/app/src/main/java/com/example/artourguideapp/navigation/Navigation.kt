@@ -82,6 +82,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private var pathIndex = 0
     private lateinit var destination: Entity
     private var distanceNode: Node = Node()
+    private val distanceNodeScaleMultiplier = 0.5f
     private var currentWaypoint: AnchorNode? = null
     private var nextWaypoint: AnchorNode? = null
 
@@ -164,7 +165,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
             buildDistanceNode(path[0].distanceTo(destination.getCentralLocation()))
             distanceNode.parent = currentWaypoint
-            rotateDistanceNode()
+            updateDistanceNode()
             }
         }
 
@@ -201,12 +202,12 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                     updateWaypoints()
                 }
                 else {
-                    rotateDistanceNode()
+                    updateDistanceNode()
                 }
 
-                if (shouldEndNavigation()) {
-                    stopNavigation()
-                }
+//                if (shouldEndNavigation()) {
+//                    stopNavigation()
+//                }
             }
         }
     }
@@ -350,7 +351,10 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
     //region Waypoint Functions
 
-    private fun buildDistanceNode(distance: Float) {
+    private fun buildDistanceNode(distanceInMeters: Float) {
+        val distanceInFeet = distanceInMeters * 3.28084
+        val formattedDistance = distanceInFeet.toInt()
+
         distanceNode.name = "Distance sign"
 
         // Programmatically build an ar button without a XML
@@ -360,21 +364,35 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         arButton.setBackgroundResource(R.drawable.button_rounded_corners)
         arButton.setBackgroundColor(ResourcesCompat.getColor(activity.resources,
             R.color.wwu_blue, null))
-        arButton.text = "${destination.getName()}\n$distance feet"
+        arButton.text = "${destination.getName()}\n$formattedDistance feet"
 
         ViewRenderable.builder().setView(activity, arButton).build()
             .thenAccept {renderable ->
                 distanceNode.renderable = renderable }
     }
 
-    private fun rotateDistanceNode() {
+    private fun updateDistanceNode() {
         // Get the vector from the arrow to the user
         val direction = Vector3.subtract(distanceNode.worldPosition, arSceneView.scene.camera.worldPosition)
 
         // Updated rotation as Quaternion
         val lookRotation = Quaternion.lookRotation(direction, Vector3.up())
 
+        val scale = Vector3(direction.length() * distanceNodeScaleMultiplier,
+                            direction.length() * distanceNodeScaleMultiplier,
+                            direction.length() * distanceNodeScaleMultiplier)
+
         distanceNode.worldRotation = lookRotation
+        distanceNode.worldScale = scale
+        distanceNode.isEnabled = true
+
+//        Log.d("NAVIGATION","User = ${arSceneView.scene.camera.worldPosition}" +
+//                "\ndestination = ${destination.getNode().worldPosition}" +
+//                "\ndistance sign = ${distanceNode.worldPosition}" +
+//                "\ndistanceNode scale = ${distanceNode.worldScale}" +
+//                "\ndistance node renderable = ${distanceNode.renderable}" +
+//                "\ncurrent waypoint = ${currentWaypoint?.isActive}" +
+//                "\ndistance node enabled = ${distanceNode.isEnabled}")
     }
 
     private fun shouldUpdateWaypoints(): Boolean {
@@ -401,10 +419,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
         val earth = arSceneView.session?.earth
         if (earth?.trackingState == TrackingState.TRACKING) {
-            val userLocation = Location("User")
-
             if (pathIndex < path.size - 1) {
-
                 // Create anchor for next waypoint
                 val nextAnchor = earth.createAnchor(
                     path[pathIndex + 1].latitude,
@@ -425,7 +440,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             }
         }
 
-        rotateDistanceNode()
+        updateDistanceNode()
 
     }
 
