@@ -6,13 +6,6 @@
         android:left="10dp"
         android:bottom="2dp"
         android:right="10dp" />
-    <solid android:color="@color/wwu_blue2">
-
-    </solid>
+    <solid android:color="@color/wwu_blue2" />
 </shape>
-
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<selector xmlns:android="http://schemas.android.com/apk/res/android">-->
-
-<!--</selector>-->
 
