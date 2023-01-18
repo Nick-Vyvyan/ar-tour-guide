@@ -3,7 +3,6 @@ package com.example.artourguideapp
 import android.location.Location
 import com.example.artourguideapp.entities.Entity
 import com.google.ar.core.Earth
-import com.google.ar.core.GeospatialPose
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ArSceneView
@@ -27,7 +26,7 @@ class AnchorHelper {
         const val SCALE_MULTIPLIER = 0.5f
         const val SCALE_MIN_DISTANCE = 20
 
-        fun scheduledSetAnchors(arSceneView: ArSceneView, entities: MutableList<Entity>) {
+        fun setAnchors(arSceneView: ArSceneView, entities: MutableList<Entity>) {
 
             // Get AR Earth
             val earth = arSceneView.session?.earth
@@ -59,7 +58,7 @@ class AnchorHelper {
             }
         }
 
-        fun scheduledUpdateNodes(arSceneView: ArSceneView, entities: MutableList<Entity>) {
+        fun updateNodes(arSceneView: ArSceneView, entities: MutableList<Entity>) {
             for (entity in entities) {
                 // If node is attached
                 if (entity.nodeIsAttached()) {

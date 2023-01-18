@@ -19,7 +19,7 @@ import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
-import com.example.artourguideapp.Navigation
+import com.example.artourguideapp.navigation.Navigation
 import com.example.artourguideapp.R
 import java.io.File
 
