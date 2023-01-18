@@ -37,6 +37,7 @@ abstract class Entity(
         arButton.setBackgroundResource(R.drawable.button_rounded_corners)
         arButton.isHapticFeedbackEnabled = true
         arButton.text = name
+        arButton.setTextAppearance(R.style.ButtonText)
 
         arButton.setOnClickListener {
             if (!dialogFragment.isVisible) {

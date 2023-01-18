@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ButtonText" parent="TextAppearance.AppCompat">
+        <item name="android:shadowDx">4</item>
+        <item name="android:shadowDy">5</item>
+        <item name="android:shadowRadius">10</item>
+        <item name="android:shadowColor">#000000</item>
+    </style>
+
+
+</resources>
