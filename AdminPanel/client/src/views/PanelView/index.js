@@ -104,8 +104,10 @@ const PanelView = (props) => {
           const message = `An error occurred: ${res.statusText}`;
           return window.alert(message);
         }
-
-        setScrapedData(parseWeb(res.data));
+        let tempData = parseWeb(res.data)
+        tempData.searchTerms = ""
+        console.log(tempData)
+        setScrapedData(tempData);
       })
       .catch((err) => console.error(err));
   };

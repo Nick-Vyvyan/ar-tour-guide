@@ -33,12 +33,11 @@ abstract class Entity(
 
         // Programmatically build an ar button without a XML
         val arButton = Button(activity)
-
-        arButton.setBackgroundColor(ResourcesCompat.getColor(activity.resources, R.color.wwu_blue, null))
-        arButton.setTextColor(ResourcesCompat.getColor(activity.resources, R.color.wwu_white, null))
+        
         arButton.setBackgroundResource(R.drawable.button_rounded_corners)
         arButton.isHapticFeedbackEnabled = true
         arButton.text = name
+        arButton.setTextAppearance(R.style.ButtonText)
 
         arButton.setOnClickListener {
             if (!dialogFragment.isVisible) {

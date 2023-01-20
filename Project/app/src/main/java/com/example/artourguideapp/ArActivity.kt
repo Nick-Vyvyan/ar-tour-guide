@@ -50,6 +50,9 @@ class ArActivity : AppCompatActivity() {
         scheduleAnchorPlacements()
         scheduleNodeUpdates()
 
+        // Create map button
+        createMapButton()
+
         // Create search button
         createSearchButton()
     }
@@ -115,6 +118,15 @@ class ArActivity : AppCompatActivity() {
         fab.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
+        }
+    }
+
+    private fun createMapButton() {
+        // map button on-click listener
+        val fab = findViewById<FloatingActionButton>(R.id.map_fab)
+        fab.setOnClickListener {
+            val mapIntent = Intent(this, MapActivity::class.java)
+            startActivity(mapIntent)
         }
     }
 

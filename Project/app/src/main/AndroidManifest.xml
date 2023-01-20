@@ -30,14 +30,26 @@
         android:theme="@style/Theme.ARTourGuideApp"
         tools:targetApi="31">
         <activity
+            android:name=".MapActivity"
+            android:exported="false"
+            android:label="WWU Campus Map"
+            android:parentActivityName=".ArActivity"
+            android:configChanges="orientation|screenSize">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".StartupActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -66,7 +78,8 @@
             android:name=".ArActivity"
             android:exported="false"
             android:screenOrientation="portrait">
-        </activity> <!-- Indicates whether "Google Play Services for AR" (ARCore) is "required" or "optional". -->
+        </activity> 
+        <!-- Indicates whether "Google Play Services for AR" (ARCore) is "required" or "optional". -->
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />

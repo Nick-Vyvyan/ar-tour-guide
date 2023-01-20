@@ -85,7 +85,7 @@ function parseBuilding(data) {
 
   // get Departments and Offices
   const departmentsOfficesElements = getDivListContent(
-    'href="https://www.wwu.edu/taxonomy',
+    'href="/taxonomy',
     data
   );
 
