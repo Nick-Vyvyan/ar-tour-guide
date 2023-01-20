@@ -114,7 +114,7 @@ class ArActivity : AppCompatActivity() {
     // Create the search button
     private fun createSearchButton() {
         // search button on-click listener
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        val fab = findViewById<FloatingActionButton>(R.id.search_fab)
         fab.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
