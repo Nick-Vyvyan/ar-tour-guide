@@ -1,10 +1,8 @@
 package com.example.artourguideapp
 
-import android.Manifest.permission.*
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.Entity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.exceptions.CameraNotAvailableException
@@ -35,19 +33,30 @@ class ArActivity : AppCompatActivity() {
         scheduleAnchorPlacements()
         scheduleNodeUpdates()
 
+        // Create map button
+        createMapButton()
+
         // Create search button
         createSearchButton()
     }
 
+    private fun createMapButton() {
+        // map button on-click listener
+        val fab = findViewById<FloatingActionButton>(R.id.map_fab)
+        fab.setOnClickListener {
+            val mapIntent = Intent(this, MapActivity::class.java)
+            startActivity(mapIntent)
+        }
+    }
+
     private fun createSearchButton() {
         // search button on-click listener
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        val fab = findViewById<FloatingActionButton>(R.id.search_fab)
         fab.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
         }
     }
-
 
     private fun scheduleAnchorPlacements() {
         val delay: Long = 2000 // waits this many ms before attempting
