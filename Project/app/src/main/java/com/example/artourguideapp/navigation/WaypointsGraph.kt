@@ -18,7 +18,7 @@ class WaypointsGraph{
         return vertex
     }
 
-    fun getClosestVertexToLocation(location: Location) : WaypointVertex? {
+    private fun getClosestVertexToLocation(location: Location) : WaypointVertex? {
         var smallestDistance = Float.MAX_VALUE
         var closestVertex: WaypointVertex? = null
 
@@ -26,7 +26,6 @@ class WaypointsGraph{
             if (vertex.location.distanceTo(location) < smallestDistance) {
                 smallestDistance = vertex.location.distanceTo(location)
                 closestVertex = vertex
-                Log.d("WAYPOINTS", "Closest vertex = ${vertex.location}, distance = $smallestDistance")
             }
         }
         return closestVertex
@@ -60,14 +59,21 @@ class WaypointsGraph{
     }
 
     // Dijkstra's Algorithm to find shortest path. Algorithm terminates once destination is processed
-    fun shortestPath(source: WaypointVertex?, destination: WaypointVertex?): MutableList<Location> {
+    fun shortestPath(sourceLocation: Location, destinationLocation: Location): NavigationPath {
+
+        val source = getClosestVertexToLocation(sourceLocation)
+        val destination = getClosestVertexToLocation(destinationLocation)
+
         // Path to return
         var path = mutableListOf<Location>()
+        var distance = 0f
 
         // If null arguments, return empty path
         if (source == null || destination == null) {
-            return path
+            return NavigationPath(path, distance)
         }
+
+        distance += destination.location.distanceTo(destinationLocation)
 
         // Get the set of vertices without the source
         var setOfVerticesWithoutSource = adjacencyMap.keys.toMutableSet()
@@ -97,8 +103,6 @@ class WaypointsGraph{
 
             // Get the vertex with the smallest distance from the source
             var vertexWithMinDistance = getVertexWithMinimumDistance(unvisitedVertices, distanceMap, source)
-
-//            Log.d("NAVIGATION", "Visiting vertex = $vertexWithMinDistance")
 
             // Add to visited vertices and remove from unvisited vertices
             visitedVertices.add(vertexWithMinDistance)
@@ -130,12 +134,12 @@ class WaypointsGraph{
                     path.add(it.location)
                 }
                 path.add(vertexWithMinDistance.location)
-                return path
+                distance += distanceMap[vertexWithMinDistance]!!
+                return NavigationPath(path, distance)
             }
         }
 
-
-        return path
+        return NavigationPath(path, distance)
     }
 
     // Helper function for Dijkstra. Gets the next closest vertex in the distanceMap from the unvisited set

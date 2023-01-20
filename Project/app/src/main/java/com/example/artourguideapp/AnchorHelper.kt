@@ -18,9 +18,10 @@ class AnchorHelper {
 
     companion object {
         const val ANCHOR_PROXIMITY_DISTANCE = 500f
-        const val VISIBLE_NODE_PROXIMITY_DISTANCE = 150f
-
+        const val ANCHOR_ELEVATION_OFFSET = 1.5f
         const val ANCHOR_SET_INTERVAL_MS : Long = 30000
+
+        const val VISIBLE_NODE_PROXIMITY_DISTANCE = 150f
         const val UPDATE_NODE_INTERVAL_MS : Long = 250
 
         const val SCALE_MULTIPLIER = 0.5f
@@ -58,17 +59,20 @@ class AnchorHelper {
             }
         }
 
-        fun updateNodes(arSceneView: ArSceneView, entities: MutableList<Entity>) {
+        fun updateNodes(arSceneView: ArSceneView?, entities: MutableList<Entity>) {
             for (entity in entities) {
                 // If node is attached
                 if (entity.nodeIsAttached()) {
-                    // Get distance to Node
-                    val distance = Vector3.subtract(arSceneView.scene.camera.worldPosition, entity.getNode().worldPosition).length()
 
-                    // If node is within visible range, update scale and rotation
-                    if (distance < VISIBLE_NODE_PROXIMITY_DISTANCE) {
-                        updateNodeScale(entity.getNode(), distance)
-                        updateNodeRotation(entity.getNode(), arSceneView.scene.camera.worldPosition)
+                    if (arSceneView != null && arSceneView.scene != null && arSceneView.scene.camera != null) {
+                        // Get distance to Node
+                        val distance = Vector3.subtract(arSceneView.scene.camera.worldPosition, entity.getNode().worldPosition).length()
+
+                        // If node is within visible range, update scale and rotation
+                        if (distance < VISIBLE_NODE_PROXIMITY_DISTANCE) {
+                            updateNodeScale(entity.getNode(), distance)
+                            updateNodeRotation(entity.getNode(), arSceneView.scene.camera.worldPosition)
+                        }
                     }
                 }
             }
@@ -79,7 +83,7 @@ class AnchorHelper {
             val entityAnchor = earth.createAnchor(
                 entity.getCentralLocation().latitude,
                 entity.getCentralLocation().longitude,
-                earth.cameraGeospatialPose.altitude + 0.5f,
+                earth.cameraGeospatialPose.altitude + ANCHOR_ELEVATION_OFFSET,
                 0f, 0f, 0f, 1f
             )
 

@@ -15,19 +15,11 @@ import java.util.*
 
 class ArActivity : AppCompatActivity() {
 
-    companion object {
-
-        // This is global so it can be modified from Navigation
-        var navigating = false
-    }
-
     //region Private Variables
 
     // Main controller for accessing entities
     private val controller = Controller()
 
-    // Navigation component
-    private lateinit var navigation: Navigation
     private lateinit var navButton: Button
 
     // AR SceneForm Variables
@@ -103,13 +95,8 @@ class ArActivity : AppCompatActivity() {
     // Set navigation button properties
     private fun setNavButtonProperties() {
         navButton.text = "Stop Navigation"
-        navButton.visibility = View.INVISIBLE
         navButton.setOnClickListener {
-            if (navigating) {
-                navigating = false
-                Navigation.stopNavigation()
-            }
-            navButton.visibility = View.INVISIBLE
+            Navigation.stopNavigation()
         }
     }
 
