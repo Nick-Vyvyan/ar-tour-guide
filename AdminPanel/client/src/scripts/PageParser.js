@@ -119,15 +119,13 @@ function parseBuilding(data) {
   });
 
   // get gender neutral restrooms
-  output.genderNeutralRestrooms = parseRoomNumbers(
+  output.genderNeutralRestrooms = getContentBetweenTags(
+    "<p>",
+    "</p>",
     getContentBetweenTags(
-      "<p>",
-      "</p>",
-      getContentBetweenTags(
-        'class="field field--name-field-gender-neutral-restrooms field--type-text-long field--label-hidden field-item">',
-        "</div>",
-        data
-      )
+      'class="field field--name-field-gender-neutral-restrooms field--type-text-long field--label-hidden field-item">',
+      "</div>",
+      data
     )
   );
 
@@ -165,7 +163,6 @@ function parseBuilding(data) {
   output.dining = output.dining.join(", ");
   output.buildingCode = output.buildingCode.join(", ");
   output.structureTypes = output.structureTypes.join(", ");
-  output.genderNeutralRestrooms = output.genderNeutralRestrooms.join(", ");
 
   return output;
 }
