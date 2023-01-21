@@ -97,13 +97,23 @@ const PanelView = (props) => {
     );
   };
 
-  const addStructureToSearchIndex = (obj) => {
+  const addStructureToSearchIndex = (buildingData) => {
     // get existing search index from mongo
     // convert to local object
 
+    const searchTokens = getSearchTokens(buildingData)
+   
+    console.log(searchTokens)
+
+    // have array of search strings
+    // add to index
+    
+  }
+
+  const getSearchTokens = (buildingData) => {
     let searchString = 
-    [obj.structureName,
-     obj.searchTerms]
+    [buildingData.structureName,
+     buildingData.searchTerms]
      .join(' ')
 
     // for each relevant field
@@ -112,36 +122,37 @@ const PanelView = (props) => {
     // remove stop words
     // split words into array
     // add document to search index
-    if (! obj.isLandmark) {
+    if (! buildingData.isLandmark) {
       // relevant fields
       searchString = 
       [
-       obj.buildingCode,
-       obj.structureTypes,
-       obj.departmentsOffices,
+       buildingData.buildingCode,
+       buildingData.structureTypes,
+       buildingData.departmentsOffices,
       ]
       .join(' ')
    
-      if (obj.computerLabs != "") {
+      if (buildingData.computerLabs != "") {
         searchString += " computer lab"
       }
       
-      if (obj.genderNeutralRestrooms != "") {
+      if (buildingData.genderNeutralRestrooms != "") {
         searchString += " bathroom restroom gender neutral toilet washroom"
       }
 
-      if (obj.dining != "") {
+      if (buildingData.dining != "") {
         searchString += " dining diner restaurant eatery cafe cafeteria food drink shop lunch dinner breakfast eat "
         
         // remove URLs and add names to searchString
-        let diningOptions = obj.dining.split(' ')
+        let diningOptions = buildingData.dining.split(' ')
         diningOptions = diningOptions.filter(token => ! (token.includes("http") || token.includes("N/A") || token.includes("None") || token === "-"));
 
         searchString += diningOptions.join(' ')
       }
 
-      searchString = removeStopwords(searchString)
-
+      searchString = searchString.toLowerCase()
+      searchString = removeSymbols(searchString)
+      return removeStopwords(searchString.split(' '))
     }
   }
 
@@ -260,16 +271,9 @@ const PanelView = (props) => {
   };
 
   const removeSymbols = (str) => {
-    // convert string to array
-    // filter array by alphanumeric
-    // return as string
+    const newVar = str.split("").filter(token => token.match(/[a-zA-Z0-9\s]/i))
+    return newVar.join('')
   };
-
-  const toLowercase = (str) => {
-    // convert string to array
-    // change all uppercase to lowercase
-    //return as string
-  }
 
   return (
     <>
