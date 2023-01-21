@@ -10,6 +10,7 @@ import S3 from "react-aws-s3";
 import { v4 as uuidv4 } from "uuid";
 import useAuth from "../../hook/useAuth";
 import Error from "../../components/Error";
+import { removeStopwords } from "stopword";
 
 // components
 import Container from "react-bootstrap/Container";
@@ -30,21 +31,24 @@ const PanelView = (props) => {
   const { state } = useLocation();
   const { structureData } = state ? state : { structureData: {} };
 
-  if (user === null || user === undefined)
-    return <Navigate to={{ pathname: "/login" }} />;
+  
 
   // const baseServerURL = "http://localhost:5000";
-  const baseServerURL =
-    "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+  
 
   // eslint-disable-next-line
   const [error, setError] = useState(null);
+  // eslint-disable-next-line
   const [websiteLink, setWebsiteLink] = useState("");
   const [coordinates, setCoordinates] = !structureData._id
+  // eslint-disable-next-line
     ? useState("")
+    // eslint-disable-next-line
     : useState(structureData.centerPoint);
   const [scrapedData, setScrapedData] = !structureData._id
+  // eslint-disable-next-line
     ? useState()
+    // eslint-disable-next-line
     : useState(structureData.scrapedData);
 
   // center point for WWU on Google map
@@ -56,6 +60,18 @@ const PanelView = (props) => {
     []
   );
 
+  // load in google map with required libraries
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyC4KhgTKzblt28kngclW9__A2vZUevgdgo",
+    libraries,
+  });
+
+  const baseServerURL =
+    "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+
+  if (user === null || user === undefined)
+    return <Navigate to={{ pathname: "/login" }} />;
+
   // create new s3 interface
   const ReactS3Client = new S3({
     bucketName: "artourguide",
@@ -64,11 +80,7 @@ const PanelView = (props) => {
     secretAccessKey: "3TziVm4GISQMvwpDeBVck7/rkf2JpVvsawLgaYYI",
   });
 
-  // load in google map with required libraries
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyC4KhgTKzblt28kngclW9__A2vZUevgdgo",
-    libraries,
-  });
+  
   if (!isLoaded) return <div>Loading Map...</div>;
 
   // const onLoad = (drawingManager) => {
@@ -85,15 +97,63 @@ const PanelView = (props) => {
     );
   };
 
+  const addStructureToSearchIndex = (obj) => {
+    // get existing search index from mongo
+    // convert to local object
+
+    let searchString = 
+    [obj.structureName,
+     obj.searchTerms]
+     .join(' ')
+
+    // for each relevant field
+    // add all strings to one big string
+    // clean up punctuation
+    // remove stop words
+    // split words into array
+    // add document to search index
+    if (! obj.isLandmark) {
+      // relevant fields
+      searchString = 
+      [
+       obj.buildingCode,
+       obj.structureTypes,
+       obj.departmentsOffices,
+      ]
+      .join(' ')
+   
+      if (obj.computerLabs != "") {
+        searchString += " computer lab"
+      }
+      
+      if (obj.genderNeutralRestrooms != "") {
+        searchString += " bathroom restroom gender neutral toilet washroom"
+      }
+
+      if (obj.dining != "") {
+        searchString += " dining diner restaurant eatery cafe cafeteria food drink shop lunch dinner breakfast eat "
+        
+        // remove URLs and add names to searchString
+        let diningOptions = obj.dining.split(' ')
+        diningOptions = diningOptions.filter(token => ! (token.includes("http") || token.includes("N/A") || token.includes("None") || token === "-"));
+
+        searchString += diningOptions.join(' ')
+      }
+
+      searchString = removeStopwords(searchString)
+
+    }
+  }
+
   // get map coords and scrape website
   const handleFirstSubmit = (e) => {
     e.preventDefault();
 
     // make sure structure is outlined on map first
-    if (coordinates === "")
+    /*if (coordinates === "")
       return window.alert(
         "Please outline a building/landmark on the map using the polygon tool!"
-      );
+      );*/
 
     // forward request to server to bypass cors restrictions
     axios
@@ -155,6 +215,8 @@ const PanelView = (props) => {
     let reqScrapedData = scrapedData;
     reqScrapedData.audioFileName = audioFileName;
 
+    addStructureToSearchIndex(scrapedData)
+
     // put all structure info together into one json
     const requestJson = !structureData._id
       ? {
@@ -197,10 +259,22 @@ const PanelView = (props) => {
     return tempStr.charAt(0).toUpperCase() + tempStr.slice(1);
   };
 
+  const removeSymbols = (str) => {
+    // convert string to array
+    // filter array by alphanumeric
+    // return as string
+  };
+
+  const toLowercase = (str) => {
+    // convert string to array
+    // change all uppercase to lowercase
+    //return as string
+  }
+
   return (
     <>
       {/* if coordinates and scraped data are present, display form to manually review it */}
-      {coordinates !== "" && scrapedData ? (
+      {/*coordinates !== "" && */scrapedData ? (
         <Container>
           <h1>Review your Building/Landmark Data</h1>
           <p>
