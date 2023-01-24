@@ -10,4 +10,5 @@
     <color name="wwu_blue">#FF003F87</color>
     <color name="wwu_blue2">#FF0083D6</color>
     <color name="wwu_white">#FFFFFFFF</color>
+    <color name="light_gray">#808080</color>
 </resources>

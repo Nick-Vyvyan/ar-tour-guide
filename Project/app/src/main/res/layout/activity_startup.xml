@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
+    android:backgroundTint="@color/black"
     tools:context=".StartupActivity">
 
     <TextView
@@ -13,6 +15,8 @@
         android:text="Loading..."
         android:textAlignment="center"
         android:textSize="24sp"
+        style="@style/ButtonText"
+        android:shadowColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -27,6 +31,8 @@
         android:text="1 of 6"
         android:textAlignment="center"
         android:textSize="24sp"
+        style="@style/ButtonText"
+        android:shadowColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +46,7 @@
         android:layout_marginTop="64dp"
         android:backgroundTint="@color/wwu_blue2"
         android:text="Grant Permission"
+        style="@style/ButtonText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

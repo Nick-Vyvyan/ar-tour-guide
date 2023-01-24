@@ -16,6 +16,6 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:textColor">@color/wwu_white</item>
         <item name="android:textColorLink">@color/teal_200</item>
-        <item name="android:backgroundTint">@color/wwu_blue</item>
+        <item name="android:backgroundTint">@color/black</item>
     </style>
 </resources>
