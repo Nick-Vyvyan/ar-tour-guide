@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="12dp"
     android:background="@drawable/button_rounded_corners"
-    android:backgroundTint="@color/wwu_blue"
+    android:backgroundTint="@color/cardview_dark_background"
     tools:context=".SearchActivity">
 
   <EditText
