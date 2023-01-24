@@ -16,6 +16,12 @@ module.exports = {
         console.log("Successfully connected to MongoDB.");
       }
 
+      // nuclear option
+      //_db.collection("search").deleteOne({})
+
+      // post nuclear option
+      //_db.collection("search").insertOne({index: {}})
+
       return callback(err);
     });
   },

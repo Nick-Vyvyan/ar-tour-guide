@@ -30,8 +30,7 @@ recordRoutes.route("/search").get(function (req, res) {
   let db_connect = dbo.getDb();
   db_connect
     .collection("search")
-    .find({})
-    .toArray(function (err, result) {
+    .findOne({}, function (err, result) {
       if (err) throw err;
       res.json(result);
     });
@@ -63,8 +62,8 @@ recordRoutes.route("/db/add").post(function (req, response) {
     if (err) throw err
 
     // in this case the maxnum and id are the same as we are adding a new entry
-    let maxNum = num[0].id + 1
-    addStructureToSearchIndex(req.body.body.scrapedData, db_connect, maxNum, maxNum)
+    let id = num[0].id + 1
+    addStructureToSearchIndex(req.body.body.scrapedData, db_connect, id)
 
     myobj.id = maxNum
     db_connect.collection("structures").insertOne(myobj, function (err, res) {
@@ -89,14 +88,12 @@ recordRoutes.route("/update/:id").post(function (req, response) {
     },
   };
 
-  let p1 = db_connect.collection("structures").find({}).sort({id:-1}).limit(1).toArray()
   let p2 = db_connect.collection("structures").find(myquery).toArray()
 
-  Promise.all([p1, p2]).then((values) => {
+  Promise.all([p2]).then((values) => {
     console.log(values)
-    const maxNum = values[0][0].id
     const id = values[1][0].id
-    addStructureToSearchIndex(req.body.body.scrapedData, db_connect, maxNum, id)
+    addStructureToSearchIndex(req.body.body.scrapedData, db_connect, id)
   })
 
   db_connect
@@ -114,13 +111,23 @@ recordRoutes.route("/:id").delete((req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
 
+  // get current structure id and search index
+  // clean index of current id
+  // update index at mongo
   Promise.all([
     db_connect.collection("structures").findOne(myquery), 
     db_connect.collection("search").findOne({})])
     .then((values) => {
-      cleanIndex(values[1], values[1].id)
+      db_connect.collection("search").update(
+        {}, 
+        {$set: {index: cleanIndex(values[1], values[0].id)}}, 
+        (err, res) => {
+          if (err) throw err
+          console.log("search index updated")
+      })
   })
 
+  // delete current structure from mongo
   db_connect.collection("structures").deleteOne(myquery, function (err, obj) {
     if (err) throw err;
     console.log("1 document deleted");
@@ -128,22 +135,34 @@ recordRoutes.route("/:id").delete((req, response) => {
   });
 });
 
+// change all columns of id to 0
 const cleanIndex = (index, id) => {
   for (let key in index) {
     index[key][id] = 0
   }
+
+  return index
 }
 
-const addStructureToSearchIndex = (buildingData, db, maxSize, id) => {
+const addStructureToSearchIndex = (buildingData, db, id) => {
 
-  db.collection("search").find({}).toArray(function (err, result) {
+  db.collection("search").findOne({}, function (err, result) {
     if (err) throw err
 
     // get tokens and convert to set
     const searchTokens = new Set(getSearchTokens(buildingData))
   
     // get index object
-    let index = result[0].index
+    let index = {}
+    if (result) {
+      index = result.index
+    }
+
+    if (index[Object.keys(index)]) {
+      const indexSize = index[Object.keys(index)].length
+    }
+    
+    maxSize = max(indexSize, id)
 
     // clean index if updating
     cleanIndex(index, id)
@@ -163,7 +182,7 @@ const addStructureToSearchIndex = (buildingData, db, maxSize, id) => {
       // what's left in searchtokens is not in the index
       // add these tokens to the index
       searchTokens.forEach((token) => {
-        index[token] = Array(maxSize+2).fill(0)
+        index[token] = Array(maxSize).fill(0)
         index[token].push(1)
       })
     } else {
@@ -176,12 +195,12 @@ const addStructureToSearchIndex = (buildingData, db, maxSize, id) => {
       }
 
       searchTokens.forEach((token) => {
-        index[token] = Array(maxSize+3).fill(0)
+        index[token] = Array(maxSize+1).fill(0)
         index[token][id] = 1
       })
     }
     
-    db.collection("search").update({ _id: ObjectId(result[0]._id)}, {$set: {index: index}}, (err, res) => {
+    db.collection("search").update({}, {$set: {index: index}}, (err, res) => {
       if (err) throw err
       console.log("search index updated")
     })
