@@ -15,6 +15,7 @@ module.exports = {
         _db = db.db("artourguide");
         console.log("Successfully connected to MongoDB.");
       }
+
       return callback(err);
     });
   },

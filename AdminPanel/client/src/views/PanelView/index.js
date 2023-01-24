@@ -10,7 +10,7 @@ import S3 from "react-aws-s3";
 import { v4 as uuidv4 } from "uuid";
 import useAuth from "../../hook/useAuth";
 import Error from "../../components/Error";
-import { removeStopwords } from "stopword";
+
 
 // components
 import Container from "react-bootstrap/Container";
@@ -33,7 +33,7 @@ const PanelView = (props) => {
 
   
 
-  // const baseServerURL = "http://localhost:5000";
+   const baseServerURL = "http://localhost:5000";
   
 
   // eslint-disable-next-line
@@ -66,8 +66,8 @@ const PanelView = (props) => {
     libraries,
   });
 
-  const baseServerURL =
-    "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+  //const baseServerURL =
+  //  "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
 
   if (user === null || user === undefined)
     return <Navigate to={{ pathname: "/login" }} />;
@@ -96,65 +96,6 @@ const PanelView = (props) => {
         .toString()
     );
   };
-
-  const addStructureToSearchIndex = (buildingData) => {
-    // get existing search index from mongo
-    // convert to local object
-
-    const searchTokens = getSearchTokens(buildingData)
-   
-    console.log(searchTokens)
-
-    // have array of search strings
-    // add to index
-    
-  }
-
-  const getSearchTokens = (buildingData) => {
-    let searchString = 
-    [buildingData.structureName,
-     buildingData.searchTerms]
-     .join(' ')
-
-    // for each relevant field
-    // add all strings to one big string
-    // clean up punctuation
-    // remove stop words
-    // split words into array
-    // add document to search index
-    if (! buildingData.isLandmark) {
-      // relevant fields
-      searchString = 
-      [
-       buildingData.buildingCode,
-       buildingData.structureTypes,
-       buildingData.departmentsOffices,
-      ]
-      .join(' ')
-   
-      if (buildingData.computerLabs != "") {
-        searchString += " computer lab"
-      }
-      
-      if (buildingData.genderNeutralRestrooms != "") {
-        searchString += " bathroom restroom gender neutral toilet washroom"
-      }
-
-      if (buildingData.dining != "") {
-        searchString += " dining diner restaurant eatery cafe cafeteria food drink shop lunch dinner breakfast eat "
-        
-        // remove URLs and add names to searchString
-        let diningOptions = buildingData.dining.split(' ')
-        diningOptions = diningOptions.filter(token => ! (token.includes("http") || token.includes("N/A") || token.includes("None") || token === "-"));
-
-        searchString += diningOptions.join(' ')
-      }
-
-      searchString = searchString.toLowerCase()
-      searchString = removeSymbols(searchString)
-      return removeStopwords(searchString.split(' '))
-    }
-  }
 
   // get map coords and scrape website
   const handleFirstSubmit = (e) => {
@@ -226,8 +167,6 @@ const PanelView = (props) => {
     let reqScrapedData = scrapedData;
     reqScrapedData.audioFileName = audioFileName;
 
-    addStructureToSearchIndex(scrapedData)
-
     // put all structure info together into one json
     const requestJson = !structureData._id
       ? {
@@ -270,10 +209,7 @@ const PanelView = (props) => {
     return tempStr.charAt(0).toUpperCase() + tempStr.slice(1);
   };
 
-  const removeSymbols = (str) => {
-    const newVar = str.split("").filter(token => token.match(/[a-zA-Z0-9\s]/i))
-    return newVar.join('')
-  };
+  
 
   return (
     <>
