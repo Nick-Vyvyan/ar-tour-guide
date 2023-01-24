@@ -57,15 +57,14 @@ recordRoutes.route("/db/add").post(function (req, response) {
     websiteLink: req.body.body.websiteLink,
   };
 
-  // get current number of docs in structures collection
+  // get highest id of docs in structures collection
   db_connect.collection("structures").find({}).sort({id:-1}).limit(1).toArray(function (err, num) {
     if (err) throw err
 
-    // in this case the maxnum and id are the same as we are adding a new entry
     let id = num[0].id + 1
     addStructureToSearchIndex(req.body.body.scrapedData, db_connect, id)
 
-    myobj.id = maxNum
+    myobj.id = id
     db_connect.collection("structures").insertOne(myobj, function (err, res) {
       if (err) throw err;
       response.json(res);
@@ -88,11 +87,11 @@ recordRoutes.route("/update/:id").post(function (req, response) {
     },
   };
 
-  let p2 = db_connect.collection("structures").find(myquery).toArray()
+  let p2 = db_connect.collection("structures").findOne(myquery)
 
   Promise.all([p2]).then((values) => {
     console.log(values)
-    const id = values[1][0].id
+    const id = values[0].id
     addStructureToSearchIndex(req.body.body.scrapedData, db_connect, id)
   })
 
@@ -118,9 +117,10 @@ recordRoutes.route("/:id").delete((req, response) => {
     db_connect.collection("structures").findOne(myquery), 
     db_connect.collection("search").findOne({})])
     .then((values) => {
+      let newIndex = cleanIndex(values[1], values[0].id)
       db_connect.collection("search").update(
         {}, 
-        {$set: {index: cleanIndex(values[1], values[0].id)}}, 
+        {$set: {index: newIndex}}, 
         (err, res) => {
           if (err) throw err
           console.log("search index updated")
@@ -158,34 +158,34 @@ const addStructureToSearchIndex = (buildingData, db, id) => {
       index = result.index
     }
 
+    let indexSize = 0
     if (index[Object.keys(index)]) {
-      const indexSize = index[Object.keys(index)].length
+      indexSize = index[Object.keys(index)].length
     }
     
-    maxSize = max(indexSize, id)
+    let maxSize = max(indexSize, id+1)
 
     // clean index if updating
     cleanIndex(index, id)
 
     // if new entry
-    if (id == maxSize) {
+    if (id == maxSize+1) {
       // new
       for (let key in index) {
-        if (searchTokens.has(key)) {
-          index[key].push(1)
-          searchTokens.delete(key)
-        } else {
+        while (index[key].length <= id) {
           index[key].push(0)
         }
+        if (searchTokens.has(key)) {
+          index[key][id] = 1
+          searchTokens.delete(key)
+        } 
       }
 
-      // what's left in searchtokens is not in the index
-      // add these tokens to the index
-      searchTokens.forEach((token) => {
-        index[token] = Array(maxSize).fill(0)
-        index[token].push(1)
-      })
+      
     } else {
+
+      cleanIndex(index, id)
+
       // updating
       for (let key in index) {
         if (searchTokens.has(key)) {
@@ -193,12 +193,14 @@ const addStructureToSearchIndex = (buildingData, db, id) => {
           searchTokens.delete(key)
         }
       }
-
-      searchTokens.forEach((token) => {
-        index[token] = Array(maxSize+1).fill(0)
-        index[token][id] = 1
-      })
     }
+
+    // what's left in searchtokens is not in the index
+    // add these tokens to the index
+    searchTokens.forEach((token) => {
+      index[token] = Array(maxSize).fill(0)
+      index[token][id] = 1
+    })
     
     db.collection("search").update({}, {$set: {index: index}}, (err, res) => {
       if (err) throw err
