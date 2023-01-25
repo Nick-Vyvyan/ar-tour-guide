@@ -15,8 +15,16 @@
         <item name="android:shadowColor">#000000</item>
         <item name="android:backgroundTint">@color/wwu_blue</item>
         <item name="titleCentered">true</item>
-        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/roboto</item>
         <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/wwu_blue2</item>
+        <item name="background">@color/wwu_blue2</item>
+        <item name="backgroundColor">@color/wwu_blue2</item>
+        <item name="android:backgroundTint">@color/wwu_blue2</item>
+        <item name="android:colorBackground">@color/wwu_blue2</item>
     </style>
 
 

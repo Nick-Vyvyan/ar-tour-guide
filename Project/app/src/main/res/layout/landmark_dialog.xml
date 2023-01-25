@@ -40,8 +40,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:backgroundTint="@color/wwu_blue"
+                android:backgroundTint="@color/wwu_blue2"
                 android:text="AR"
+                android:elevation="5dp"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -51,8 +52,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/wwu_blue"
+                android:backgroundTint="@color/wwu_blue2"
                 android:text="MAP"
+                android:elevation="5dp"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -62,8 +64,9 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:backgroundTint="@color/wwu_blue"
+            android:backgroundTint="@color/wwu_blue2"
             android:text="Play Audio"
+            android:elevation="5dp"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

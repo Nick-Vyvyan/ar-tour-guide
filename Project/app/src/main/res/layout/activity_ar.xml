@@ -12,27 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="5dp"
-            app:title="~ Welcome to WWU ~"
-            app:titleCentered="true"
-            app:titleTextAppearance="@style/ToolbarStyle"
-            android:backgroundTint="@color/wwu_blue"
-            style="@style/ToolbarStyle"
-            android:layout_marginTop="10dp"
-            />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/map_fab"
         android:layout_width="wrap_content"
