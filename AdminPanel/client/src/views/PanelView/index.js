@@ -33,7 +33,7 @@ const PanelView = (props) => {
 
   
 
-   const baseServerURL = "http://localhost:5000";
+  //const baseServerURL = "http://localhost:5000";
   
 
   // eslint-disable-next-line
@@ -66,8 +66,7 @@ const PanelView = (props) => {
     libraries,
   });
 
-  //const baseServerURL =
-  //  "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+  const baseServerURL = "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
 
   if (user === null || user === undefined)
     return <Navigate to={{ pathname: "/login" }} />;
@@ -102,10 +101,10 @@ const PanelView = (props) => {
     e.preventDefault();
 
     // make sure structure is outlined on map first
-    /*if (coordinates === "")
+    if (coordinates === "")
       return window.alert(
         "Please outline a building/landmark on the map using the polygon tool!"
-      );*/
+      );
 
     // forward request to server to bypass cors restrictions
     axios
@@ -214,7 +213,7 @@ const PanelView = (props) => {
   return (
     <>
       {/* if coordinates and scraped data are present, display form to manually review it */}
-      {/*coordinates !== "" && */scrapedData ? (
+      {coordinates !== "" && scrapedData ? (
         <Container>
           <h1>Review your Building/Landmark Data</h1>
           <p>
