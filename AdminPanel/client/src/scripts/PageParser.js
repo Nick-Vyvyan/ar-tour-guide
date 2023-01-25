@@ -316,25 +316,4 @@ function removeTagsFromString(data) {
   return retString;
 }
 
-// gets string of room numbers and coverts to list
-function parseRoomNumbers(data) {
-  if (!data) {
-    return [];
-  }
-
-  // get past initial non-numerical chars
-  let i = 0;
-  while (data[i].charCodeAt(0) < 48 || data[i].charCodeAt(0) > 57) {
-    i++;
-  }
-
-  data = data.substring(i);
-
-  if (!data) {
-    return [];
-  }
-
-  return data.split(", ");
-}
-
 module.exports = { parseWeb };

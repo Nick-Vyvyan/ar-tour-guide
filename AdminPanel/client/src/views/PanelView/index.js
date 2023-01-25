@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import useAuth from "../../hook/useAuth";
 import Error from "../../components/Error";
 
+
 // components
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
@@ -30,21 +31,24 @@ const PanelView = (props) => {
   const { state } = useLocation();
   const { structureData } = state ? state : { structureData: {} };
 
-  if (user === null || user === undefined)
-    return <Navigate to={{ pathname: "/login" }} />;
+  
 
-  // const baseServerURL = "http://localhost:5000";
-  const baseServerURL =
-    "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+  //const baseServerURL = "http://localhost:5000";
+  
 
   // eslint-disable-next-line
   const [error, setError] = useState(null);
+  // eslint-disable-next-line
   const [websiteLink, setWebsiteLink] = useState("");
   const [coordinates, setCoordinates] = !structureData._id
+  // eslint-disable-next-line
     ? useState("")
+    // eslint-disable-next-line
     : useState(structureData.centerPoint);
   const [scrapedData, setScrapedData] = !structureData._id
+  // eslint-disable-next-line
     ? useState()
+    // eslint-disable-next-line
     : useState(structureData.scrapedData);
 
   // center point for WWU on Google map
@@ -56,6 +60,17 @@ const PanelView = (props) => {
     []
   );
 
+  // load in google map with required libraries
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyC4KhgTKzblt28kngclW9__A2vZUevgdgo",
+    libraries,
+  });
+
+  const baseServerURL = "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+
+  if (user === null || user === undefined)
+    return <Navigate to={{ pathname: "/login" }} />;
+
   // create new s3 interface
   const ReactS3Client = new S3({
     bucketName: "artourguide",
@@ -64,11 +79,7 @@ const PanelView = (props) => {
     secretAccessKey: "3TziVm4GISQMvwpDeBVck7/rkf2JpVvsawLgaYYI",
   });
 
-  // load in google map with required libraries
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyC4KhgTKzblt28kngclW9__A2vZUevgdgo",
-    libraries,
-  });
+  
   if (!isLoaded) return <div>Loading Map...</div>;
 
   // const onLoad = (drawingManager) => {
@@ -196,6 +207,8 @@ const PanelView = (props) => {
     const tempStr = str.replace(/([A-Z])/g, " $1");
     return tempStr.charAt(0).toUpperCase() + tempStr.slice(1);
   };
+
+  
 
   return (
     <>
