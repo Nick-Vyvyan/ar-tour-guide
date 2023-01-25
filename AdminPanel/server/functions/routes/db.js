@@ -1,5 +1,6 @@
 const express = require("express");
 var ObjectId = require("mongodb").ObjectID;
+const { removeStopwords } = require("stopword");
 
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
@@ -19,6 +20,17 @@ recordRoutes.route("/db").get(function (req, res) {
     .collection("structures")
     .find({})
     .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
+// gets the search table
+recordRoutes.route("/search").get(function (req, res) {
+  let db_connect = dbo.getDb();
+  db_connect
+    .collection("search")
+    .findOne({}, function (err, result) {
       if (err) throw err;
       res.json(result);
     });
@@ -44,10 +56,25 @@ recordRoutes.route("/db/add").post(function (req, response) {
     centerPoint: req.body.body.centerPoint,
     websiteLink: req.body.body.websiteLink,
   };
-  db_connect.collection("structures").insertOne(myobj, function (err, res) {
-    if (err) throw err;
-    response.json(res);
-  });
+
+  // get highest id of docs in structures collection
+  db_connect.collection("structures").find({}).sort({id:-1}).limit(1).toArray(function (err, num) {
+    if (err) throw err
+
+    let id = num[0].id + 1
+    addStructureToSearchIndex(req.body.body.scrapedData, db_connect, id)
+
+    myobj.id = id
+    db_connect.collection("structures").insertOne(myobj, function (err, res) {
+      if (err) throw err;
+      response.json(res);
+    });
+  })
+  
+
+  
+
+  
 });
 
 // This section will help you update a record by id.
@@ -59,6 +86,15 @@ recordRoutes.route("/update/:id").post(function (req, response) {
       scrapedData: req.body.body.scrapedData,
     },
   };
+
+  let p2 = db_connect.collection("structures").findOne(myquery)
+
+  Promise.all([p2]).then((values) => {
+    console.log(values)
+    const id = values[0].id
+    addStructureToSearchIndex(req.body.body.scrapedData, db_connect, id)
+  })
+
   db_connect
     .collection("structures")
     .updateOne(myquery, newvalues, function (err, res) {
@@ -66,17 +102,167 @@ recordRoutes.route("/update/:id").post(function (req, response) {
       console.log("1 document updated");
       response.json(res);
     });
+
 });
 
 // This section will help you delete a record
 recordRoutes.route("/:id").delete((req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
+
+  // get current structure id and search index
+  // clean index of current id
+  // update index at mongo
+  Promise.all([
+    db_connect.collection("structures").findOne(myquery), 
+    db_connect.collection("search").findOne({})])
+    .then((values) => {
+      let newIndex = cleanIndex(values[1].index, values[0].id)
+      db_connect.collection("search").update( 
+        {},
+        {$set: {index: newIndex}}, 
+        (err, res) => {
+          if (err) throw err
+          console.log("search index updated")
+      })
+  })
+
+  // delete current structure from mongo
   db_connect.collection("structures").deleteOne(myquery, function (err, obj) {
     if (err) throw err;
     console.log("1 document deleted");
     response.json(obj);
   });
 });
+
+// change all columns of id to 0
+const cleanIndex = (index, id) => {
+  for (let key in index) {
+    index[key][id] = 0
+  }
+
+  return index
+}
+
+const addStructureToSearchIndex = (buildingData, db, id) => {
+
+  db.collection("search").findOne({}, function (err, result) {
+    if (err) throw err
+
+    // get tokens and convert to set
+    const searchTokens = new Set(getSearchTokens(buildingData))
+  
+    // get index object
+    let index = {}
+    if (result) {
+      index = result.index
+    }
+
+    let indexSize = 0
+    if (index[Object.keys(index)]) {
+      indexSize = index[Object.keys(index)].length
+    }
+    
+    let maxSize = Math.max(indexSize, id+1)
+
+    // if new entry
+    if (id+1 == maxSize) {
+      // new
+      for (let key in index) {
+        while (index[key].length <= id) {
+          index[key].push(0)
+        }
+        if (searchTokens.has(key)) {
+          index[key][id] = 1
+          searchTokens.delete(key)
+        } 
+      }
+    } else {
+
+      cleanIndex(index, id)
+
+      // updating
+      for (let key in index) {
+        if (searchTokens.has(key)) {
+          index[key][id] = 1
+          searchTokens.delete(key)
+        }
+      }
+    }
+
+    // what's left in searchtokens is not in the index
+    // add these tokens to the index
+    searchTokens.forEach((token) => {
+      index[token] = Array(maxSize).fill(0)
+      index[token][id] = 1
+    })
+    
+    db.collection("search").update({}, {$set: {index: index}}, (err, res) => {
+      if (err) throw err
+      console.log("search index updated")
+    })
+  })
+
+  
+
+  
+  // have array of search tokens
+  // add to index
+  // push updated index to mongo
+  
+}
+
+const getSearchTokens = (buildingData) => {
+  let searchString = 
+  [buildingData.structureName,
+   buildingData.searchTerms]
+   .join(' ')
+
+  // for each relevant field
+  // add all strings to one big string
+  // clean up punctuation
+  // remove stop words
+  // split words into array
+  // add document to search index
+  if (buildingData.buildingCode) {
+    // relevant fields
+    searchString += ' ' +
+    [
+     buildingData.buildingCode,
+     buildingData.structureTypes,
+     buildingData.departmentsOffices,
+    ]
+    .join(' ')
+ 
+    if (buildingData.computerLabs !== "") {
+      searchString += " computer lab"
+    }
+    
+    if (buildingData.genderNeutralRestrooms !== "") {
+      searchString += " bathroom restroom gender neutral toilet washroom"
+    }
+
+    if (buildingData.dining !== "") {
+      searchString += " dining diner restaurant eatery cafe cafeteria food drink shop lunch dinner breakfast eat "
+      
+      // remove URLs and add names to searchString
+      let diningOptions = buildingData.dining.split(' ')
+      diningOptions = diningOptions.filter(token => ! (token.includes("http") || token.includes("N/A") || token.includes("None") || token === "-"));
+
+      searchString += diningOptions.join(' ')
+    }
+
+    searchString = searchString.toLowerCase()
+    searchString = removeSymbols(searchString)
+    searchString = searchString.trim()
+
+    return removeStopwords(searchString.split(/\s+/))
+  }
+}
+
+const removeSymbols = (str) => {
+  const newVar = str.split("").filter(token => token.match(/[a-zA-Z0-9\s]/i))
+  return newVar.join('')
+};
 
 module.exports = recordRoutes;
