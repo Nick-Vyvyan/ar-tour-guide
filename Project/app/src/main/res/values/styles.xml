@@ -8,5 +8,16 @@
         <item name="android:textColor">@color/wwu_white</item>
     </style>
 
+    <style name="ToolbarStyle" parent="@style/Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:shadowDx">-4</item>
+        <item name="android:shadowDy">5</item>
+        <item name="android:shadowRadius">10</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:backgroundTint">@color/wwu_blue</item>
+        <item name="titleCentered">true</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
 
 </resources>

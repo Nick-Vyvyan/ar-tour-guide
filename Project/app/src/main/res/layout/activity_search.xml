@@ -29,7 +29,7 @@
       android:imeOptions="actionSearch"
       android:inputType="textPersonName"
       android:minHeight="48dp"
-      android:textColorHint="@color/black"
+      android:textColorHint="@color/light_gray"
       app:layout_constraintEnd_toStartOf="@+id/searchButton"
       app:layout_constraintHorizontal_bias="0.5"
       app:layout_constraintHorizontal_chainStyle="packed"

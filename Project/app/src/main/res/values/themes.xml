@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ARTourGuideApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.ARTourGuideApp" parent="Theme.Material3.Dark">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/wwu_blue</item>
         <item name="colorPrimaryVariant">@color/wwu_blue</item>
