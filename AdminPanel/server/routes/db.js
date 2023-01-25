@@ -117,9 +117,9 @@ recordRoutes.route("/:id").delete((req, response) => {
     db_connect.collection("structures").findOne(myquery), 
     db_connect.collection("search").findOne({})])
     .then((values) => {
-      let newIndex = cleanIndex(values[1], values[0].id)
-      db_connect.collection("search").update(
-        {}, 
+      let newIndex = cleanIndex(values[1].index, values[0].id)
+      db_connect.collection("search").update( 
+        {},
         {$set: {index: newIndex}}, 
         (err, res) => {
           if (err) throw err
@@ -163,13 +163,10 @@ const addStructureToSearchIndex = (buildingData, db, id) => {
       indexSize = index[Object.keys(index)].length
     }
     
-    let maxSize = max(indexSize, id+1)
-
-    // clean index if updating
-    cleanIndex(index, id)
+    let maxSize = Math.max(indexSize, id+1)
 
     // if new entry
-    if (id == maxSize+1) {
+    if (id+1 == maxSize) {
       // new
       for (let key in index) {
         while (index[key].length <= id) {
@@ -180,8 +177,6 @@ const addStructureToSearchIndex = (buildingData, db, id) => {
           searchTokens.delete(key)
         } 
       }
-
-      
     } else {
 
       cleanIndex(index, id)
@@ -217,14 +212,6 @@ const addStructureToSearchIndex = (buildingData, db, id) => {
   
 }
 
-const removeStructureFromSearchIndex = (id) => {
-  // get existing search index from mongo
-  // convert to local object
-
-  // remove all instances of this id
-  // push updated index to mongo
-}
-
 const getSearchTokens = (buildingData) => {
   let searchString = 
   [buildingData.structureName,
@@ -237,7 +224,7 @@ const getSearchTokens = (buildingData) => {
   // remove stop words
   // split words into array
   // add document to search index
-  if (! buildingData.isLandmark) {
+  if (buildingData.buildingCode) {
     // relevant fields
     searchString += ' ' +
     [
@@ -267,6 +254,7 @@ const getSearchTokens = (buildingData) => {
 
     searchString = searchString.toLowerCase()
     searchString = removeSymbols(searchString)
+    searchString = searchString.trim()
 
     return removeStopwords(searchString.split(/\s+/))
   }
