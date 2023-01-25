@@ -12,12 +12,14 @@ import android.location.Location
  */
 class BuildingEntity(
     location : Location,
-    buildingData: BuildingData
+    buildingData: BuildingData,
+    searchId: Int,
 ) : Entity(
     buildingData.getTitle(),
     buildingData.getURL(),
     location,
-    buildingData) {
+    buildingData,
+    searchId) {
 
     init {
         setDialogFragment(BuildingDataDialogFragment(buildingData, location, this))

@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.*
 import kotlin.concurrent.thread
 import org.json.JSONArray
+import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
@@ -56,7 +57,7 @@ class StartupActivity : AppCompatActivity() {
     //region Permissions
 
     private fun requestPermissions() {
-        var permissionsToRequest = mutableListOf<String>()
+        val permissionsToRequest = mutableListOf<String>()
 
         // Check for camera and location permissions and add to list if not yet permitted
 
@@ -159,78 +160,28 @@ class StartupActivity : AppCompatActivity() {
     private fun loadStructuresFromJsonAndStart() {
         thread {
             var controller = Controller()
-            var localStructuresJsonStr = ""
-            var remoteStructuresJsonStr = ""
+            var localStructuresJson = ""
+            var remoteStructuresJson = ""
+            var localSearchJson = ""
+            var remoteSearchJson = ""
+            val searchFilename = "search.json"
+            val structuresFilename = "structures.json"
 
             try {
-                try {
-                    // read in current structures json if one exists
-                    val inputStream: InputStream = openFileInput("structures.json")
-
-                    val inputStreamReader = InputStreamReader(inputStream)
-                    val bufferedReader = BufferedReader(inputStreamReader)
-                    var receiveString: String?
-                    val stringBuilder = StringBuilder()
-
-                    // build json string one line at a time
-                    while (bufferedReader.readLine().also { receiveString = it } != null) {
-                        stringBuilder.append(receiveString)
-                    }
-                    inputStream.close()
-
-                    // set local json string
-                    localStructuresJsonStr = stringBuilder.toString()
-                } catch (fnfException: FileNotFoundException) {
-                    // otherwise, create empty structures json file
-                    try {
-                        val outputStreamWriter =
-                            OutputStreamWriter(openFileOutput("structures.json", MODE_PRIVATE))
-                        outputStreamWriter.write("")
-                        localStructuresJsonStr = ""
-                        outputStreamWriter.close()
-                    } catch (ioException: IOException) {
-                        ioException.printStackTrace()
-                    }
-                }
-
-                var retrievingDB = false
-                while (!retrievingDB) {
-                    retrievingDB = true
-                    try {
-                        // get remote db structures json
-                        val connection =
-                            URL("https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app/db")
-                                .openConnection() as HttpURLConnection
-                        // set remote json string
-                        remoteStructuresJsonStr = JSONArray(
-                            connection.inputStream.bufferedReader().readText()
-                        ).toString(4)
-                    } catch (fnfException: FileNotFoundException) {
-                        retrievingDB = false
-                    }
-                }
-
-                // update structures file with remote db json if different
-                if (localStructuresJsonStr != remoteStructuresJsonStr) {
-                    try {
-                        val outputStreamWriter =
-                            OutputStreamWriter(openFileOutput("structures.json", MODE_PRIVATE))
-                        outputStreamWriter.write(remoteStructuresJsonStr)
-                        outputStreamWriter.close()
-                    } catch (ioException: IOException) {
-                        ioException.printStackTrace()
-                    }
-                }
+                localStructuresJson = getLocalJson(structuresFilename)
+                remoteStructuresJson = getRemoteJson("app/db/")
+                updateLocalJson(localStructuresJson, remoteStructuresJson, structuresFilename)
 
                 // create structure objects for each object in JSONArray to be used by the app
                 val structures: MutableList<Entity> = mutableListOf()
 
-                val structuresJsonArr = JSONArray(remoteStructuresJsonStr)
+                val structuresJsonArr = JSONArray(remoteStructuresJson)
                 for (i in 0 until structuresJsonArr.length()) {
                     val currentStructure = structuresJsonArr.getJSONObject(i)
                     val currentScrapedData = currentStructure.getJSONObject("scrapedData")
                     val websiteLink = currentStructure.getString("websiteLink")
                     val audioFileName = currentScrapedData.getString("audioFileName")
+                    val searchId = currentStructure.getInt("id")
 
                     // if has audio file, download from s3
                     if (audioFileName != "") {
@@ -295,7 +246,8 @@ class StartupActivity : AppCompatActivity() {
                                         currentScrapedData.getString("computerLabs"),
                                         currentScrapedData.getString("dining"),
                                         audioFileName, websiteLink
-                                    )
+                                    ),
+                                    searchId
                                 )
                             )
                         }
@@ -304,6 +256,20 @@ class StartupActivity : AppCompatActivity() {
 
                 // add structure entities to app
                 controller.setEntities(structures)
+
+                remoteSearchJson = getRemoteJson("app/search/")
+                localSearchJson = getLocalJson(searchFilename)
+                updateLocalJson(localSearchJson, remoteSearchJson, searchFilename)
+
+                // construct search index from json
+                val searchJsonMap = JSONObject(remoteStructuresJson)
+                var searchIndex: MutableMap<String, Array<Int>> = mutableMapOf()
+
+                for (key in searchJsonMap.keys()) {
+                    searchIndex[key] = searchJsonMap[key] as Array<Int>
+                }
+
+                controller.setSearchIndex(searchIndex)
 
                 runOnUiThread {
                     progressText.text = "Starting AR session"
@@ -315,6 +281,7 @@ class StartupActivity : AppCompatActivity() {
         }
     }
 
+
     // Start AR and finish StartupActivity
     private fun startArActivity() {
         var arActivityIntent = Intent(this, ArActivity::class.java)
@@ -322,5 +289,65 @@ class StartupActivity : AppCompatActivity() {
         finish()
     }
 
-    //endregion
+    private fun getLocalJson(filename: String): String {
+        try {
+            // read in current structures json if one exists
+            val inputStream: InputStream = openFileInput(filename)
+
+            val inputStreamReader = InputStreamReader(inputStream)
+            val bufferedReader = BufferedReader(inputStreamReader)
+            var receiveString: String?
+            val stringBuilder = StringBuilder()
+
+            // build json string one line at a time
+            while (bufferedReader.readLine().also { receiveString = it } != null) {
+                stringBuilder.append(receiveString)
+            }
+            inputStream.close()
+
+            // set local json string
+            return stringBuilder.toString()
+
+        } catch (fnfException: FileNotFoundException) {
+            // otherwise, create empty structures json file
+            try {
+                val outputStreamWriter =
+                    OutputStreamWriter(openFileOutput(filename, MODE_PRIVATE))
+                outputStreamWriter.write("")
+                outputStreamWriter.close()
+            } catch (ioException: IOException) {
+                ioException.printStackTrace()
+            }
+            return ""
+        }
+    }
+
+    private fun getRemoteJson(path: String): String {
+        while (true) {
+            try {
+                // get remote db json
+                val connection =
+                    URL("https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/$path")
+                        .openConnection() as HttpURLConnection
+                // set remote json string
+                return JSONArray(connection.inputStream.bufferedReader().readText()).toString(4)
+            } catch (fnfException: FileNotFoundException) {
+                ""
+            }
+        }
+    }
+
+    private fun updateLocalJson(localJson: String, remoteJson: String, filename: String) {
+        // update local file with remote db json if different
+        if (localJson != remoteJson) {
+            try {
+                val outputStreamWriter =
+                    OutputStreamWriter(openFileOutput(filename, MODE_PRIVATE))
+                outputStreamWriter.write(remoteJson)
+                outputStreamWriter.close()
+            } catch (ioException: IOException) {
+                ioException.printStackTrace()
+            }
+        }
+    }
 }
