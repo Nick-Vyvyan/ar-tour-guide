@@ -40,6 +40,7 @@ class SearchActivity : AppCompatActivity() {
 
         currentEntities.clear()
         currentEntities.addAll(originalEntities)
+        currentEntities.sortBy { it.getName() }
 
         val searchButton = findViewById<Button>(R.id.searchButton)
         val searchText = findViewById<EditText>(R.id.searchText)
@@ -70,6 +71,7 @@ class SearchActivity : AppCompatActivity() {
 
         currentEntities.clear()
         currentEntities.addAll(newEntities)
+        currentEntities.sortBy { it.getName() }
         structureListAdapter.notifyDataSetChanged()
     }
 
