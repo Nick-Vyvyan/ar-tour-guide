@@ -9,6 +9,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.ViewManager
 import android.widget.Button
 import android.widget.TextView
@@ -160,17 +161,31 @@ class StartupActivity : AppCompatActivity() {
     private fun loadStructuresFromJsonAndStart() {
         thread {
             var controller = Controller()
-            var localStructuresJson = ""
-            var remoteStructuresJson = ""
-            var localSearchJson = ""
-            var remoteSearchJson = ""
             val searchFilename = "search.json"
             val structuresFilename = "structures.json"
 
             try {
-                localStructuresJson = getLocalJson(structuresFilename)
-                remoteStructuresJson = getRemoteJson("app/db/")
+                var localStructuresJson = getLocalJson(structuresFilename)
+                var remoteStructuresJson = getRemoteJson("app/db/")
                 updateLocalJson(localStructuresJson, remoteStructuresJson, structuresFilename)
+
+                var localSearchJson = getLocalJson(searchFilename)
+                var remoteSearchJson = getRemoteJson("app/search")
+                updateLocalJson(localSearchJson, remoteSearchJson, searchFilename)
+
+                // construct search index from json
+                var searchJsonMap = JSONObject(remoteSearchJson)
+                searchJsonMap = searchJsonMap["index"] as JSONObject
+                var searchIndex: MutableMap<String, Array<Int>> = mutableMapOf()
+
+                for (key in searchJsonMap.keys()) {
+                    searchIndex[key] = Array((searchJsonMap[key] as JSONArray).length()) { 0 }
+                    for (i in 0 until (searchJsonMap[key] as JSONArray).length()) {
+                        searchIndex[key]?.set(i, (searchJsonMap[key] as JSONArray).optInt(i))
+                    }
+
+                }
+
 
                 // create structure objects for each object in JSONArray to be used by the app
                 val structures: MutableList<Entity> = mutableListOf()
@@ -227,7 +242,8 @@ class StartupActivity : AppCompatActivity() {
                                         structureName,
                                         currentScrapedData.getString("description"),
                                         audioFileName, websiteLink
-                                    )
+                                    ),
+                                    searchId
                                 )
                             )
                         }
@@ -254,22 +270,13 @@ class StartupActivity : AppCompatActivity() {
                     }
                 }
 
-                // add structure entities to app
-                controller.setEntities(structures)
 
-                remoteSearchJson = getRemoteJson("app/search/")
-                localSearchJson = getLocalJson(searchFilename)
-                updateLocalJson(localSearchJson, remoteSearchJson, searchFilename)
 
-                // construct search index from json
-                val searchJsonMap = JSONObject(remoteStructuresJson)
-                var searchIndex: MutableMap<String, Array<Int>> = mutableMapOf()
 
-                for (key in searchJsonMap.keys()) {
-                    searchIndex[key] = searchJsonMap[key] as Array<Int>
-                }
 
                 controller.setSearchIndex(searchIndex)
+                // add structure entities to app
+                controller.setEntities(structures)
 
                 runOnUiThread {
                     progressText.text = "Starting AR session"
@@ -329,8 +336,9 @@ class StartupActivity : AppCompatActivity() {
                 val connection =
                     URL("https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/$path")
                         .openConnection() as HttpURLConnection
+                Log.d("test", "made it to open connection")
                 // set remote json string
-                return JSONArray(connection.inputStream.bufferedReader().readText()).toString(4)
+                return connection.inputStream.bufferedReader().readText()
             } catch (fnfException: FileNotFoundException) {
                 ""
             }
