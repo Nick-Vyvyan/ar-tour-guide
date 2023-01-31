@@ -75,7 +75,7 @@ class SearchActivity : AppCompatActivity() {
                     while (searchResults.size < i+1) {
                         searchResults.add(0)
                     }
-                    searchResults[i] = item
+                    searchResults[i] += item
                 }
             }
         }
@@ -84,7 +84,7 @@ class SearchActivity : AppCompatActivity() {
             if (it.getSearchId() < searchResults.size) searchResults[it.getSearchId()] > 0 else false
         } as ArrayList<Entity>
 
-        newEntities.sortByDescending { item -> item.getSearchId() }
+        newEntities.sortBy { item -> searchResults[item.getSearchId()] } //ByDescending { item -> searchResults[item.getSearchId()] }
         currentEntities.clear()
         currentEntities.addAll(newEntities)
         structureListAdapter.notifyDataSetChanged()
