@@ -68,7 +68,8 @@ class SearchActivity : AppCompatActivity() {
         var searchResults = ArrayList<Int>()
 
         for (token in searchQuery) {
-            var curResults = searchIndex[token]
+            var curResults = if (searchIndex.containsKey(token)) searchIndex[token] else null
+
             if (curResults != null) {
                 for ((i, item) in curResults.withIndex()) {
                     while (searchResults.size < i+1) {
@@ -80,7 +81,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val newEntities = originalEntities.filter {
-            searchResults[it.getSearchId()] > 0
+            if (it.getSearchId() < searchResults.size) searchResults[it.getSearchId()] > 0 else false
         } as ArrayList<Entity>
 
         newEntities.sortByDescending { item -> item.getSearchId() }
