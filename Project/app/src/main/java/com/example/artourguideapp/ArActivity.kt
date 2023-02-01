@@ -134,7 +134,9 @@ class ArActivity : AppCompatActivity() {
 
     //region Scheduling
 
-    // Schedule the anchor placement update
+    /**
+     * Schedule the anchor placement update
+      */
     private fun scheduleAnchorPlacements() {
         val delay: Long = 2000 // waits this many ms before attempting
         val interval = AnchorHelper.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously

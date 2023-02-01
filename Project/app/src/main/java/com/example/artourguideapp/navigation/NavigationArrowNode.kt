@@ -16,7 +16,7 @@ import kotlin.math.round
 class NavigationArrowNode(var activity: Activity, var currentWaypoint: NavigationWaypointNode) : Node() {
 
     // Allowed to be modified by Navigation class
-    var distanceFromCurrentWaypointToDestinationInMeters = 0f
+    var distanceFromCurrentWaypointToDestinationInMeters = 0.0
 
 
     // AR Nodes

@@ -1,4 +1,4 @@
-package com.example.artourguideapp.navigation
+package com.example.artourguideapp.previouswork
 
 class CampusWaypoints {
     companion object {

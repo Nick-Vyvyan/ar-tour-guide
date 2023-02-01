@@ -10,12 +10,12 @@ import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
 
-/**
- * This class contains the functions used to create, update, and remove anchors in
- * the AR Scene. It also contains constants for proximities and function intervals.
- */
 class AnchorHelper {
 
+    /**
+     * This class contains the functions used to create, update, and remove anchors in
+     * the AR Scene. It also contains constants for proximities and function intervals.
+     */
     companion object {
         const val ANCHOR_PROXIMITY_DISTANCE = 500f
         const val ANCHOR_ELEVATION_OFFSET = 1.5f
