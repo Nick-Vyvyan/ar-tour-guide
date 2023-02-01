@@ -15,7 +15,7 @@
       android:textStyle="italic"
       android:textColor="@color/black"
       android:shadowDy="4"
-      android:shadowRadius="5"
+      android:shadowRadius="2"
       android:shadowColor="@color/light_gray"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
       android:contentDescription="Search Button"
       android:elevation="10dp"
       android:minWidth="0dp"
-      app:cornerRadius="10dp"
+
       app:icon="@drawable/ic_baseline_search_24"
       app:iconPadding="0dp"
       app:layout_constraintEnd_toEndOf="parent"
