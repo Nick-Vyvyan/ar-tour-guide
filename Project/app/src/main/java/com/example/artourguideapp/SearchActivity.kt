@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.artourguideapp.entities.*
 
 lateinit var structureListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-var controller: Controller = Controller();
+var controller: Controller = Controller()
 var originalEntities: ArrayList<Entity> = ArrayList(controller.getEntities())
 var currentEntities: ArrayList<Entity> = ArrayList()
 
@@ -69,7 +69,7 @@ class SearchActivity : AppCompatActivity() {
 
         for (token in searchQuery) {
             // key is in index - init indexRow, else null
-            var indexRow = if (searchIndex.containsKey(token)) searchIndex[token] else null
+            val indexRow = if (searchIndex.containsKey(token)) searchIndex[token] else null
 
             if (indexRow != null) {
                 // add values to results
@@ -90,12 +90,13 @@ class SearchActivity : AppCompatActivity() {
                 if (it.getSearchId() < searchResults.size) searchResults[it.getSearchId()] > 0 else false
             } as ArrayList<Entity>
 
-        newEntities.sortByDescending { item -> searchResults[item.getSearchId()] } //ByDescending { item -> searchResults[item.getSearchId()] }
+        newEntities.sortByDescending { item -> searchResults[item.getSearchId()] }
         currentEntities.clear()
         currentEntities.addAll(newEntities)
         structureListAdapter.notifyDataSetChanged()
     }
 
+    // effectively an AND operation for an array and arraylist, arraylist will grow to size if smaller than array
     private fun incrementSearchResults(indexRow: Array<Int>, searchResults: ArrayList<Int>): ArrayList<Int> {
         for ((i, presence) in indexRow.withIndex()) {
             while (searchResults.size < i+1) {
