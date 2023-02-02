@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.view.ViewManager
 import android.widget.Button
 import android.widget.TextView
@@ -139,7 +140,7 @@ class StartupActivity : AppCompatActivity() {
 
     // Initialize entities and start AR
     private fun initializeEntitiesAndStart() {
-        (appSettingsButton.parent as ViewManager).removeView(appSettingsButton)
+        appSettingsButton.visibility = View.GONE
         loadingText.text = "Loading..."
 
         if (loadDummyEntities) {
