@@ -28,7 +28,8 @@ import kotlin.math.min
  *      call startNavigationTo(entity) or stopNavigation()
  */
 class Navigation private constructor(private var arSceneView: ArSceneView,
-                                     private var activity: AppCompatActivity){
+                                     private var activity: AppCompatActivity,
+                                     private var navButton: Button){
 
     // 5E:1A:E4:6D:1A:F3:5B:72:6A:10:ED:45:24:D3:99:C2:FE:F4:35:F7
 
@@ -36,14 +37,12 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     companion object {
 
         private lateinit var navigation: Navigation // Navigation object
-        private lateinit var navButton: Button // Button on ArActivity
 
         /**
          * Initializes the navigation object and navButton
          */
-        fun init(arSceneView: ArSceneView, activity: AppCompatActivity, navButton: Button) {
-            navigation = Navigation(arSceneView, activity)
-            Companion.navButton = navButton
+        fun init(arSceneView: ArSceneView, activity: AppCompatActivity) {
+            navigation = Navigation(arSceneView, activity, activity.findViewById(R.id.stopNavButton))
         }
 
         /**
@@ -52,8 +51,6 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         fun startNavigationTo(destination: Entity) {
             if (navigationInitialized()) {
                 navigation.navigateTo(destination)
-                navButton.visibility = View.VISIBLE
-                Log.d("NAVIGATION", "Nav button is visible")
             }
         }
 
@@ -79,13 +76,13 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     /** Path Variables */
     private var destination: Entity? = null
     private var pathLocations = mutableListOf<LatLng>()
-    private val USER_REACHED_DESTINATION_RADIUS = 5f
+    private val USER_REACHED_DESTINATION_RADIUS = 10f
 
     /** Waypoint Variables */
     private var currentWaypointIndex = 0
     private var currentWaypointAnchorNode: AnchorNode? = null
     private var nextWaypointAnchorNode: AnchorNode? = null
-    private val UPDATE_WAYPOINT_RADIUS = 20f
+    private val UPDATE_WAYPOINT_RADIUS = 10f
     private val DESTINATION_LOCAL_SCALE = Vector3(.5f, .5f, .5f)
     private val DESTINATION_LOCAL_POSITION = Vector3(0f, .4f, 0f)
 
@@ -95,7 +92,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
     /** AR Rendered Nodes */
     private var currentWaypointNode: NavigationWaypointNode = NavigationWaypointNode(activity)
-    private var navigationArrowNode: NavigationArrowNode = NavigationArrowNode(activity, currentWaypointNode)
+    private var navigationArrowNode: NavigationArrowNode = NavigationArrowNode(activity, currentWaypointNode, "")
 
     // region Navigation
 
@@ -110,12 +107,14 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         setDestination(newDestination)
         generateDirectionsToDestination()
         startNavigationUpdates()
+        navButton.visibility = View.VISIBLE
     }
 
     /** Set entity as destination on entity and on this*/
     private fun setDestination(newDestination: Entity) {
         newDestination.setAsDestination()
         destination = newDestination
+        navigationArrowNode.destinationName = newDestination.getName()
     }
 
     /** Generate the directions to the current destination */

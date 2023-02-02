@@ -2,11 +2,11 @@ package com.example.artourguideapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.navigation.Navigation
+import com.example.artourguideapp.navigation.Tour
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import com.google.ar.sceneform.ArSceneView
@@ -35,10 +35,13 @@ class ArActivity : AppCompatActivity() {
 
         // Get ARSceneView and navigation button
         arSceneView = findViewById(R.id.arSceneView)
-        navButton = findViewById(R.id.navButton)
+        navButton = findViewById(R.id.stopNavButton)
 
         // Initialize Navigation
-        Navigation.init(arSceneView, this, navButton)
+        Navigation.init(arSceneView, this)
+
+        // Initialize Tour feature
+        Tour.init(this)
 
         // Set AR navigation button properties
         setNavButtonProperties()

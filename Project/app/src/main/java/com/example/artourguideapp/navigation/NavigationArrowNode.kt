@@ -13,7 +13,7 @@ import kotlin.math.round
 
 /** This is an AR Navigation Node that contains an arrow model and distance text.
  *  It points to the current waypoint and displays how much distance remains in the path */
-class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node) : Node() {
+class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node, var destinationName: String) : Node() {
 
     // Allowed to be modified by Navigation class
     var distanceFromCurrentWaypointToDestinationInMeters = 0.0
@@ -30,7 +30,7 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node) : N
     private var NODE_LOCAL_POSITION = Vector3(0f, -.15f, -.5f)
     private var NODE_LOCAL_SCALE = Vector3(.25f, .25f, .25f)
     private var ARROW_OFFSET = Vector3(0f, .1f, 0f)
-    private var TEXT_OFFSET = Vector3(0f, 0f, .3f)
+    private var TEXT_OFFSET = Vector3(0f, -.1f, .3f)
 
     init {
         // Build arrow node
@@ -100,7 +100,9 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node) : N
 
     private fun formattedDistanceText(): String {
         // Return variable
-        var formattedText: String
+        var formattedText = ""
+
+        formattedText += "$destinationName\n"
 
         // Get current waypoint distance at same height as user
         val currentWaypointPositionFlat = Vector3(currentWaypoint!!.worldPosition.x, scene!!.camera.worldPosition.y, currentWaypoint!!.worldPosition.z)
@@ -114,7 +116,7 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node) : N
         // If more than 1000 feet away, convert to miles
         if (distanceInFeet > 1000) {
             val distanceInMiles = round((distanceInFeet / 5280) * 10).toInt() / 10.0
-            formattedText = "$distanceInMiles miles away"
+            formattedText += "$distanceInMiles miles away"
         }
         else {
             var formattedDistance: Int
@@ -133,7 +135,7 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node) : N
                 formattedDistance = round(distanceInFeet).toInt()
             }
 
-            formattedText = "$formattedDistance feet away"
+            formattedText += "$formattedDistance feet away"
         }
 
         return formattedText
