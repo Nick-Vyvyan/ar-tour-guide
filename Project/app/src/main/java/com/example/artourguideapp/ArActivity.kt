@@ -2,6 +2,7 @@ package com.example.artourguideapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.entities.Entity
@@ -20,7 +21,7 @@ class ArActivity : AppCompatActivity() {
     // Main controller for accessing entities
     private val controller = Controller()
 
-    private lateinit var navButton: Button
+    private lateinit var stopNavButton: Button
 
     // AR SceneForm Variables
     private lateinit var arSceneView: ArSceneView
@@ -35,7 +36,7 @@ class ArActivity : AppCompatActivity() {
 
         // Get ARSceneView and navigation button
         arSceneView = findViewById(R.id.arSceneView)
-        navButton = findViewById(R.id.stopNavButton)
+        stopNavButton = findViewById(R.id.stopNavButton)
 
         // Initialize Navigation
         Navigation.init(arSceneView, this)
@@ -49,9 +50,8 @@ class ArActivity : AppCompatActivity() {
         // initialize all entity AR nodes
         initializeEntityNodes()
 
-        // Schedule AR element updating
-        scheduleAnchorPlacements()
-        scheduleNodeUpdates()
+        // Schedule anchor placement
+        scheduleInitialAnchorPlacements()
 
         // Create map button
         createMapButton()
@@ -100,8 +100,8 @@ class ArActivity : AppCompatActivity() {
 
     // Set navigation button properties
     private fun setNavButtonProperties() {
-        navButton.text = "Stop Navigation"
-        navButton.setOnClickListener {
+        stopNavButton.text = "Stop Navigation"
+        stopNavButton.setOnClickListener {
             Navigation.stopNavigation()
         }
     }
@@ -111,7 +111,6 @@ class ArActivity : AppCompatActivity() {
         for (entity: Entity in controller.getEntities()) {
             entity.initNode(this)
         }
-
     }
 
     // Create the search button
@@ -138,30 +137,40 @@ class ArActivity : AppCompatActivity() {
     //region Scheduling
 
     /**
-     * Schedule the anchor placement update
+     * Schedule the initial anchor placement update (very frequent)
       */
-    private fun scheduleAnchorPlacements() {
-        val delay: Long = 2000 // waits this many ms before attempting
-        val interval = AnchorHelper.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
+    private fun scheduleInitialAnchorPlacements() {
+        val delay: Long = 0 // waits this many ms before attempting
+        val interval = AnchorHelper.INITIAL_ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
         Timer().schedule(object: TimerTask() {
             override fun run() {
                 runOnUiThread {
-                    AnchorHelper.setAnchors(arSceneView, controller.getEntities())
+                    if (!AnchorHelper.initialAnchorsPlaced) {
+                        Log.d("ANCHOR HELPER", "Attempting to set initial anchors...")
+                        AnchorHelper.setAnchors(arSceneView, controller.getEntities())
+                    }
+                    else {
+                        scheduleSecondaryAnchorPlacements()
+                        cancel()
+                    }
                 }
             }
         },delay, interval)
     }
 
-    // Schedule updates for all attached Entity nodes
-    private fun scheduleNodeUpdates() {
-        val delay: Long = 2000 // waits this many ms before attempting
-        val interval = AnchorHelper.UPDATE_NODE_INTERVAL_MS // updates after this many ms continuously
+    /**
+     * Schedule the secondary anchor placement update (less frequent)
+     */
+    private fun scheduleSecondaryAnchorPlacements() {
+        val delay: Long = 0 // waits this many ms before attempting
+        val interval = AnchorHelper.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
         Timer().schedule(object: TimerTask() {
             override fun run() {
                 runOnUiThread {
-                    AnchorHelper.updateNodes(arSceneView, controller.getEntities())
+                    Log.d("ANCHOR HELPER", "Secondary anchor placements")
+                    AnchorHelper.setAnchors(arSceneView, controller.getEntities())
                 }
             }
         },delay, interval)

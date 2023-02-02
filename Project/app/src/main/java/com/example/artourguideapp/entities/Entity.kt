@@ -24,36 +24,11 @@ abstract class Entity(
 ) {
 
     private lateinit var dialogFragment: DialogFragment
-//    lateinit var anchor: Anchor
-    private var node: Node = Node()
+    private lateinit var node: EntityNode
     private var isDestination: Boolean = false
 
     fun initNode(activity: AppCompatActivity) {
-//        node = Node()
-        node.name = name
-        node.parent = null
-
-        // Programmatically build an ar button without a XML
-        val arButton = Button(activity)
-        
-        arButton.setBackgroundResource(R.drawable.button_rounded_corners)
-        arButton.isHapticFeedbackEnabled = true
-        arButton.text = name
-        arButton.setTextAppearance(R.style.ButtonText)
-
-        arButton.setOnClickListener {
-            if (!dialogFragment.isVisible) {
-                dialogFragment.show(activity.supportFragmentManager, name)
-            }
-            if (isDestination) {
-                Navigation.stopNavigation()
-            }
-
-        }
-
-        ViewRenderable.builder().setView(activity, arButton).build()
-            .thenAccept {renderable ->
-                node.renderable = renderable }
+        node = EntityNode(activity, this)
     }
 
     fun nodeIsAttached() : Boolean {
