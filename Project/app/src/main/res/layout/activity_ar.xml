@@ -43,7 +43,7 @@
         app:srcCompat="@drawable/ic_baseline_search_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/startTourFab"
+        android:id="@+id/start_tour_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
@@ -55,7 +55,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_search_24" />
+        app:srcCompat="@drawable/ic_baseline_directions_walk_24" />
 
     <Button
         android:id="@+id/skipToNextDestinationButton"

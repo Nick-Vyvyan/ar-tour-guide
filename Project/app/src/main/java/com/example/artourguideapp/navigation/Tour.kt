@@ -64,7 +64,7 @@ class Tour {
         /** Initializes all UI functionality */
         private fun initializeButtons() {
             stopNavButton = activity.findViewById(R.id.stopNavButton)
-            startTourButton = activity.findViewById(R.id.startTourFab)
+            startTourButton = activity.findViewById(R.id.start_tour_fab)
             startTourButton.setOnClickListener {
                 startTour()
             }
