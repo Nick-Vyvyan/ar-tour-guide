@@ -34,7 +34,7 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Navigatio
     init {
         // Build arrow node
         ModelRenderable.builder()
-            .setSource(activity, R.raw.wwu_arrow_light)
+            .setSource(activity, R.raw.wwu_arrow)
             .setIsFilamentGltf(true)
             .build()
             .thenAccept { newRenderable ->
