@@ -130,6 +130,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                 val directionsRequestURL = "https://maps.googleapis.com/maps/api/directions/json?" +
                                             "origin=$originString&" +
                                             "destination=$destinationString&" +
+                                            "mode=walking&" +
                                             "key=${activity.resources.getString(R.string.GoogleMapsApiKey)}"
                 val url = URL(directionsRequestURL)
                 val connection = url.openConnection() as HttpURLConnection
@@ -146,6 +147,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
     /** Generate the path given from the Google Maps JSONObject */
     private fun generatePathFromJSON(directions: JSONObject) {
+        pathLocations.clear()
 
         // Check route status
         val status = directions.getString("status")
