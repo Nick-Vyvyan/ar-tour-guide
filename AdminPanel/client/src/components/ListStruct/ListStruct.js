@@ -8,8 +8,7 @@ function ListStruct(props) {
   const navigate = useNavigate();
 
   //const baseServerURL = "http://localhost:5000";
-  const baseServerURL =
-    "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+  const baseServerURL = "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
 
   const editStructure = () => {
     axios

@@ -6,8 +6,10 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:background="@drawable/rounded_corners"
+    android:backgroundTint="@color/cardview_dark_background"
     android:theme="@style/Theme.ARTourGuideApp">
 
     <TextView
@@ -38,9 +40,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:backgroundTint="?attr/colorOnPrimary"
+                android:backgroundTint="@color/wwu_blue2"
                 android:text="AR"
-                android:textColor="?attr/colorPrimary"
+                android:elevation="5dp"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
             <Button
@@ -48,9 +51,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:backgroundTint="?attr/colorOnPrimary"
+                android:backgroundTint="@color/wwu_blue2"
                 android:text="MAP"
-                android:textColor="?attr/colorPrimary"
+                android:elevation="5dp"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
             </LinearLayout>
 
@@ -59,9 +63,10 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:backgroundTint="?attr/colorOnPrimary"
+                android:backgroundTint="@color/wwu_blue2"
                 android:text="Play Audio"
-                android:textColor="?attr/colorPrimary"
+                android:elevation="5dp"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
     </LinearLayout>
