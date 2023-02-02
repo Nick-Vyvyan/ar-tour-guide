@@ -186,23 +186,6 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/parkingInfoLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Parking Information:"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/parkingInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:textSize="18sp" />
-
-            <TextView
                 android:id="@+id/diningLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -63,11 +63,6 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         var navButton: Button = view.findViewById(R.id.buildingArNavigationButton)
         var mapButton: Button = view.findViewById(R.id.buildingMapButton)
 
-        // Allow links in parking info
-        var parkingInfo: TextView = view.findViewById(R.id.parkingInfo)
-        parkingInfo.isClickable = true
-        parkingInfo.movementMethod = LinkMovementMethod.getInstance()
-
         var dining: TextView = view.findViewById(R.id.dining)
 
         // Allow additional info to hold website link
