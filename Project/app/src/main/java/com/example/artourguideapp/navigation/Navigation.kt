@@ -1,23 +1,18 @@
 package com.example.artourguideapp.navigation
 
 import android.location.Location
-import android.util.JsonReader
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
-import com.google.android.gms.common.api.Response
 import com.google.android.gms.maps.model.LatLng
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ArSceneView
 import com.google.ar.sceneform.math.Vector3
-import org.json.JSONArray
 import org.json.JSONObject
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
@@ -90,8 +85,9 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private var currentWaypointIndex = 0
     private var currentWaypointAnchorNode: AnchorNode? = null
     private var nextWaypointAnchorNode: AnchorNode? = null
-    private val UPDATE_WAYPOINT_RADIUS = 4f
-    private val WAYPOINT_NODE_DISPLACEMENT = 2f
+    private val UPDATE_WAYPOINT_RADIUS = 20f
+    private val DESTINATION_LOCAL_SCALE = Vector3(.5f, .5f, .5f)
+    private val DESTINATION_LOCAL_POSITION = Vector3(0f, .4f, 0f)
 
     /** Directions Variables */
     private var totalDistance = 0.0
@@ -113,10 +109,16 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         stopNavigation()
         setDestination(newDestination)
         generateDirectionsToDestination()
-//        generatePath()
         startNavigationUpdates()
     }
 
+    /** Set entity as destination on entity and on this*/
+    private fun setDestination(newDestination: Entity) {
+        newDestination.setAsDestination()
+        destination = newDestination
+    }
+
+    /** Generate the directions to the current destination */
     private fun generateDirectionsToDestination() {
         thread {
             // Get AR Earth
@@ -139,20 +141,11 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
                 // Generate the path
                 generatePathFromJSON(directionsObject)
-
-                activity.runOnUiThread {
-
-                    // Set navigation arrow parent to the user and set its fields then enable
-                    navigationArrowNode.parent = arSceneView.scene.camera
-                    navigationArrowNode.currentWaypoint = currentWaypointNode
-                    navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters =
-                        totalDistance
-                    navigationArrowNode.isEnabled = true
-                }
             }
         }
     }
 
+    /** Generate the path given from the Google Maps JSONObject */
     private fun generatePathFromJSON(directions: JSONObject) {
 
         // Check route status
@@ -224,12 +217,6 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         navButton.visibility = View.INVISIBLE
     }
 
-    /** Set entity as destination on entity and on this*/
-    private fun setDestination(newDestination: Entity) {
-        newDestination.setAsDestination()
-        destination = newDestination
-    }
-
     /** Create a new navigation update timer and start navigation updates */
     private fun startNavigationUpdates() {
         navigationUpdateTimer = Timer()
@@ -251,14 +238,14 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
             // Otherwise continue navigation as usual
             else {
-                // Ensure arrow is enabled
-                if (!navigationArrowNode.isEnabled) {
-                    navigationArrowNode.isEnabled = true
-                }
-
                 // Ensure that waypoint anchors are attached
                 if (currentWaypointAnchorNode == null || nextWaypointAnchorNode == null) {
                     initializeWaypointAnchors()
+
+                    // After waypoint anchor are initialized, initialize navigation arrow
+                    if (!navigationArrowNode.isEnabled) {
+                        initializeNavigationArrow()
+                    }
                 }
 
                 // Advance waypoints if needed
@@ -274,6 +261,15 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         }
     }
 
+    private fun initializeNavigationArrow() {
+        // Set navigation arrow parent to the user and set its fields then enable
+        navigationArrowNode.parent = arSceneView.scene.camera
+        navigationArrowNode.currentWaypoint = currentWaypointNode
+        navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters =
+            totalDistance
+        navigationArrowNode.isEnabled = true
+    }
+
     private fun initializeWaypointAnchors() {
         // Get AR Earth
         val earth = arSceneView.session?.earth
@@ -284,7 +280,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             val currentAnchor = earth.createAnchor(
                 pathLocations[currentWaypointIndex].latitude,
                 pathLocations[currentWaypointIndex].longitude,
-                earth.cameraGeospatialPose.altitude + WAYPOINT_NODE_DISPLACEMENT,
+                earth.cameraGeospatialPose.altitude,
                 0f, 0f, 0f, 1f
             )
 
@@ -296,7 +292,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             val nextAnchor = earth.createAnchor(
                 pathLocations[nextWaypointIndex].latitude,
                 pathLocations[nextWaypointIndex].longitude,
-                earth.cameraGeospatialPose.altitude + WAYPOINT_NODE_DISPLACEMENT,
+                earth.cameraGeospatialPose.altitude,
                 0f, 0f, 0f, 1f
             )
 
@@ -352,60 +348,55 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         }
 
         return false
-
     }
 
     private fun advanceToNextWaypoint() {
-
         currentWaypointAnchorNode?.anchor?.detach() // detach current waypoint anchor
         currentWaypointAnchorNode = nextWaypointAnchorNode // assign current waypoint to next waypoint
 
+        // If current waypoint is destination, move waypoint arrow above destination
+        if (currentWaypointIndex >= pathLocations.size - 1) {
+            currentWaypointNode.parent = destination!!.getNode()
+            currentWaypointNode.localPosition = DESTINATION_LOCAL_POSITION
+            currentWaypointNode.localScale = DESTINATION_LOCAL_SCALE
 
-        navigationArrowNode.currentWaypoint = currentWaypointNode
-
-        // If current waypoint is destination, remove waypoint arrow
-        if (currentWaypointIndex == pathLocations.size - 1) {
             navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters = 0.0
-            currentWaypointNode.parent = null
+            navigationArrowNode.currentWaypoint = destination!!.getNode()!!
         }
         else {
             // Subtract distance between waypoints from total distance
-            var distanceResults = floatArrayOf()
+            var distanceResults = floatArrayOf(0f)
             Location.distanceBetween(pathLocations[currentWaypointIndex].latitude, pathLocations[currentWaypointIndex].longitude,
                                                                                      pathLocations[currentWaypointIndex + 1].latitude, pathLocations[currentWaypointIndex + 1].longitude,
                                                                                      distanceResults)
             navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters -= distanceResults[0]
             currentWaypointNode.parent = currentWaypointAnchorNode
-        }
 
-        currentWaypointNode.localPosition = Vector3(0f,0f,0f)
 
-        currentWaypointIndex++ // increase currentWaypointIndex by 1 (points to new current)
+            currentWaypointNode.localPosition = Vector3(0f,0f,0f)
+            currentWaypointIndex++ // increase currentWaypointIndex by 1 (points to new current)
 
-        // If next waypoint is not the destination, create an anchor for the next waypoint
-        if (currentWaypointIndex < pathLocations.size - 1) {
-            val earth = arSceneView.session?.earth
-            if (earth?.trackingState == TrackingState.TRACKING) {
+            // If next waypoint is not the destination, create an anchor for the next waypoint
+            if (currentWaypointIndex < pathLocations.size - 1) {
+                val earth = arSceneView.session?.earth
+                if (earth?.trackingState == TrackingState.TRACKING) {
 
-                // Create anchor for next waypoint
-                val nextAnchor = earth.createAnchor(
-                    pathLocations[currentWaypointIndex + 1].latitude,
-                    pathLocations[currentWaypointIndex + 1].longitude,
-                    earth.cameraGeospatialPose.altitude + WAYPOINT_NODE_DISPLACEMENT,
-                    0f, 0f, 0f, 1f
-                )
+                    // Create anchor for next waypoint
+                    val nextAnchor = earth.createAnchor(
+                        pathLocations[currentWaypointIndex + 1].latitude,
+                        pathLocations[currentWaypointIndex + 1].longitude,
+                        earth.cameraGeospatialPose.altitude,
+                        0f, 0f, 0f, 1f
+                    )
 
-                // Create anchor nodes from anchor
-                nextWaypointAnchorNode = AnchorNode(nextAnchor)
+                    // Create anchor nodes from anchor
+                    nextWaypointAnchorNode = AnchorNode(nextAnchor)
 
-                // Set anchor node parent to the AR Scene
-                nextWaypointAnchorNode!!.parent = arSceneView.scene
+                    // Set anchor node parent to the AR Scene
+                    nextWaypointAnchorNode!!.parent = arSceneView.scene
+                }
             }
-        }
 
-        // If current waypoint is destination, disable waypoint node
-        else {
-            currentWaypointNode.isEnabled = false
         }
     }
     //endregion

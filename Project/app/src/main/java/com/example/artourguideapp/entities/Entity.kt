@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import com.example.artourguideapp.R
+import com.example.artourguideapp.navigation.Navigation
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.rendering.ViewRenderable
 
@@ -42,6 +43,9 @@ abstract class Entity(
         arButton.setOnClickListener {
             if (!dialogFragment.isVisible) {
                 dialogFragment.show(activity.supportFragmentManager, name)
+            }
+            if (isDestination) {
+                Navigation.stopNavigation()
             }
 
         }

@@ -13,7 +13,7 @@ import kotlin.math.round
 
 /** This is an AR Navigation Node that contains an arrow model and distance text.
  *  It points to the current waypoint and displays how much distance remains in the path */
-class NavigationArrowNode(var activity: Activity, var currentWaypoint: NavigationWaypointNode) : Node() {
+class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node) : Node() {
 
     // Allowed to be modified by Navigation class
     var distanceFromCurrentWaypointToDestinationInMeters = 0.0
@@ -27,9 +27,10 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Navigatio
     private lateinit var distanceText: TextView
 
     // Constants
-    private var NODE_LOCAL_POSITION = Vector3(0f, -.6f, -2f)
-    private var ARROW_OFFSET = Vector3(0f, .2f, 0f)
-    private var TEXT_OFFSET = Vector3(0f, -.2f, 0f)
+    private var NODE_LOCAL_POSITION = Vector3(0f, -.15f, -.5f)
+    private var NODE_LOCAL_SCALE = Vector3(.25f, .25f, .25f)
+    private var ARROW_OFFSET = Vector3(0f, .1f, 0f)
+    private var TEXT_OFFSET = Vector3(0f, 0f, .3f)
 
     init {
         // Build arrow node
@@ -61,6 +62,7 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Navigatio
         }
 
         localPosition = NODE_LOCAL_POSITION
+        localScale = NODE_LOCAL_SCALE
     }
 
     override fun onUpdate(frameTime: FrameTime?) {
