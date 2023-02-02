@@ -64,11 +64,28 @@ class SearchActivity : AppCompatActivity() {
         currentEntities.clear()
         currentEntities.addAll(originalEntities)
 
-        val structureName = findViewById<EditText>(R.id.searchText).text.toString()
+        val searchQuery = findViewById<EditText>(R.id.searchText).text.toString().split(' ')
+        val searchIndex = controller.getSearchIndex()
+        var searchResults = ArrayList<Int>()
+
+        for (token in searchQuery) {
+            var curResults = if (searchIndex.containsKey(token)) searchIndex[token] else null
+
+            if (curResults != null) {
+                for ((i, item) in curResults.withIndex()) {
+                    while (searchResults.size < i+1) {
+                        searchResults.add(0)
+                    }
+                    searchResults[i] += item
+                }
+            }
+        }
+
         val newEntities = originalEntities.filter {
-            it.getName().contains(structureName, true)
+            if (it.getSearchId() < searchResults.size) searchResults[it.getSearchId()] > 0 else false
         } as ArrayList<Entity>
 
+        newEntities.sortBy { item -> searchResults[item.getSearchId()] } //ByDescending { item -> searchResults[item.getSearchId()] }
         currentEntities.clear()
         currentEntities.addAll(newEntities)
         currentEntities.sortBy { it.getName() }

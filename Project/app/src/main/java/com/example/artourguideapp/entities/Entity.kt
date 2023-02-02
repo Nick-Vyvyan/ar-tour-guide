@@ -20,6 +20,7 @@ abstract class Entity(
     private var url: String,
     private var centralLocation : Location,
     private var entityData: EntityData,
+    private var searchId: Int,
 ) {
 
     private lateinit var dialogFragment: DialogFragment
@@ -71,6 +72,9 @@ abstract class Entity(
         return node
     }
 
+    fun getSearchId() : Int {
+        return searchId
+    }
 
     fun getCentralLocation() : Location
     {
