@@ -173,7 +173,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                 // Add each step location into the path locations
                 for (i in 0 until steps.length()) {
                     val step = steps.getJSONObject(i)
-                    val stepEndLocation = step.getJSONObject("end_location")
+                    val stepEndLocation = step.getJSONObject("start_location")
                     val pathLocation = LatLng(stepEndLocation.getDouble("lat"), stepEndLocation.getDouble("lng"))
                     pathLocations.add(pathLocation)
                 }
@@ -185,6 +185,8 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
                 // Get the total distance of the route in meters
                 totalDistance = defaultRouteLeg.getJSONObject("distance").getDouble("value")
+                navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters =
+                    totalDistance
 
                 // Get Google copyrights
                 copyrights = defaultRoute.getString("copyrights")

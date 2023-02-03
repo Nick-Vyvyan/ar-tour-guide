@@ -14,6 +14,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class Tour {
 
     companion object {
+        var onTour = false
+
         private lateinit var activity: AppCompatActivity
 
         private var destinations: MutableList<Entity> = mutableListOf()
@@ -90,22 +92,24 @@ class Tour {
         }
 
         /** Starts the tour */
-        private fun startTour() {
+        fun startTour() {
             destinationIndex = 0
             Navigation.startNavigationTo(destinations[destinationIndex])
             stopNavButton.visibility = View.INVISIBLE
             startTourButton.visibility = View.INVISIBLE
             stopTourButton.visibility = View.VISIBLE
             skipToNextDestinationButton.visibility = View.VISIBLE
+            onTour = true
         }
 
         /** Stops the tour */
-        private fun stopTour() {
+        fun stopTour() {
             Navigation.stopNavigation()
             stopNavButton.visibility = View.INVISIBLE
             startTourButton.visibility = View.VISIBLE
             stopTourButton.visibility = View.INVISIBLE
             skipToNextDestinationButton.visibility = View.INVISIBLE
+            onTour = false
         }
 
         /** Skips to the next destination */
