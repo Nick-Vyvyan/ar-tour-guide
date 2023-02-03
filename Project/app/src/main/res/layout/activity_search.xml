@@ -25,7 +25,7 @@
       android:background="@drawable/rounded_corners"
       android:backgroundTint="@color/wwu_white"
       android:ems="10"
-      android:hint="Structure Name..."
+      android:hint="Find structures..."
       android:imeOptions="actionSearch"
       android:inputType="textPersonName"
       android:minHeight="48dp"
