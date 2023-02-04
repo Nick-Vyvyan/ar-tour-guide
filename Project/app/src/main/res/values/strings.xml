@@ -2,4 +2,32 @@
     <string name="app_name">WWU Tour Guide</string>
     <string name="geospatial_pose" translatable="false">LAT/LNG: %.6f˚, %.6f˚\n\t\t\tACCURACY: %.2fm\nALTITUDE: %.2fm\n\t\t\tACCURACY: %.2fm\nHEADING: %.1f˚\n\t\t\tACCURACY: %.1f˚</string>
     <string name="earth_state">EarthState: %1$s\nTrackingState: %2$s\n%3$s</string>
+    <string name="find_structures">Find structures…</string>
+    <string name="search_button">Search Button</string>
+    <string name="ar_map_button">Map Button</string>
+    <string name="ar_search_button">Search Button</string>
+    <string name="ar_tour_button">Tour Button</string>
+    <string name="ar_tour_skip">Skip</string>
+    <string name="ar_tour_stop">Stop</string>
+    <string name="dialog_building_name">Building Name (CODE)</string>
+    <string name="dialog_ar">AR</string>
+    <string name="dialog_map">Map</string>
+    <string name="dialog_play_audio">Play Audio</string>
+    <string name="dialog_types_label">Types:</string>
+    <string name="dialog_types">TYPE 1, TYPE 2</string>
+    <string name="dialog_departments_label">Departments:</string>
+    <string name="dialog_departments">DEP 1\nDEP 2\nDEP3\nDEP4\nDEP5</string>
+    <string name="dialog_accessibility_label">Accessibility Info:</string>
+    <string name="dialog_gender_neutral_restrooms_label">Gender Neutral Restrooms:</string>
+    <string name="dialog_computer_labs_label">Computer Labs:</string>
+    <string name="dialog_dining_label">Dining:</string>
+    <string name="dialog_additional_info_label">Additional Info</string>
+    <string name="dialog_link_to_website_label">Link to website</string>
+    <string name="dialog_landmark_name">Landmark Name</string>
+    <string name="dialog_description_label">Description</string>
+    <string name="dialog_description">DESCRIPTION HERE</string>
+    <string name="startup_loading">Loading...</string>
+    <string name="startup_progress">1 of 6</string>
+    <string name="startup_grant_permission">Grant Permission</string>
+    <string name="distance_text">0 ft.</string>
 </resources>

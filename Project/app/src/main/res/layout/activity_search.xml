@@ -6,17 +6,10 @@
     android:layout_height="match_parent"
     android:layout_margin="12dp"
     android:background="@drawable/button_rounded_corners"
-    android:backgroundTint="@color/cardview_dark_background"
     tools:context=".SearchActivity">
 
   <EditText
       android:id="@+id/searchText"
-      android:textAlignment="center"
-      android:textStyle="italic"
-      android:textColor="@color/black"
-      android:shadowDy="4"
-      android:shadowRadius="2"
-      android:shadowColor="@color/light_gray"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="32dp"
@@ -25,16 +18,19 @@
       android:background="@drawable/rounded_corners"
       android:backgroundTint="@color/wwu_white"
       android:ems="10"
-      android:hint="Find structures..."
+      android:hint="@string/find_structures"
       android:imeOptions="actionSearch"
       android:inputType="textPersonName"
       android:minHeight="48dp"
-      android:textColorHint="@color/light_gray"
+      android:textAlignment="center"
+      android:textColor="@color/black"
+      android:textColorHint="#757575"
       app:layout_constraintEnd_toStartOf="@+id/searchButton"
       app:layout_constraintHorizontal_bias="0.5"
       app:layout_constraintHorizontal_chainStyle="packed"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent"
+      android:autofillHints="" />
 
   <com.google.android.material.button.MaterialButton
       android:id="@+id/searchButton"
@@ -43,8 +39,8 @@
       android:layout_marginTop="32dp"
       android:layout_marginEnd="16dp"
       android:background="@drawable/button_rounded_corners_shadow"
-      app:backgroundTint="@color/wwu_blue2"
-      android:contentDescription="Search Button"
+      app:backgroundTint="@color/wwu_blue"
+      android:contentDescription="@string/search_button"
       android:elevation="10dp"
       android:minWidth="0dp"
 
