@@ -26,8 +26,8 @@
     <string name="dialog_landmark_name">Landmark Name</string>
     <string name="dialog_description_label">Description</string>
     <string name="dialog_description">DESCRIPTION HERE</string>
-    <string name="startup_loading">Loading...</string>
-    <string name="startup_progress">1 of 6</string>
+    <string name="startup_loading">Loading…</string>
+    <string name="startup_progress">Getting structure 0 of 10</string>
     <string name="startup_grant_permission">Grant Permission</string>
     <string name="distance_text">0 ft.</string>
 </resources>

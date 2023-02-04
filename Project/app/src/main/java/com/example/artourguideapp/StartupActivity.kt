@@ -92,12 +92,12 @@ class StartupActivity : AppCompatActivity() {
         when (requestCode) {
             PERMISSION_REQUEST_CODE -> {
                 if (hasPermissions()) {
-                    loadingText.text = "Loading..."
+                    loadingText.text = "Loading…"
                     loadStructuresFromJsonAndStart()
                     //loadDummyEntitiesAndStart()
                 }
                 else {
-                    loadingText.text = "Waiting on permissions..."
+                    loadingText.text = "Waiting on permissions…"
                     progressText.text = "Please open app settings"
                 }
             }
@@ -122,7 +122,7 @@ class StartupActivity : AppCompatActivity() {
     // Initialize all UI elements
     private fun initializeUI() {
         loadingText = findViewById(R.id.loadingText)
-        loadingText.text = "Requesting Camera and Location permission..."
+        loadingText.text = "Requesting Camera and Location permission…"
 
         progressText = findViewById(R.id.progressText)
         progressText.text = ""
@@ -141,7 +141,7 @@ class StartupActivity : AppCompatActivity() {
     // Initialize entities and start AR
     private fun initializeEntitiesAndStart() {
         appSettingsButton.visibility = View.GONE
-        loadingText.text = "Loading..."
+        loadingText.text = "Loading…"
 
         if (loadDummyEntities) {
             loadDummyEntitiesAndStart()
@@ -231,9 +231,9 @@ class StartupActivity : AppCompatActivity() {
                     location.latitude = centerPoint.x.toDouble()
                     location.longitude = centerPoint.y.toDouble()
 
-
                     runOnUiThread {
-                        progressText.text = "" + i + " of " + structuresJsonArr.length()
+                        "Getting structure $i of ${structuresJsonArr.length()}…".also { progressText.text = it }
+                        
                         // if landmark, add as LandmarkEntity
                         if (currentStructure.getBoolean("isLandmark")) {
                             structures.add(
@@ -280,7 +280,7 @@ class StartupActivity : AppCompatActivity() {
                 controller.setEntities(structures)
 
                 runOnUiThread {
-                    progressText.text = "Starting AR session"
+                    progressText.text = "Starting AR session…"
                     startArActivity()
                 }
             } catch (ioException: IOException) {
