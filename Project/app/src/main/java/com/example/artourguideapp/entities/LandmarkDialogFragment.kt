@@ -119,7 +119,10 @@ class LandmarkDialogFragment(var landmarkData: LandmarkData, var center: Locatio
                     player!!.start()
                 }
             }
-            // Log.d("DEBUG","Made to has audio")
+
+            player?.setOnCompletionListener {
+                audioButton.text = "Play Audio"
+            }
         } else {
             audioButton.visibility = View.GONE
         }

@@ -121,7 +121,10 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
                     player!!.start()
                 }
             }
-            // Log.d("DEBUG","Made to has audio")
+
+            player?.setOnCompletionListener {
+                audioButton.text = "Play Audio"
+            }
         } else {
             audioButton.visibility = GONE
         }
