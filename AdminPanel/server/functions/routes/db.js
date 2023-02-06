@@ -168,7 +168,7 @@ const addStructureToSearchIndex = (buildingData, db, id) => {
     let maxSize = Math.max(indexSize, id+1)
 
     // if new entry
-    if (id+1 == maxSize) {
+    if (id+1 >= maxSize) {
       // new
       for (let key in index) {
         while (index[key].length <= id) {
@@ -253,13 +253,12 @@ const getSearchTokens = (buildingData) => {
 
       searchString += diningOptions.join(" ")
     }
-
-    searchString = searchString.toLowerCase()
-    searchString = removeSymbols(searchString)
-    searchString = searchString.trim()
-
-    return removeStopwords(searchString.split(/\s+/))
   }
+  searchString = searchString.toLowerCase()
+  searchString = removeSymbols(searchString)
+  searchString = searchString.trim()
+
+  return removeStopwords(searchString.split(/\s+/))
 }
 
 const removeSymbols = (str) => {
