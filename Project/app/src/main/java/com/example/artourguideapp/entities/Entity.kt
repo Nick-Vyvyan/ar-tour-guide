@@ -47,7 +47,6 @@ abstract class Entity(
             if (isDestination) {
                 Navigation.stopNavigation()
             }
-
         }
 
         ViewRenderable.builder().setView(activity, arButton).build()

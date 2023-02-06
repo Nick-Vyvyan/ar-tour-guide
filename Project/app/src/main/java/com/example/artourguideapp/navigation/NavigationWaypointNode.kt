@@ -10,7 +10,7 @@ import com.google.ar.sceneform.rendering.ModelRenderable
 
 class NavigationWaypointNode(var activity: Activity): Node() {
 
-    private val WAYPOINT_SCALE = Vector3(3f, 3f, 3f)
+    private val WAYPOINT_SCALE = Vector3(5f, 5f, 5f)
     private val WAYPOINT_ROTATION = Quaternion.lookRotation(Vector3.down(), Vector3.up())
     private val WAYPOINT_NODE_DISPLACEMENT = 2f
 
@@ -27,7 +27,7 @@ class NavigationWaypointNode(var activity: Activity): Node() {
         // Set scale
         worldScale = WAYPOINT_SCALE
         worldRotation = WAYPOINT_ROTATION
-        worldPosition.y += WAYPOINT_NODE_DISPLACEMENT
+        localPosition.y = WAYPOINT_NODE_DISPLACEMENT
     }
 
     override fun onActivate() {
@@ -43,6 +43,10 @@ class NavigationWaypointNode(var activity: Activity): Node() {
 
         if (scene == null) {
             return
+        }
+
+        if (localPosition.y != WAYPOINT_NODE_DISPLACEMENT) {
+            localPosition.y = WAYPOINT_NODE_DISPLACEMENT
         }
     }
 }

@@ -7,7 +7,9 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
+import com.example.artourguideapp.AnchorHelper
 import com.google.android.gms.maps.model.LatLng
+import com.google.ar.core.Earth
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ArSceneView
@@ -72,10 +74,12 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     /** Timer Variables */
     private var navigationUpdateTimer: Timer = Timer()
     private val NAVIGATION_UPDATE_INTERVAL: Long = 2000
+    private val NAVIGATION_UPDATE_DELAY: Long = 2000
 
     /** Path Variables */
     private var destination: Entity? = null
     private var pathLocations = mutableListOf<LatLng>()
+    private var pathDistanceRemainingFromWaypoint = mutableListOf<Double>()
     private val USER_REACHED_DESTINATION_RADIUS = 10f
 
     /** Waypoint Variables */
@@ -105,9 +109,13 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private fun navigateTo(newDestination: Entity) {
         stopNavigation()
         setDestination(newDestination)
-        generateDirectionsToDestination()
+        generatePathAndUI()
         startNavigationUpdates()
-        navButton.visibility = View.VISIBLE
+
+        // If the user is not on tour, display the navigation button
+        if (!Tour.onTour) {
+            navButton.visibility = View.VISIBLE
+        }
     }
 
     /** Set entity as destination on entity and on this*/
@@ -117,37 +125,46 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         navigationArrowNode.destinationName = newDestination.getName()
     }
 
-    /** Generate the directions to the current destination */
-    private fun generateDirectionsToDestination() {
+    /** Generates the path and UI. Done together since both tasks require AR Earth and therefore
+     * appear only after AR Earth is successfully tracked.
+     */
+    private fun generatePathAndUI() {
         thread {
-            // Get AR Earth
             val earth = arSceneView.session?.earth
             if (earth?.trackingState == TrackingState.TRACKING) {
-
-                // Generate a google maps JSON request
-                val originString = "${earth.cameraGeospatialPose.latitude},${earth.cameraGeospatialPose.longitude}"
-                val destinationString = "${destination!!.getCentralLocation().latitude},${destination!!.getCentralLocation().longitude}"
-                val directionsRequestURL = "https://maps.googleapis.com/maps/api/directions/json?" +
-                                            "origin=$originString&" +
-                                            "destination=$destinationString&" +
-                                            "mode=walking&" +
-                                            "key=${activity.resources.getString(R.string.GoogleMapsApiKey)}"
-                val url = URL(directionsRequestURL)
-                val connection = url.openConnection() as HttpURLConnection
-
-                // Get the directions JSON Object
-                val inputStream = connection.inputStream
-                val directionsObject = JSONObject(inputStream.bufferedReader().readText())
-
-                // Generate the path
-                generatePathFromJSON(directionsObject)
+                generateDirectionsToDestination(earth)
+                activity.runOnUiThread {
+                    initializeNavigationUI(earth)
+                }
             }
         }
+    }
+
+    /** Generate the directions to the current destination */
+    private fun generateDirectionsToDestination(earth: Earth) {
+        // Generate a google maps JSON request
+        val originString = "${earth.cameraGeospatialPose.latitude},${earth.cameraGeospatialPose.longitude}"
+        val destinationString = "${destination!!.getCentralLocation().latitude},${destination!!.getCentralLocation().longitude}"
+        val directionsRequestURL = "https://maps.googleapis.com/maps/api/directions/json?" +
+                                    "origin=$originString&" +
+                                    "destination=$destinationString&" +
+                                    "mode=walking&" +
+                                    "key=${activity.resources.getString(R.string.GoogleMapsApiKey)}"
+        val url = URL(directionsRequestURL)
+        val connection = url.openConnection() as HttpURLConnection
+
+        // Get the directions JSON Object
+        val inputStream = connection.inputStream
+        val directionsObject = JSONObject(inputStream.bufferedReader().readText())
+
+        // Generate the path
+        generatePathFromJSON(directionsObject)
     }
 
     /** Generate the path given from the Google Maps JSONObject */
     private fun generatePathFromJSON(directions: JSONObject) {
         pathLocations.clear()
+        pathDistanceRemainingFromWaypoint.clear()
 
         // Check route status
         val status = directions.getString("status")
@@ -162,10 +179,10 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                 // Get the legs of the journey (should only be one leg since navigation is only between two locations)
                 val defaultRouteLeg = defaultRoute.getJSONArray("legs").getJSONObject(0)
 
-                // Add route start
-                val routeStartLocation = defaultRouteLeg.getJSONObject("start_location")
-                val routeStartLatLng = LatLng(routeStartLocation.getDouble("lat"), routeStartLocation.getDouble("lng"))
-                pathLocations.add(routeStartLatLng)
+                // Get the total distance of the route in meters
+                totalDistance = defaultRouteLeg.getJSONObject("distance").getDouble("value")
+
+                var distanceRemaining = totalDistance
 
                 // Get the steps for that leg
                 val steps = defaultRouteLeg.getJSONArray("steps")
@@ -176,21 +193,116 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                     val stepEndLocation = step.getJSONObject("end_location")
                     val pathLocation = LatLng(stepEndLocation.getDouble("lat"), stepEndLocation.getDouble("lng"))
                     pathLocations.add(pathLocation)
+
+                    val stepDistance = step.getJSONObject("distance").getDouble("value")
+                    distanceRemaining -= stepDistance
+
+                    pathDistanceRemainingFromWaypoint.add(distanceRemaining)
                 }
-
-                // Add route end
-                val routeEndLocation = defaultRouteLeg.getJSONObject("end_location")
-                val routeEndLatLng = LatLng(routeEndLocation.getDouble("lat"), routeEndLocation.getDouble("lng"))
-                pathLocations.add(routeEndLatLng)
-
-                // Get the total distance of the route in meters
-                totalDistance = defaultRouteLeg.getJSONObject("distance").getDouble("value")
+                Log.d("NAVIGATION", "Path to ${destination!!.getName()} = $pathLocations")
+                // Reset current waypoint index to beginning
+                currentWaypointIndex = 0
 
                 // Get Google copyrights
                 copyrights = defaultRoute.getString("copyrights")
             }
 
         }
+    }
+
+    /**
+     * Initializes the waypoint anchors, the navigation arrow, then points the
+     * arrow to the correct node.
+     */
+    private fun initializeNavigationUI(earth: Earth) {
+        initializeWaypointAnchorsAndNodes(earth)
+        initializeNavigationArrow()
+        pointArrowToCorrectNode()
+    }
+
+    /**
+     * Initialize the waypoint anchors and nodes. Current anchor and next anchor will point to same
+     * thing if there is only one location in pathLocations. Current waypoint node is enabled
+     */
+    private fun initializeWaypointAnchorsAndNodes(earth: Earth) {
+
+        // Create anchor for first waypoint
+        val currentAnchor = earth.createAnchor(
+            pathLocations[currentWaypointIndex].latitude,
+            pathLocations[currentWaypointIndex].longitude,
+            earth.cameraGeospatialPose.altitude,
+            0f, 0f, 0f, 1f
+        )
+
+        // Create anchor node, assign to scene
+        currentWaypointAnchorNode = AnchorNode(currentAnchor)
+        currentWaypointAnchorNode!!.parent = arSceneView.scene
+
+        // set currentWaypointNode parent created anchor and enable the node
+        currentWaypointNode.parent = currentWaypointAnchorNode
+        currentWaypointNode.isEnabled = true
+
+
+        // nextWaypointIndex = 0 if only one waypoint in path, 1 otherwise
+        val nextWaypointIndex = min(currentWaypointIndex + 1, pathLocations.size - 1)
+
+        // If the current waypoint is not the last waypoint
+        if (currentWaypointIndex < pathLocations.size - 1) {
+
+            // Create anchor for next waypoint
+            val nextAnchor = earth.createAnchor(
+                pathLocations[nextWaypointIndex].latitude,
+                pathLocations[nextWaypointIndex].longitude,
+                earth.cameraGeospatialPose.altitude,
+                0f, 0f, 0f, 1f
+            )
+
+            // Create anchor node and assign parent to scene
+            nextWaypointAnchorNode = AnchorNode(nextAnchor)
+            nextWaypointAnchorNode!!.parent = arSceneView.scene
+        }
+
+        // Otherwise, point current and next anchor nodes to same thing
+        else {
+            nextWaypointAnchorNode = currentWaypointAnchorNode
+        }
+    }
+
+    /**
+     * If the destination node is active (button can be seen), arrow will point directly to destination
+     * node and current waypoint will be disabled. Otherwise, enable and point to current waypoint
+     */
+    private fun pointArrowToCorrectNode() {
+        navigationArrowNode.isEnabled = true
+
+        val distanceFromUserToDestination = Vector3.subtract(destination!!.getNode().worldPosition, arSceneView.scene.camera.worldPosition).length()
+
+        // If destination node is visible, point directly to the destination, otherwise, point to the current waypoint node
+        if (destination!!.getNode()!!.isActive &&
+            distanceFromUserToDestination > USER_REACHED_DESTINATION_RADIUS &&
+            distanceFromUserToDestination < AnchorHelper.VISIBLE_NODE_PROXIMITY_DISTANCE) {
+            Log.d("NAVIGATION", "Arrow pointing to destination")
+            navigationArrowNode.currentWaypoint = destination!!.getNode()
+            navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters = 0.0
+            currentWaypointNode.isEnabled = false
+        }
+        else {
+            navigationArrowNode.currentWaypoint = currentWaypointNode
+            navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters = pathDistanceRemainingFromWaypoint[currentWaypointIndex]
+            currentWaypointNode.isEnabled = true
+        }
+    }
+
+    /**
+     * Initialize the navigation arrow. Set the parent to the user, set the distance to the total
+     * distance, and enable the arrow
+     */
+    private fun initializeNavigationArrow() {
+        // Set navigation arrow parent to the user and set its fields then enable
+        navigationArrowNode.parent = arSceneView.scene.camera
+        navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters =
+            totalDistance
+        navigationArrowNode.isEnabled = true
     }
 
     /** Stop Navigation */
@@ -202,8 +314,9 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         destination?.clearAsDestination()
         destination = null
 
-        // Disable navigation arrow
+        // Disable navigation arrow and reset distance
         navigationArrowNode.isEnabled = false
+        navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters = 0.0
 
         // Remove current waypoint node parent and detach anchor
         currentWaypointNode.parent = null
@@ -225,27 +338,23 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             override fun run() {
                 navigationUpdate()
             }
-        },0, NAVIGATION_UPDATE_INTERVAL)
+        },NAVIGATION_UPDATE_DELAY, NAVIGATION_UPDATE_INTERVAL)
     }
 
     /** Navigation update */
     private fun navigationUpdate() {
-        activity.runOnUiThread {
+        // If path hasn't been generated, generate the path and UI
+        if(pathLocations.isEmpty()) {
+            generatePathAndUI()
+        }
 
-            // If path hasn't been generated, generate a path
-            if(pathLocations.isEmpty()) {
-                generateDirectionsToDestination()
-            }
-
-            // Otherwise continue navigation as usual
-            else {
-                // Ensure that waypoint anchors are attached
-                if (currentWaypointAnchorNode == null || nextWaypointAnchorNode == null) {
-                    initializeWaypointAnchors()
-
-                    // After waypoint anchor are initialized, initialize navigation arrow
-                    if (!navigationArrowNode.isEnabled) {
-                        initializeNavigationArrow()
+        // Otherwise continue navigation as usual
+        else {
+            activity.runOnUiThread {
+                if (currentWaypointAnchorNode == null) {
+                    val earth = arSceneView.session?.earth
+                    if (earth?.trackingState == TrackingState.TRACKING) {
+                        initializeWaypointAnchorsAndNodes(earth)
                     }
                 }
 
@@ -254,61 +363,13 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                     advanceToNextWaypoint()
                 }
 
+                pointArrowToCorrectNode()
+
                 // If destination reached, stop navigation
                 if (shouldStopNavigation()) {
                     stopNavigation()
                 }
             }
-        }
-    }
-
-    private fun initializeNavigationArrow() {
-        // Set navigation arrow parent to the user and set its fields then enable
-        navigationArrowNode.parent = arSceneView.scene.camera
-        navigationArrowNode.currentWaypoint = currentWaypointNode
-        navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters =
-            totalDistance
-        navigationArrowNode.isEnabled = true
-    }
-
-    private fun initializeWaypointAnchors() {
-        // Get AR Earth
-        val earth = arSceneView.session?.earth
-        if (earth?.trackingState == TrackingState.TRACKING) {
-
-            currentWaypointIndex = 0
-            // Create anchor for first waypoint
-            val currentAnchor = earth.createAnchor(
-                pathLocations[currentWaypointIndex].latitude,
-                pathLocations[currentWaypointIndex].longitude,
-                earth.cameraGeospatialPose.altitude,
-                0f, 0f, 0f, 1f
-            )
-
-
-            // If only one waypoint in path, next index is 0, otherwise, 1
-            val nextWaypointIndex = min(pathLocations.size - 1, 1)
-
-            // Create anchor for next waypoint
-            val nextAnchor = earth.createAnchor(
-                pathLocations[nextWaypointIndex].latitude,
-                pathLocations[nextWaypointIndex].longitude,
-                earth.cameraGeospatialPose.altitude,
-                0f, 0f, 0f, 1f
-            )
-
-            // Create anchor nodes from anchors
-            currentWaypointAnchorNode = AnchorNode(currentAnchor)
-            nextWaypointAnchorNode = AnchorNode(nextAnchor)
-
-            // Set anchor node parents to the AR Scene
-            currentWaypointAnchorNode!!.parent = arSceneView.scene
-            nextWaypointAnchorNode!!.parent = arSceneView.scene
-
-            // Set current waypoint node parent
-            currentWaypointNode.parent = currentWaypointAnchorNode
-            currentWaypointNode.localPosition = Vector3(0f, 0f, 0f)
-            currentWaypointNode.isEnabled = true
         }
     }
 
@@ -342,63 +403,59 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private fun shouldAdvanceToNextWaypoint(): Boolean {
         if (currentWaypointAnchorNode != null) {
             // Check if user is within a radius of the current waypoint
-            val distanceFromUserToCurrentWaypoint = Vector3.subtract(currentWaypointAnchorNode!!.worldPosition, arSceneView.scene.camera.worldPosition).length()
-            val userIsCloseEnoughForNewWaypoint = distanceFromUserToCurrentWaypoint < UPDATE_WAYPOINT_RADIUS
+            val userIsCloseEnoughToCurrentWaypoint = navigationArrowNode.distanceToWaypoint < UPDATE_WAYPOINT_RADIUS
 
-            return userIsCloseEnoughForNewWaypoint
+            // Make sure that the current waypoint isn't the end of the path
+            val currentIndexIsNotFinalIndex = currentWaypointIndex < pathLocations.size - 1
+
+            var userIsCloserToNewWaypointThanCurrent = false
+            // Determine if distance from user to next waypoint is less than current waypoint
+            if (currentWaypointAnchorNode != nextWaypointAnchorNode) {
+                val distanceFromUserToNextWaypoint = Vector3.subtract(nextWaypointAnchorNode!!.worldPosition, arSceneView.scene.camera.worldPosition).length()
+                val distanceFromCurrentToNextWaypoint = Vector3.subtract(nextWaypointAnchorNode!!.worldPosition, currentWaypointAnchorNode!!.worldPosition).length()
+                userIsCloserToNewWaypointThanCurrent = distanceFromCurrentToNextWaypoint > distanceFromUserToNextWaypoint
+            }
+
+            Log.d("NAVIGATION", "Closer to new than current = $userIsCloserToNewWaypointThanCurrent\nClose enough to current = $userIsCloseEnoughToCurrentWaypoint")
+            return (userIsCloserToNewWaypointThanCurrent || userIsCloseEnoughToCurrentWaypoint) && currentIndexIsNotFinalIndex
         }
 
         return false
     }
 
     private fun advanceToNextWaypoint() {
+        Log.d("NAVIGATION", "Advancing to next waypoint")
         currentWaypointAnchorNode?.anchor?.detach() // detach current waypoint anchor
         currentWaypointAnchorNode = nextWaypointAnchorNode // assign current waypoint to next waypoint
 
-        // If current waypoint is destination, move waypoint arrow above destination
-        if (currentWaypointIndex >= pathLocations.size - 1) {
-            currentWaypointNode.parent = destination!!.getNode()
-            currentWaypointNode.localPosition = DESTINATION_LOCAL_POSITION
-            currentWaypointNode.localScale = DESTINATION_LOCAL_SCALE
+        currentWaypointNode.parent = currentWaypointAnchorNode
+        currentWaypointNode.localPosition = Vector3(0f,0f,0f)
 
-            navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters = 0.0
-            navigationArrowNode.currentWaypoint = destination!!.getNode()!!
-        }
-        else {
-            // Subtract distance between waypoints from total distance
-            var distanceResults = floatArrayOf(0f)
-            Location.distanceBetween(pathLocations[currentWaypointIndex].latitude, pathLocations[currentWaypointIndex].longitude,
-                                                                                     pathLocations[currentWaypointIndex + 1].latitude, pathLocations[currentWaypointIndex + 1].longitude,
-                                                                                     distanceResults)
-            navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters -= distanceResults[0]
-            currentWaypointNode.parent = currentWaypointAnchorNode
+        currentWaypointIndex++ // increase currentWaypointIndex by 1 (points to new current)
 
+        navigationArrowNode.distanceFromCurrentWaypointToDestinationInMeters = pathDistanceRemainingFromWaypoint[currentWaypointIndex]
+        // If next waypoint is not the destination, create an anchor for the next waypoint
+        if (currentWaypointIndex < pathLocations.size - 1) {
+            val earth = arSceneView.session?.earth
+            if (earth?.trackingState == TrackingState.TRACKING) {
 
-            currentWaypointNode.localPosition = Vector3(0f,0f,0f)
-            currentWaypointIndex++ // increase currentWaypointIndex by 1 (points to new current)
+                // Create anchor for next waypoint
+                val nextAnchor = earth.createAnchor(
+                    pathLocations[currentWaypointIndex + 1].latitude,
+                    pathLocations[currentWaypointIndex + 1].longitude,
+                    earth.cameraGeospatialPose.altitude,
+                    0f, 0f, 0f, 1f
+                )
 
-            // If next waypoint is not the destination, create an anchor for the next waypoint
-            if (currentWaypointIndex < pathLocations.size - 1) {
-                val earth = arSceneView.session?.earth
-                if (earth?.trackingState == TrackingState.TRACKING) {
+                // Create anchor nodes from anchor
+                nextWaypointAnchorNode = AnchorNode(nextAnchor)
 
-                    // Create anchor for next waypoint
-                    val nextAnchor = earth.createAnchor(
-                        pathLocations[currentWaypointIndex + 1].latitude,
-                        pathLocations[currentWaypointIndex + 1].longitude,
-                        earth.cameraGeospatialPose.altitude,
-                        0f, 0f, 0f, 1f
-                    )
-
-                    // Create anchor nodes from anchor
-                    nextWaypointAnchorNode = AnchorNode(nextAnchor)
-
-                    // Set anchor node parent to the AR Scene
-                    nextWaypointAnchorNode!!.parent = arSceneView.scene
-                }
+                // Set anchor node parent to the AR Scene
+                nextWaypointAnchorNode!!.parent = arSceneView.scene
             }
-
         }
+
+
     }
     //endregion
 

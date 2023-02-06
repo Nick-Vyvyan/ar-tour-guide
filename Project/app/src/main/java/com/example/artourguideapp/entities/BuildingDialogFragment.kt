@@ -23,6 +23,7 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.example.artourguideapp.navigation.Navigation
 import com.example.artourguideapp.R
+import com.example.artourguideapp.navigation.Tour
 import java.io.File
 
 
@@ -134,6 +135,11 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
             if (activity?.localClassName != "ArActivity") {
                 activity?.finish()
             }
+
+            if (Tour.onTour) {
+                Tour.stopTour()
+            }
+
             Navigation.startNavigationTo(entity)
 
             dialog?.dismiss()

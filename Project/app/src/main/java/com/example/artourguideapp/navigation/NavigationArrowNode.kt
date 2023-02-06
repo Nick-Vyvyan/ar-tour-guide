@@ -17,6 +17,7 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node, var
 
     // Allowed to be modified by Navigation class
     var distanceFromCurrentWaypointToDestinationInMeters = 0.0
+    var distanceToWaypoint = 0f
 
 
     // AR Nodes
@@ -88,14 +89,8 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node, var
         val textRotation = Quaternion.lookRotation(textDirection, Vector3.up())
         textNode.worldRotation = textRotation
 
-
-        // Get distance to destination
-        val distanceToCurrentWaypoint = Vector3.subtract(currentWaypoint!!.worldPosition, worldPosition).length()
-        val distanceInMeters = distanceToCurrentWaypoint + distanceFromCurrentWaypointToDestinationInMeters
-        val distanceInFeet = round(distanceInMeters * 3.28084).toInt()
-
+        distanceToWaypoint = currentWaypointPositionFlat.length()
         distanceText.text = formattedDistanceText()
-
     }
 
     private fun formattedDistanceText(): String {
@@ -121,7 +116,7 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node, var
         else {
             var formattedDistance: Int
             // Format to hundreds of feet
-            if (distanceInFeet > 250) {
+            if (distanceInFeet > 300) {
                 formattedDistance = round(distanceInFeet / 100).toInt() * 100
             }
 
@@ -138,6 +133,6 @@ class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node, var
             formattedText += "$formattedDistance feet away"
         }
 
-        return formattedText
+        return "$formattedText\n$distanceToWaypoint meters to waypoint"
     }
 }
