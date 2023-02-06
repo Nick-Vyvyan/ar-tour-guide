@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ArActivity">
 
+
     <com.google.ar.sceneform.ArSceneView
         android:id="@+id/arSceneView"
         android:layout_width="match_parent"
@@ -19,7 +20,7 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="?attr/colorPrimary"
         android:clickable="true"
-        android:contentDescription="Map Button"
+        android:contentDescription="@string/ar_map_button"
         android:focusable="true"
         android:foregroundTint="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,24 +35,70 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="?attr/colorPrimary"
         android:clickable="true"
-        android:contentDescription="Search Button"
+        android:contentDescription="@string/ar_search_button"
         android:focusable="true"
         android:foregroundTint="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_search_24" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/start_tour_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:clickable="true"
+        android:contentDescription="@string/ar_tour_button"
+        android:focusable="true"
+        android:foregroundTint="?attr/colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_directions_walk_24" />
+
     <Button
-        android:id="@+id/navButton"
+        android:id="@+id/skipToNextDestinationButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/wwu_blue"
+        android:text="@string/ar_tour_skip"
+        android:textAppearance="@style/ButtonText"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.849"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109" />
+
+    <Button
+        android:id="@+id/stopTourButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/wwu_blue"
+        android:text="@string/ar_tour_stop"
+        android:textAppearance="@style/ButtonText"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.151"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109" />
+
+    <Button
+        android:id="@+id/stopNavButton"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="?attr/colorSecondary"
+        android:backgroundTint="@color/wwu_blue"
+        android:visibility="gone"
+        android:textAppearance="@style/ButtonText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.109"
-        android:visibility="gone"/>
+        app:layout_constraintVertical_bias="0.109" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

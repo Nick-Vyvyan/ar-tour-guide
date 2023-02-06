@@ -23,6 +23,7 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.example.artourguideapp.navigation.Navigation
 import com.example.artourguideapp.R
+import com.example.artourguideapp.navigation.Tour
 import java.io.File
 
 
@@ -62,11 +63,6 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         var audioButton: Button = view.findViewById(R.id.buildingMediaButton)
         var navButton: Button = view.findViewById(R.id.buildingArNavigationButton)
         var mapButton: Button = view.findViewById(R.id.buildingMapButton)
-
-        // Allow links in parking info
-        var parkingInfo: TextView = view.findViewById(R.id.parkingInfo)
-        parkingInfo.isClickable = true
-        parkingInfo.movementMethod = LinkMovementMethod.getInstance()
 
         var dining: TextView = view.findViewById(R.id.dining)
 
@@ -125,7 +121,10 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
                     player!!.start()
                 }
             }
-            // Log.d("DEBUG","Made to has audio")
+
+            player?.setOnCompletionListener {
+                audioButton.text = "Play Audio"
+            }
         } else {
             audioButton.visibility = GONE
         }
@@ -133,6 +132,9 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         navButton.setOnClickListener {
             if (activity?.localClassName != "ArActivity") {
                 activity?.finish()
+            }
+            if (Tour.onTour) {
+                Tour.stopTour()
             }
             Navigation.startNavigationTo(entity)
 

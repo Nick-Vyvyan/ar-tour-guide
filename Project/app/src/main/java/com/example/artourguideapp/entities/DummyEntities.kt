@@ -53,7 +53,8 @@ class DummyEntities{
                     "CF 312",
             "",
             "",
-            "https://www.wwu.edu/building/cf")
+            "https://www.wwu.edu/building/cf"),
+            1
         )
 
         var wadeKingEntity = BuildingEntity(
@@ -71,7 +72,8 @@ class DummyEntities{
         "",
         "Rock's Edge Cafe",
         "",
-        "https://www.wwu.edu/building/sv")
+        "https://www.wwu.edu/building/sv"),
+        2
         )
 
         var handel = LandmarkEntity( Location("Mark di Suvero, For Handel, 1975"), LandmarkData(
@@ -88,7 +90,8 @@ class DummyEntities{
                     "rigorous labor and challenges involved in the construction trade and engineering. Di Suvero's For Handel (1975) originally combined a hanging wooden platform or " +
                     "swinging bed with the steel girders of modern technology. The fact that the bed was removed soon after the sculpture was erected does not diminish the sculpture's " +
                     "impact or meaning.", "", "https://westerngallery.wwu.edu/mark-di-suvero-handel-1975"
-        )
+        ),
+            12
         )
 
         var stairsToNowhere = LandmarkEntity(
@@ -98,7 +101,8 @@ class DummyEntities{
                 "tellus cras adipiscing enim eu turpis egestas pretium aenean pharetra magna ac placerat vestibulum lectus",
                 "",
                 "https://westerngallery.wwu.edu/mark-di-suvero-handel-1975"
-            )
+            ),
+            13
         )
 
 
@@ -122,7 +126,8 @@ class DummyEntities{
                         "CF 312",
                 "",
                 "",
-                "https://www.wwu.edu/building/cf")
+                "https://www.wwu.edu/building/cf"),
+            3
         )
 
         var house2 = BuildingEntity(
@@ -145,7 +150,8 @@ class DummyEntities{
                         "CF 312",
                 "",
                 "",
-                "https://www.wwu.edu/building/cf")
+                "https://www.wwu.edu/building/cf"),
+            4
         )
 
         var house3 = BuildingEntity(
@@ -168,7 +174,8 @@ class DummyEntities{
                         "CF 312",
                 "",
                 "",
-                "https://www.wwu.edu/building/cf")
+                "https://www.wwu.edu/building/cf"),
+            5
         )
 
         var house4 = BuildingEntity(
@@ -191,7 +198,8 @@ class DummyEntities{
                         "CF 312",
                 "",
                 "",
-                "https://www.wwu.edu/building/cf")
+                "https://www.wwu.edu/building/cf"),
+            6
         )
         var house5 = BuildingEntity(
             h5Loc,
@@ -213,7 +221,8 @@ class DummyEntities{
                         "CF 312",
                 "",
                 "",
-                "https://www.wwu.edu/building/cf")
+                "https://www.wwu.edu/building/cf"),
+            7
         )
 
         var academicWest = BuildingEntity(
@@ -236,7 +245,8 @@ class DummyEntities{
                         "CF 312",
                 "",
                 "",
-                "https://www.wwu.edu/building/aw")
+                "https://www.wwu.edu/building/aw"),
+            8
         )
 
         var environmentalStudies = BuildingEntity(
@@ -259,7 +269,8 @@ class DummyEntities{
                         "CF 312",
                 "",
                 "",
-                "https://www.wwu.edu/building/es")
+                "https://www.wwu.edu/building/es"),
+            9
         )
 
         var slowhouse = BuildingEntity(
@@ -282,7 +293,8 @@ class DummyEntities{
                         "CF 312",
                 "",
                 "",
-                "https://www.wwu.edu/building/es")
+                "https://www.wwu.edu/building/es"),
+            0
         )
 
         fun initialize(activity: AppCompatActivity) {

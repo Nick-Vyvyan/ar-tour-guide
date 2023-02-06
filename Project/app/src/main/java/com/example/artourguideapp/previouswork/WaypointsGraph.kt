@@ -1,7 +1,6 @@
-package com.example.artourguideapp.navigation
+package com.example.artourguideapp.previouswork
 
 import android.location.Location
-import android.util.Log
 import kotlin.collections.ArrayList
 
 class WaypointsGraph{

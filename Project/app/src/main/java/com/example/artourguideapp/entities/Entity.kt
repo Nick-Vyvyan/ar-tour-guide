@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import com.example.artourguideapp.R
+import com.example.artourguideapp.navigation.Navigation
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.rendering.ViewRenderable
 
@@ -19,36 +20,15 @@ abstract class Entity(
     private var url: String,
     private var centralLocation : Location,
     private var entityData: EntityData,
+    private var searchId: Int,
 ) {
 
     private lateinit var dialogFragment: DialogFragment
-//    lateinit var anchor: Anchor
-    private var node: Node = Node()
+    private lateinit var node: EntityNode
     private var isDestination: Boolean = false
 
     fun initNode(activity: AppCompatActivity) {
-//        node = Node()
-        node.name = name
-        node.parent = null
-
-        // Programmatically build an ar button without a XML
-        val arButton = Button(activity)
-        
-        arButton.setBackgroundResource(R.drawable.button_rounded_corners)
-        arButton.isHapticFeedbackEnabled = true
-        arButton.text = name
-        arButton.setTextAppearance(R.style.ButtonText)
-
-        arButton.setOnClickListener {
-            if (!dialogFragment.isVisible) {
-                dialogFragment.show(activity.supportFragmentManager, name)
-            }
-
-        }
-
-        ViewRenderable.builder().setView(activity, arButton).build()
-            .thenAccept {renderable ->
-                node.renderable = renderable }
+        node = EntityNode(activity, this)
     }
 
     fun nodeIsAttached() : Boolean {
@@ -67,6 +47,9 @@ abstract class Entity(
         return node
     }
 
+    fun getSearchId() : Int {
+        return searchId
+    }
 
     fun getCentralLocation() : Location
     {

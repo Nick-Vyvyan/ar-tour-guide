@@ -32,7 +32,10 @@ class MyEntityListRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.contentView.text = item.getName()
+        holder.contentView.text =
+            if (item is BuildingEntity) item.getName() + " (" + (item.getEntityData()
+                    as BuildingData).getCode() + ")"
+            else item.getName()
 
         val structureName = holder.itemView.findViewById<TextView>(R.id.structure_name)
         structureName.setOnClickListener {

@@ -3,9 +3,24 @@
     <style name="ButtonText" parent="TextAppearance.AppCompat">
         <item name="android:shadowDx">4</item>
         <item name="android:shadowDy">5</item>
-        <item name="android:shadowRadius">10</item>
+        <item name="android:shadowRadius">0</item>
         <item name="android:shadowColor">#000000</item>
         <item name="android:textColor">@color/wwu_white</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:backgroundTint">@color/wwu_blue</item>
+        <item name="android:background">@color/wwu_blue</item>
+        <item name="titleTextColor">@color/wwu_white</item>
+        <item name="android:elevation">5dp</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/wwu_blue2</item>
+        <item name="background">@color/wwu_blue2</item>
+        <item name="backgroundColor">@color/wwu_blue2</item>
+        <item name="android:backgroundTint">@color/wwu_blue2</item>
+        <item name="android:colorBackground">@color/wwu_blue2</item>
     </style>
 
 

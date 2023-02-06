@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:background="@drawable/rounded_corners"
+    android:backgroundTint="@color/cardview_dark_background"
     android:theme="@style/Theme.ARTourGuideApp">
 
     <TextView
@@ -15,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Building Name (CODE)"
+        android:text="@string/dialog_building_name"
         android:textAlignment="viewStart"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -38,20 +39,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:backgroundTint="?attr/colorOnPrimary"
-                android:text="AR"
-                android:textColor="?attr/colorPrimary"
-                android:textStyle="bold" />
+                android:backgroundTint="@color/wwu_blue"
+                android:text="@string/dialog_ar"
+                android:elevation="5dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                style="?android:attr/buttonBarButtonStyle" />
 
             <Button
                 android:id="@+id/buildingMapButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:backgroundTint="?attr/colorOnPrimary"
-                android:text="MAP"
-                android:textColor="?attr/colorPrimary"
-                android:textStyle="bold" />
+                android:backgroundTint="@color/wwu_blue"
+                android:text="@string/dialog_map"
+                android:elevation="5dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                style="?android:attr/buttonBarButtonStyle" />
             </LinearLayout>
 
             <Button
@@ -59,9 +64,10 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:backgroundTint="?attr/colorOnPrimary"
-                android:text="Play Audio"
-                android:textColor="?attr/colorPrimary"
+                android:backgroundTint="@color/wwu_blue"
+                android:text="@string/dialog_play_audio"
+                android:elevation="5dp"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
     </LinearLayout>
@@ -95,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:text="Types:"
+                android:text="@string/dialog_types_label"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -106,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="TYPE 1, TYPE 2"
+                android:text="@string/dialog_types"
                 android:textSize="18sp" />
 
             <TextView
@@ -114,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Departments:"
+                android:text="@string/dialog_departments_label"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -122,9 +128,9 @@
                 android:id="@+id/buildingDepartments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="DEP 1\nDEP 2\nDEP3\nDEP4\nDEP5"
+                android:text="@string/dialog_departments"
                 android:textSize="18sp" />
 
             <TextView
@@ -133,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
-                android:text="Accessibility Info:"
+                android:text="@string/dialog_accessibility_label"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -141,8 +147,8 @@
                 android:id="@+id/accessibilityLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:gravity="left"
+                android:layout_marginStart="20dp"
+                android:gravity="start"
                 android:orientation="vertical" />
 
             <TextView
@@ -150,7 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Gender Neutral Restrooms:"
+                android:text="@string/dialog_gender_neutral_restrooms_label"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -158,7 +164,7 @@
                 android:id="@+id/genderNeutralRestrooms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:textSize="18sp" />
 
@@ -168,7 +174,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
 
-                android:text="Computer Labs:"
+                android:text="@string/dialog_computer_labs_label"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -176,24 +182,7 @@
                 android:id="@+id/computerLabs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/parkingInfoLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Parking Information:"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/parkingInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:textSize="18sp" />
 
@@ -202,7 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Dining:"
+                android:text="@string/dialog_dining_label"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -210,7 +199,7 @@
                 android:id="@+id/dining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:textSize="18sp" />
 
@@ -219,7 +208,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Additional Info"
+                android:text="@string/dialog_additional_info_label"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -227,9 +216,9 @@
                 android:id="@+id/landmark_data_url"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Link to website"
+                android:text="@string/dialog_link_to_website_label"
                 android:textColor="?android:attr/textColorLink"
                 android:textSize="18sp"
                 android:textStyle="bold" />

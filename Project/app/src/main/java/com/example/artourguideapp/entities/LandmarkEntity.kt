@@ -12,12 +12,14 @@ import android.location.Location
  */
 class LandmarkEntity(
     location : Location,
-    landmarkData: LandmarkData
+    landmarkData: LandmarkData,
+    searchId: Int,
 ) : Entity(
     landmarkData.getTitle(),
     landmarkData.getURL(),
     location,
-    landmarkData) {
+    landmarkData,
+    searchId) {
 
     init {
         setDialogFragment(LandmarkDialogFragment(landmarkData, location, this))

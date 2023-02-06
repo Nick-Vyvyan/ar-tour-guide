@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:background="@drawable/rounded_corners"
+    android:backgroundTint="@color/cardview_dark_background"
     android:theme="@style/Theme.ARTourGuideApp">
 
     <TextView
@@ -15,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Building Name (CODE)"
+        android:text="@string/dialog_landmark_name"
         android:textAlignment="viewStart"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -38,21 +39,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:backgroundTint="?attr/colorOnPrimary"
-                android:text="AR"
-                android:textColor="?attr/colorPrimary"
-                android:textStyle="bold" />
+                android:backgroundTint="@color/wwu_blue"
+                android:text="@string/dialog_ar"
+                android:elevation="5dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                style="?android:attr/buttonBarButtonStyle" />
 
             <Button
                 android:id="@+id/landmarkMapButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="?attr/colorOnPrimary"
-                android:text="MAP"
-                android:textColor="?attr/colorPrimary"
-                android:textStyle="bold" />
+                android:backgroundTint="@color/wwu_blue"
+                android:text="@string/dialog_map"
+                android:elevation="5dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
 
         <Button
@@ -60,9 +65,10 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:backgroundTint="?attr/colorOnPrimary"
-            android:text="Play Audio"
-            android:textColor="?attr/colorPrimary"
+            android:backgroundTint="@color/wwu_blue"
+            android:text="@string/dialog_play_audio"
+            android:elevation="5dp"
+            android:textColor="@color/white"
             android:textStyle="bold" />
 
 
@@ -95,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:text="Description"
+                android:text="@string/dialog_description_label"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -106,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="DESCRIPTION HERE"
+                android:text="@string/dialog_description"
                 android:textSize="18sp" />
 
             <TextView
@@ -114,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Additional Info"
+                android:text="@string/dialog_additional_info_label"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -122,9 +128,9 @@
                 android:id="@+id/landmark_data_url"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Link to website"
+                android:text="@string/dialog_link_to_website_label"
                 android:textColor="?android:attr/textColorLink"
                 android:textSize="18sp"
                 android:textStyle="bold" />
