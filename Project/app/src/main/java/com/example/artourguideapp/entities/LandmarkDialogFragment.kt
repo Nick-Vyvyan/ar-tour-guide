@@ -73,6 +73,9 @@ class LandmarkDialogFragment(var landmarkData: LandmarkData, var center: Locatio
             if (activity?.localClassName == "SearchActivity") {
                 activity?.finish()
             }
+            if (Tour.onTour) {
+                Tour.stopTour()
+            }
 
             if (Tour.onTour) {
                 Tour.stopTour()
@@ -120,7 +123,10 @@ class LandmarkDialogFragment(var landmarkData: LandmarkData, var center: Locatio
                     player!!.start()
                 }
             }
-            // Log.d("DEBUG","Made to has audio")
+
+            player?.setOnCompletionListener {
+                audioButton.text = "Play Audio"
+            }
         } else {
             audioButton.visibility = View.GONE
         }

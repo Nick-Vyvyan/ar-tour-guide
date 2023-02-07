@@ -91,14 +91,14 @@ class Tour {
         }
 
         /** Starts the tour */
-        private fun startTour() {
-            onTour = true
+        fun startTour() {
             destinationIndex = 0
             Navigation.startNavigationTo(destinations[destinationIndex])
             stopNavButton.visibility = View.INVISIBLE
             startTourButton.visibility = View.INVISIBLE
             stopTourButton.visibility = View.VISIBLE
             skipToNextDestinationButton.visibility = View.VISIBLE
+            onTour = true
         }
 
         /** Stops the tour */

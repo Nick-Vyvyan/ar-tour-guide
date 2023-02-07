@@ -15,6 +15,7 @@ require("mongodb").ObjectId;
 
 // This section will help you get a list of all the records.
 recordRoutes.route("/db").get(function (req, res) {
+  console.log("Getting structure info")
   let db_connect = dbo.getDb();
   db_connect
     .collection("structures")
@@ -27,6 +28,7 @@ recordRoutes.route("/db").get(function (req, res) {
 
 // gets the search table
 recordRoutes.route("/search").get(function (req, res) {
+  console.log("Getting search info")
   let db_connect = dbo.getDb();
   db_connect
     .collection("search")
@@ -123,7 +125,7 @@ recordRoutes.route("/:id").delete((req, response) => {
         {$set: {index: newIndex}}, 
         (err, res) => {
           if (err) throw err
-          console.log("search index updated")
+          console.log("search index updated", res)
       })
   })
 
@@ -166,7 +168,7 @@ const addStructureToSearchIndex = (buildingData, db, id) => {
     let maxSize = Math.max(indexSize, id+1)
 
     // if new entry
-    if (id+1 == maxSize) {
+    if (id+1 >= maxSize) {
       // new
       for (let key in index) {
         while (index[key].length <= id) {
@@ -199,7 +201,7 @@ const addStructureToSearchIndex = (buildingData, db, id) => {
     
     db.collection("search").update({}, {$set: {index: index}}, (err, res) => {
       if (err) throw err
-      console.log("search index updated")
+      console.log("search index updated", res)
     })
   })
 
@@ -216,7 +218,7 @@ const getSearchTokens = (buildingData) => {
   let searchString = 
   [buildingData.structureName,
    buildingData.searchTerms]
-   .join(' ')
+   .join(" ")
 
   // for each relevant field
   // add all strings to one big string
@@ -226,13 +228,13 @@ const getSearchTokens = (buildingData) => {
   // add document to search index
   if (buildingData.buildingCode) {
     // relevant fields
-    searchString += ' ' +
+    searchString += " " +
     [
      buildingData.buildingCode,
      buildingData.structureTypes,
      buildingData.departmentsOffices,
     ]
-    .join(' ')
+    .join(" ")
  
     if (buildingData.computerLabs !== "") {
       searchString += " computer lab"
@@ -246,23 +248,22 @@ const getSearchTokens = (buildingData) => {
       searchString += " dining diner restaurant eatery cafe cafeteria food drink shop lunch dinner breakfast eat "
       
       // remove URLs and add names to searchString
-      let diningOptions = buildingData.dining.split(' ')
+      let diningOptions = buildingData.dining.split(" ")
       diningOptions = diningOptions.filter(token => ! (token.includes("http") || token.includes("N/A") || token.includes("None") || token === "-"));
 
-      searchString += diningOptions.join(' ')
+      searchString += diningOptions.join(" ")
     }
-
-    searchString = searchString.toLowerCase()
-    searchString = removeSymbols(searchString)
-    searchString = searchString.trim()
-
-    return removeStopwords(searchString.split(/\s+/))
   }
+  searchString = searchString.toLowerCase()
+  searchString = removeSymbols(searchString)
+  searchString = searchString.trim()
+
+  return removeStopwords(searchString.split(/\s+/))
 }
 
 const removeSymbols = (str) => {
   const newVar = str.split("").filter(token => token.match(/[a-zA-Z0-9\s]/i))
-  return newVar.join('')
+  return newVar.join("")
 };
 
 module.exports = recordRoutes;

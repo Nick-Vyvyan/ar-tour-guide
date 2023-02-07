@@ -19,20 +19,21 @@ class AnchorHelper {
     companion object {
         const val ANCHOR_PROXIMITY_DISTANCE = 500f
         const val ANCHOR_ELEVATION_OFFSET = 1.5f
-        const val ANCHOR_SET_INTERVAL_MS : Long = 30000
+        const val INITIAL_ANCHOR_SET_INTERVAL_MS : Long = 100
+        const val ANCHOR_SET_INTERVAL_MS : Long = 10000
 
         const val VISIBLE_NODE_PROXIMITY_DISTANCE = 150f
-        const val UPDATE_NODE_INTERVAL_MS : Long = 250
 
         const val SCALE_MULTIPLIER = 0.5f
         const val SCALE_MIN_DISTANCE = 20
+
+        var initialAnchorsPlaced = false
 
         fun setAnchors(arSceneView: ArSceneView, entities: MutableList<Entity>) {
 
             // Get AR Earth
             val earth = arSceneView.session?.earth
             if (earth?.trackingState == TrackingState.TRACKING) {
-
                 // Get user location
                 val userLocation = Location("User")
                 userLocation.latitude = earth.cameraGeospatialPose.latitude
@@ -49,32 +50,12 @@ class AnchorHelper {
                         removeAnchor(entity)
                     }
                     // If entity in proximity or is destination, but node is not yet attached
-                    //      Create anchor, set node, and update scale and rotation
+                    //      Create anchor and set node
                     else if (!entity.nodeIsAttached()) {
                         createAnchorAndSetNode(earth, entity, arSceneView)
-                        updateNodeScale(entity.getNode(), distance)
-                        updateNodeRotation(entity.getNode(), arSceneView.scene.camera.worldPosition)
                     }
                 }
-            }
-        }
-
-        fun updateNodes(arSceneView: ArSceneView?, entities: MutableList<Entity>) {
-            for (entity in entities) {
-                // If node is attached
-                if (entity.nodeIsAttached()) {
-
-                    if (arSceneView != null && arSceneView.scene != null && arSceneView.scene.camera != null) {
-                        // Get distance to Node
-                        val distance = Vector3.subtract(arSceneView.scene.camera.worldPosition, entity.getNode().worldPosition).length()
-
-                        // If node is within visible range, update scale and rotation
-                        if (distance < VISIBLE_NODE_PROXIMITY_DISTANCE) {
-                            updateNodeScale(entity.getNode(), distance)
-                            updateNodeRotation(entity.getNode(), arSceneView.scene.camera.worldPosition)
-                        }
-                    }
-                }
+                initialAnchorsPlaced = true
             }
         }
 
@@ -95,23 +76,6 @@ class AnchorHelper {
 
             // Set anchor node parent to the AR Scene
             arAnchorNode.parent = arSceneView.scene
-        }
-
-        private fun updateNodeRotation(node: Node, userPosition: Vector3) {
-            // Direction from user to entity
-            val direction = Vector3.subtract(userPosition, node.worldPosition)
-
-            // Updated rotation as Quaternion
-            val lookRotation = Quaternion.lookRotation(direction, Vector3.up())
-
-            node.worldRotation = lookRotation
-        }
-
-        private fun updateNodeScale(node: Node, distance: Float) {
-            if (distance < SCALE_MIN_DISTANCE) {
-                node.worldScale = Vector3(distance * SCALE_MULTIPLIER, distance * SCALE_MULTIPLIER, distance * SCALE_MULTIPLIER)
-            } else
-                node.worldScale = Vector3(25f, 25f, 25f)
         }
 
         private fun removeAnchor(entity: Entity) {

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.artourguideapp.entities.*
 
 lateinit var structureListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-var controller: Controller = Controller();
+var controller: Controller = Controller()
 var originalEntities: ArrayList<Entity> = ArrayList(controller.getEntities())
 var currentEntities: ArrayList<Entity> = ArrayList()
 
@@ -64,15 +64,50 @@ class SearchActivity : AppCompatActivity() {
         currentEntities.clear()
         currentEntities.addAll(originalEntities)
 
-        val structureName = findViewById<EditText>(R.id.searchText).text.toString()
-        val newEntities = originalEntities.filter {
-            it.getName().contains(structureName, true)
-        } as ArrayList<Entity>
+        val searchQuery = findViewById<EditText>(R.id.searchText).text.toString().split(' ')
+        val searchIndex = controller.getSearchIndex()
+        var searchResults = ArrayList<Int>()
 
+        for (token in searchQuery) {
+            // key is in index - init indexRow, else null
+            val indexRow = if (searchIndex.containsKey(token)) searchIndex[token] else null
+
+            if (indexRow != null) {
+                // add values to results
+                searchResults = incrementSearchResults(indexRow, searchResults)
+            } else {
+                for (word in searchIndex.keys) {
+                    if (word.contains(token)) {
+                        searchResults = searchIndex[word]?.let { incrementSearchResults(it, searchResults) }!!
+                    }
+                }
+            }
+        }
+
+        val newEntities = if (searchQuery.isEmpty())
+            originalEntities
+        else
+            originalEntities.filter {
+                if (it.getSearchId() < searchResults.size) searchResults[it.getSearchId()] > 0 else false
+            } as ArrayList<Entity>
+
+        newEntities.sortByDescending { item -> searchResults[item.getSearchId()] }
         currentEntities.clear()
         currentEntities.addAll(newEntities)
         currentEntities.sortBy { it.getName() }
         structureListAdapter.notifyDataSetChanged()
+    }
+
+    // effectively an AND operation for an array and arraylist, arraylist will grow to size if smaller than array
+    private fun incrementSearchResults(indexRow: Array<Int>, searchResults: ArrayList<Int>): ArrayList<Int> {
+        for ((i, presence) in indexRow.withIndex()) {
+            while (searchResults.size < i+1) {
+                searchResults.add(0)
+            }
+            searchResults[i] += presence
+        }
+
+        return searchResults
     }
 
     // get recyclerview adapter context

@@ -16,4 +16,12 @@ class Controller
         return Model.getEntities()
     }
 
+    fun setSearchIndex(searchIndex: Map<String, Array<Int>>) {
+        Model.setSearchIndex(searchIndex)
+    }
+
+    fun getSearchIndex(): Map<String, Array<Int>> {
+        return Model.getSearchIndex()
+    }
+
 }

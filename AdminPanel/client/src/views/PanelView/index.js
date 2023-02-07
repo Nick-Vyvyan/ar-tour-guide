@@ -66,7 +66,7 @@ const PanelView = (props) => {
     libraries,
   });
 
-  const baseServerURL = "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+  //const baseServerURL = "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
 
   if (user === null || user === undefined)
     return <Navigate to={{ pathname: "/login" }} />;

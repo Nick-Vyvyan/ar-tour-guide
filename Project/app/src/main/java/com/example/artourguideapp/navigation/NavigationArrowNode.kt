@@ -13,12 +13,11 @@ import kotlin.math.round
 
 /** This is an AR Navigation Node that contains an arrow model and distance text.
  *  It points to the current waypoint and displays how much distance remains in the path */
-class NavigationArrowNode(var activity: Activity, var currentWaypoint: Node, var destinationName: String) : Node() {
+class NavigationArrowNode(activity: Activity, var currentWaypoint: Node, var destinationName: String) : Node() {
 
     // Allowed to be modified by Navigation class
     var distanceFromCurrentWaypointToDestinationInMeters = 0.0
     var distanceToWaypoint = 0f
-
 
     // AR Nodes
     private var arrowNode: Node = Node()
