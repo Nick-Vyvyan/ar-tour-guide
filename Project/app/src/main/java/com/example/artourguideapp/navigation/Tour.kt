@@ -110,7 +110,7 @@ class Tour {
 
             navigationTypeTextView.visibility = View.VISIBLE
 
-            skipToNextDestinationButton.text = "Skip"
+            skipToNextDestinationButton.text = "Next"
             formatTourText()
         }
 
