@@ -70,9 +70,8 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     /** Constants */
     private val NAVIGATION_UPDATE_INTERVAL: Long = 2000
     private val NAVIGATION_UPDATE_DELAY: Long = 2000
-    private val DESTINATION_MIN_RADIUS = 5
     private val USER_WITHIN_WAYPOINT_RADIUS = 10f
-    private val USER_WITHIN_DESTINATION_RADIUS = 2f
+    private val USER_WITHIN_DESTINATION_RADIUS = 10f
 
     /** Update Timer */
     private var navigationUpdateTimer: Timer = Timer()
