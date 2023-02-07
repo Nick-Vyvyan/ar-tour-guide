@@ -32,9 +32,7 @@ class StartupActivity : AppCompatActivity() {
     private lateinit var appSettingsButton: Button
     private val PERMISSION_REQUEST_CODE = 12345
 
-    private val loadDummyEntities: Boolean = true
-//    private val loadDummyEntities: Boolean = false
-
+    private val loadDummyEntities: Boolean = false
     //endregion
 
     //region Activity Functions

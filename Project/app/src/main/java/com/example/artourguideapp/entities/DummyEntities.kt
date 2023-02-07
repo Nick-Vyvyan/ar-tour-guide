@@ -298,14 +298,11 @@ class DummyEntities{
         )
 
         fun initialize(activity: AppCompatActivity) {
-            cfLoc.latitude = 48.76312505380084
-            cfLoc.longitude = -122.4425570036162
+            cfLoc.latitude = 48.7327738818
+            cfLoc.longitude = -122.485214413
 
-//            wkrcLoc.latitude = 48.7315959997
-//            wkrcLoc.longitude = -122.488958036
-
-            wkrcLoc.latitude = 48.76170711147837
-            wkrcLoc.longitude = -122.45040587231348
+            wkrcLoc.latitude = 48.7315959997
+            wkrcLoc.longitude = -122.488958036
 
             awLoc.latitude = 48.73228015834756
             awLoc.longitude = -122.48651712172678
@@ -325,8 +322,8 @@ class DummyEntities{
             h4Loc.latitude = 48.88876263392437
             h4Loc.longitude = -122.47895767114501
 
-            h5Loc.latitude = 48.7315959997
-            h5Loc.longitude = -122.45040587231348
+            h5Loc.latitude = 48.76244375674259
+            h5Loc.longitude = -122.45055761431342
 
             shLoc.latitude = 48.7458610000001
             shLoc.longitude = -122.440000001
