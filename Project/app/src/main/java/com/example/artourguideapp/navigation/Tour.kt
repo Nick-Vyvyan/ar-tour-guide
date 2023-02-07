@@ -98,13 +98,19 @@ class Tour {
             onTour = true
             destinationIndex = 0
             Navigation.startNavigationTo(destinations[destinationIndex])
+
             startTourButton.visibility = View.INVISIBLE
+
             stopTourButton.visibility = View.VISIBLE
             stopTourButton.setOnClickListener {
                 stopTour()
             }
+
             skipToNextDestinationButton.visibility = View.VISIBLE
+
             navigationTypeTextView.visibility = View.VISIBLE
+
+            skipToNextDestinationButton.text = "Skip"
             formatTourText()
         }
 
@@ -123,6 +129,9 @@ class Tour {
             if (destinationIndex < destinations.size) {
                 Navigation.startNavigationTo(destinations[destinationIndex])
                 formatTourText()
+                if (destinationIndex == destinations.size - 1) {
+                    skipToNextDestinationButton.text = "End"
+                }
             }
             else {
                 stopTour()
