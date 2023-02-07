@@ -71,7 +71,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private val NAVIGATION_UPDATE_INTERVAL: Long = 2000
     private val NAVIGATION_UPDATE_DELAY: Long = 2000
     private val USER_WITHIN_WAYPOINT_RADIUS = 10f
-    private val USER_WITHIN_DESTINATION_RADIUS = 10f
+    private val USER_WITHIN_DESTINATION_RADIUS = 2f
 
     /** Update Timer */
     private var navigationUpdateTimer: Timer = Timer()
@@ -168,7 +168,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     //region Path and UI Generation
 
     /** Generates the path and UI. Done together since both tasks require AR Earth and therefore
-     * appear only after AR Earth is successfully tracked.
+     * UI elements and path elements appear together.
      */
     private fun generatePathAndUI() {
         thread {
@@ -263,6 +263,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
     }
 
+    /** Set all UI elements based on current data */
     private fun setUIElements() {
         // If the user is not on tour, display the navigation button
         if (!Tour.onTour) {
