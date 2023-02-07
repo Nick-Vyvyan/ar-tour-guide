@@ -21,8 +21,6 @@ class ArActivity : AppCompatActivity() {
     // Main controller for accessing entities
     private val controller = Controller()
 
-    private lateinit var stopNavButton: Button
-
     // AR SceneForm Variables
     private lateinit var arSceneView: ArSceneView
 
@@ -36,16 +34,12 @@ class ArActivity : AppCompatActivity() {
 
         // Get ARSceneView and navigation button
         arSceneView = findViewById(R.id.arSceneView)
-        stopNavButton = findViewById(R.id.stopNavButton)
 
         // Initialize Navigation
         Navigation.init(arSceneView, this)
 
         // Initialize Tour feature
         Tour.init(this)
-
-        // Set AR navigation button properties
-        setNavButtonProperties()
 
         // initialize all entity AR nodes
         initializeEntityNodes()
@@ -97,14 +91,6 @@ class ArActivity : AppCompatActivity() {
     //endregion
 
     //region UI
-
-    // Set navigation button properties
-    private fun setNavButtonProperties() {
-        stopNavButton.text = "Stop Navigation"
-        stopNavButton.setOnClickListener {
-            Navigation.stopNavigation()
-        }
-    }
 
     // Initialize all Entity nodes. Mu
     private fun initializeEntityNodes() {

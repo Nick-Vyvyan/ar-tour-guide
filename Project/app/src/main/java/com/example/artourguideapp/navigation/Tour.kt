@@ -2,6 +2,7 @@ package com.example.artourguideapp.navigation
 
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.Model
 import com.example.artourguideapp.R
@@ -49,27 +50,26 @@ class Tour {
             "Performing Arts Center")
 
         /** UI Elements */
-        private lateinit var stopNavButton: Button
         private lateinit var startTourButton: FloatingActionButton
-        private lateinit var stopTourButton: Button
+        private lateinit var stopTourButton: FloatingActionButton
         private lateinit var skipToNextDestinationButton: Button
+        private lateinit var navigationTypeTextView: TextView
 
         /** Initializes the tour functionality */
         fun init(activity: AppCompatActivity) {
             Companion.activity = activity
 
-            initializeButtons()
+            initializeUI()
             initializeDestinations()
         }
 
         /** Initializes all UI functionality */
-        private fun initializeButtons() {
-            stopNavButton = activity.findViewById(R.id.stopNavButton)
+        private fun initializeUI() {
             startTourButton = activity.findViewById(R.id.start_tour_fab)
             startTourButton.setOnClickListener {
                 startTour()
             }
-            stopTourButton = activity.findViewById(R.id.stopTourButton)
+            stopTourButton = activity.findViewById(R.id.stopNavButton)
             stopTourButton.setOnClickListener {
                 stopTour()
             }
@@ -78,6 +78,9 @@ class Tour {
             skipToNextDestinationButton.setOnClickListener {
                 skipToNextDestination()
             }
+
+            navigationTypeTextView = activity.findViewById(R.id.navigationTypeTextView)
+            formatTourText()
         }
 
         /** Initializes all destinations based on destination route */
@@ -92,23 +95,26 @@ class Tour {
 
         /** Starts the tour */
         fun startTour() {
+            onTour = true
             destinationIndex = 0
             Navigation.startNavigationTo(destinations[destinationIndex])
-            stopNavButton.visibility = View.INVISIBLE
             startTourButton.visibility = View.INVISIBLE
             stopTourButton.visibility = View.VISIBLE
+            stopTourButton.setOnClickListener {
+                stopTour()
+            }
             skipToNextDestinationButton.visibility = View.VISIBLE
-            onTour = true
+            navigationTypeTextView.visibility = View.VISIBLE
+            formatTourText()
         }
 
         /** Stops the tour */
         fun stopTour() {
+            onTour = false
             Navigation.stopNavigation()
-            stopNavButton.visibility = View.INVISIBLE
             startTourButton.visibility = View.VISIBLE
             stopTourButton.visibility = View.INVISIBLE
             skipToNextDestinationButton.visibility = View.INVISIBLE
-            onTour = false
         }
 
         /** Skips to the next destination */
@@ -116,7 +122,7 @@ class Tour {
             destinationIndex++
             if (destinationIndex < destinations.size) {
                 Navigation.startNavigationTo(destinations[destinationIndex])
-                stopNavButton.visibility = View.INVISIBLE
+                formatTourText()
             }
             else {
                 stopTour()
@@ -133,6 +139,10 @@ class Tour {
             }
 
             return null
+        }
+
+        private fun formatTourText() {
+            navigationTypeTextView.text = "Campus Tour: ${destinationIndex+1}/${destinations.size}"
         }
     }
 }

@@ -12,7 +12,7 @@ class NavigationWaypointNode(var activity: Activity): Node() {
 
     private val WAYPOINT_SCALE = Vector3(5f, 5f, 5f)
     private val WAYPOINT_ROTATION = Quaternion.lookRotation(Vector3.down(), Vector3.up())
-    private val WAYPOINT_NODE_DISPLACEMENT = 2f
+    private val VERTICAL_DISPLACEMENT = 5f
 
     init {
         // Build arrow
@@ -27,7 +27,7 @@ class NavigationWaypointNode(var activity: Activity): Node() {
         // Set scale
         worldScale = WAYPOINT_SCALE
         worldRotation = WAYPOINT_ROTATION
-        localPosition.y = WAYPOINT_NODE_DISPLACEMENT
+        localPosition.y = VERTICAL_DISPLACEMENT
     }
 
     override fun onActivate() {
@@ -45,8 +45,8 @@ class NavigationWaypointNode(var activity: Activity): Node() {
             return
         }
 
-        if (localPosition.y != WAYPOINT_NODE_DISPLACEMENT) {
-            localPosition.y = WAYPOINT_NODE_DISPLACEMENT
+        if (localPosition.y != VERTICAL_DISPLACEMENT) {
+            localPosition.y = VERTICAL_DISPLACEMENT
         }
     }
 }

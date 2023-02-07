@@ -14,24 +14,28 @@ import kotlin.math.round
 
 /** This is an AR Navigation Node that contains an arrow model and distance text.
  *  It points to the current waypoint and displays how much distance remains in the path */
-class NavigationArrowNode(activity: Activity, var currentWaypoint: Node, var destinationName: String) : Node() {
+class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node() {
 
     // Allowed to be modified by Navigation class
     var distanceFromCurrentWaypointToDestination = 0.0
     var distanceToCurrentWaypoint = 0f
+    var pointDirectlyToWaypoint = false
+
+    // UI Elements
+    private var distanceToDestinationTextView: TextView = activity.findViewById(R.id.distanceToDestinationTextView)
 
     // AR Nodes
     private var arrowNode: Node = Node()
     private var textNode: Node = Node()
 
     // AR TextView
-    private lateinit var distanceText: TextView
+    private lateinit var waypointDistanceText: TextView
 
     // Constants
-    private var NODE_LOCAL_POSITION = Vector3(0f, -.15f, -.5f)
+    private var NODE_LOCAL_POSITION = Vector3(0f, -.175f, -.5f)
     private var NODE_LOCAL_SCALE = Vector3(.25f, .25f, .25f)
-    private var ARROW_OFFSET = Vector3(0f, .1f, 0f)
-    private var TEXT_OFFSET = Vector3(0f, -.1f, .3f)
+    private var ARROW_OFFSET = Vector3(0f, 0f, 0f)
+    private var TEXT_OFFSET = Vector3(0f, .15f, .0f)
 
     init {
         // Build arrow node
@@ -49,9 +53,9 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node, var des
         ViewRenderable.builder().setView(activity, R.layout.distance_text).build()
             .thenAccept { renderable ->
                 textNode.renderable = renderable
-                textNode.parent = this
+                textNode.parent = arrowNode
                 textNode.localPosition = Vector3.add(textNode.localPosition, TEXT_OFFSET)
-                distanceText = renderable.view as TextView
+                waypointDistanceText = renderable.view as TextView
             }
     }
 
@@ -73,31 +77,54 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node, var des
             return
         }
 
-        // Get the vector from the arrow to the destination
+        // Point arrow to current waypoint
         val currentWaypointPositionFlat = Vector3(currentWaypoint!!.worldPosition.x, scene!!.camera.worldPosition.y, currentWaypoint!!.worldPosition.z)
+        val vectorToCurrentWaypointFlat = Vector3.subtract(currentWaypointPositionFlat, worldPosition)
 
-        val arrowDirection = Vector3.subtract(currentWaypointPositionFlat, worldPosition)
+        // If arrow should point directly to waypoint, do that, otherwise, point to waypoint coordinate at same elevation as user
+        var arrowRotation: Quaternion = if (pointDirectlyToWaypoint) {
+            val vectorToCurrentWaypoint = Vector3.subtract(currentWaypoint!!.worldPosition, worldPosition)
+            Quaternion.lookRotation(vectorToCurrentWaypoint, Vector3.up())
+        } else {
+            Quaternion.lookRotation(vectorToCurrentWaypointFlat, Vector3.up())
+        }
 
-        // Updated rotation as Quaternion
-        val arrowRotation = Quaternion.lookRotation(arrowDirection, Vector3.up())
         arrowNode.worldRotation = arrowRotation
 
-        // Get the vector from the arrow to the destination
+        // Point text toward user
         val textDirection = Vector3.subtract(textNode.worldPosition, scene!!.camera.worldPosition)
-
-        // Updated rotation as Quaternion
         val textRotation = Quaternion.lookRotation(textDirection, Vector3.up())
         textNode.worldRotation = textRotation
 
-        distanceToCurrentWaypoint = currentWaypointPositionFlat.length()
-        distanceText.text = formattedDistanceText()
+        distanceToCurrentWaypoint = vectorToCurrentWaypointFlat.length()
+
+        // update UI
+        updateUI()
+        setDistanceToDestinationText()
+        setWaypointDistanceText()
+
     }
 
-    private fun formattedDistanceText(): String {
+    private fun updateUI() {
+        setDistanceToDestinationText()
+        setWaypointDistanceText()
+    }
+
+    private fun setWaypointDistanceText() {
+        if (distanceFromCurrentWaypointToDestination > 1) {
+            val distanceToWaypointInFeet = distanceToCurrentWaypoint * 3.28084
+            val formattedWaypointDistance = round(distanceToWaypointInFeet / 10).toInt() * 10
+
+            waypointDistanceText.text = "\n$formattedWaypointDistance ft. to waypoint"
+        }
+        else {
+            waypointDistanceText.text = ""
+        }
+    }
+
+    private fun setDistanceToDestinationText() {
         // Return variable
         var formattedText = ""
-
-        formattedText += "$destinationName\n"
 
         // Get current waypoint distance at same height as user
         val currentWaypointPositionFlat = Vector3(currentWaypoint!!.worldPosition.x, worldPosition.y, currentWaypoint!!.worldPosition.z)
@@ -133,14 +160,6 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node, var des
             formattedText += "$formattedDistance feet away"
         }
 
-
-        if (distanceFromCurrentWaypointToDestination > 1) {
-            val distanceToWaypointInFeet = distanceToCurrentWaypoint * 3.28084
-            val formattedWaypointDistance = round(distanceToWaypointInFeet / 10).toInt() * 10
-
-            formattedText += "\n$formattedWaypointDistance ft. to waypoint"
-        }
-
-        return formattedText
+        distanceToDestinationTextView.text = formattedText
     }
 }

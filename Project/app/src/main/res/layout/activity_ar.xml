@@ -11,20 +11,99 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/map_fab"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/destinationLinearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="?attr/colorPrimary"
-        android:clickable="true"
-        android:contentDescription="@string/ar_map_button"
-        android:focusable="true"
-        android:foregroundTint="?attr/colorOnPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="?attr/colorSecondary"
+        android:backgroundTint="?attr/colorSecondary"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_map_24" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/navigationTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="?attr/colorSecondary"
+            android:backgroundTint="?attr/colorSecondary"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:id="@+id/navigationTypeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Navigating to: "
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/destinationNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:text="Communications Facility"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/distanceToDestinationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/stopNavButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00000000"
+            android:clickable="true"
+            android:visibility="visible"
+            app:fabCustomSize="56dp"
+            app:fabSize="normal"
+            app:maxImageSize="56dp"
+            app:srcCompat="@drawable/ic_baseline_cancel_24" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/skipToNextDestinationButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorSecondary"
+        android:text="@string/ar_tour_next"
+        android:textAppearance="@style/ButtonText"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/start_tour_fab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/start_tour_fab"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/search_fab"
@@ -42,6 +121,21 @@
         app:srcCompat="@drawable/ic_baseline_search_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/map_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:clickable="true"
+        android:contentDescription="@string/ar_map_button"
+        android:focusable="true"
+        android:foregroundTint="?attr/colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_map_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/start_tour_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,49 +150,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_baseline_directions_walk_24" />
 
-    <Button
-        android:id="@+id/skipToNextDestinationButton"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/wwu_blue"
-        android:text="@string/ar_tour_next"
-        android:textAppearance="@style/ButtonText"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.849"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.109" />
-
-    <Button
-        android:id="@+id/stopTourButton"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/wwu_blue"
-        android:text="@string/ar_tour_stop"
-        android:textAppearance="@style/ButtonText"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.151"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.109" />
-
-    <Button
-        android:id="@+id/stopNavButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/wwu_blue"
-        android:visibility="gone"
-        android:textAppearance="@style/ButtonText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.109" />
 
     <TextView
         android:id="@+id/copyrightsText"

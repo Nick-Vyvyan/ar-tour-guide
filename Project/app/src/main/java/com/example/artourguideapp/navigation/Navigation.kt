@@ -2,13 +2,14 @@ package com.example.artourguideapp.navigation
 
 import android.util.Log
 import android.view.View
-import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.AnchorHelper
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.Earth
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
@@ -71,7 +72,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private val NAVIGATION_UPDATE_DELAY: Long = 2000
     private val DESTINATION_MIN_RADIUS = 5
     private val USER_WITHIN_WAYPOINT_RADIUS = 10f
-    private val USER_WITHIN_DESTINATION_RADIUS = 10f
+    private val USER_WITHIN_DESTINATION_RADIUS = 2f
 
     /** Update Timer */
     private var navigationUpdateTimer: Timer = Timer()
@@ -84,18 +85,20 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private var currentWaypointIndex = 0
 
     /** UI Elements */
-    private var stopNavButton: Button = activity.findViewById(R.id.stopNavButton)
+    private var destinationLinearLayout: LinearLayout = activity.findViewById(R.id.destinationLinearLayout)
+    private var navigationTypeTextView: TextView = activity.findViewById(R.id.navigationTypeTextView)
+    private var destinationNameTextView: TextView = activity.findViewById(R.id.destinationNameTextView)
+    private var stopNavButton: FloatingActionButton = activity.findViewById(R.id.stopNavButton)
     private var copyrightsTextView: TextView = activity.findViewById(R.id.copyrightsText)
 
     /** AR Elements */
     private var currentWaypointAnchorNode: AnchorNode? = null
     private var nextWaypointAnchorNode: AnchorNode? = null
     private var currentWaypointNode: NavigationWaypointNode = NavigationWaypointNode(activity)
-    private var navigationArrowNode: NavigationArrowNode = NavigationArrowNode(activity, currentWaypointNode, "")
+    private var navigationArrowNode: NavigationArrowNode = NavigationArrowNode(activity, currentWaypointNode)
 
     /** Google Maps Licensing */
     private var copyrights = ""
-
 
     // region Navigation
 
@@ -110,18 +113,12 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         setDestination(newDestination)
         generatePathAndUI()
         startNavigationUpdates()
-
-        // If the user is not on tour, display the navigation button
-        if (!Tour.onTour) {
-            stopNavButton.visibility = View.VISIBLE
-        }
     }
 
     /** Set entity as destination on entity and on this */
     private fun setDestination(newDestination: Entity) {
         newDestination.setAsDestination()
         destination = newDestination
-        navigationArrowNode.destinationName = newDestination.getName()
     }
 
     /** Stop Navigation and reset all variables */
@@ -150,8 +147,20 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         waypoints.clear()
         distancesRemainingFromWaypoint.clear()
 
-        // Make button invisible
+        // Reset UI
+        if (!Tour.onTour) {
+            resetUIElements()
+        }
+    }
+
+    private fun resetUIElements() {
         stopNavButton.visibility = View.INVISIBLE
+
+        destinationNameTextView.text = ""
+
+        destinationLinearLayout.visibility = View.INVISIBLE
+
+        copyrightsTextView.text = ""
         copyrightsTextView.visibility = View.INVISIBLE
     }
 
@@ -251,6 +260,24 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         initializeWaypointAnchorsAndNodes(earth)
         initializeNavigationArrow()
         pointArrowToCorrectNode()
+        setUIElements()
+
+    }
+
+    private fun setUIElements() {
+        // If the user is not on tour, display the navigation button
+        if (!Tour.onTour) {
+            stopNavButton.visibility = View.VISIBLE
+            stopNavButton.setOnClickListener {
+                Navigation.stopNavigation()
+            }
+            navigationTypeTextView.visibility = View.GONE
+        }
+
+        destinationNameTextView.text = destination!!.getName()
+
+        destinationLinearLayout.visibility = View.VISIBLE
+
         copyrightsTextView.text = copyrights
         copyrightsTextView.visibility = View.VISIBLE
     }
@@ -371,24 +398,24 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private fun pointArrowToCorrectNode() {
         // If non-null destination and user position
         if (destination != null && userPositionNotNull()) {
-            // Get distance to destination
-            val distanceFromUserToDestination = Vector3.subtract(arSceneView.scene.camera.worldPosition, destination!!.getNode().worldPosition).length()
 
             // If destination node is visible, point directly to the destination, otherwise, point to the current waypoint node
-            if (destination!!.getNode()!!.isActive &&
-                distanceFromUserToDestination > DESTINATION_MIN_RADIUS &&
-                distanceFromUserToDestination < AnchorHelper.VISIBLE_NODE_PROXIMITY_DISTANCE) {
-
+            val distanceFromUserToDestination = navigationArrowNode.distanceFromCurrentWaypointToDestination + navigationArrowNode.distanceFromCurrentWaypointToDestination
+            if (distanceFromUserToDestination < AnchorHelper.VISIBLE_NODE_PROXIMITY_DISTANCE) {
+                navigationArrowNode.pointDirectlyToWaypoint = true
                 navigationArrowNode.currentWaypoint = destination!!.getNode()
                 navigationArrowNode.distanceFromCurrentWaypointToDestination = 0.0
                 currentWaypointNode.isEnabled = false
             }
             else {
-                navigationArrowNode.currentWaypoint = currentWaypointNode
-                if (currentWaypointIndex < distancesRemainingFromWaypoint.size) {
-                    navigationArrowNode.distanceFromCurrentWaypointToDestination = distancesRemainingFromWaypoint[currentWaypointIndex]
+                if (currentWaypointAnchorNode != null) {
+                    navigationArrowNode.pointDirectlyToWaypoint = false
+                    navigationArrowNode.currentWaypoint = currentWaypointAnchorNode!!
+                    if (currentWaypointIndex < distancesRemainingFromWaypoint.size) {
+                        navigationArrowNode.distanceFromCurrentWaypointToDestination = distancesRemainingFromWaypoint[currentWaypointIndex]
+                    }
+                    currentWaypointNode.isEnabled = true
                 }
-                currentWaypointNode.isEnabled = true
             }
         }
     }
