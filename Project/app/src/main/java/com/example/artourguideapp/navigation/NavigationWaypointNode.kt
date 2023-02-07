@@ -11,13 +11,12 @@ import com.google.ar.sceneform.rendering.ModelRenderable
 class NavigationWaypointNode(var activity: Activity): Node() {
 
     private val WAYPOINT_SCALE = Vector3(5f, 5f, 5f)
-    private val WAYPOINT_ROTATION = Quaternion.lookRotation(Vector3.down(), Vector3.up())
     private val VERTICAL_DISPLACEMENT = 5f
 
     init {
         // Build arrow
         ModelRenderable.builder()
-            .setSource(activity, R.raw.wwu_arrow)
+            .setSource(activity, R.raw.wwu_waypoint_arrow)
             .setIsFilamentGltf(true)
             .build()
             .thenAccept { newRenderable ->
@@ -26,7 +25,6 @@ class NavigationWaypointNode(var activity: Activity): Node() {
 
         // Set scale
         worldScale = WAYPOINT_SCALE
-        worldRotation = WAYPOINT_ROTATION
         localPosition.y = VERTICAL_DISPLACEMENT
     }
 
@@ -36,6 +34,12 @@ class NavigationWaypointNode(var activity: Activity): Node() {
         if (scene == null) {
             throw IllegalStateException("AR Scene is null!")
         }
+
+        // Place waypoint arrow initially facing user
+        val vectorToCurrentWaypoint = Vector3.subtract(scene!!.camera.worldPosition, worldPosition)
+        val arrowRotation = Quaternion.lookRotation(vectorToCurrentWaypoint, Vector3.up())
+
+        worldRotation = arrowRotation
     }
 
     override fun onUpdate(frameTime: FrameTime?) {
