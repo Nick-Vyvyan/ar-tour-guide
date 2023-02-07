@@ -61,7 +61,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/wwu_blue"
-        android:text="@string/ar_tour_skip"
+        android:text="@string/ar_tour_next"
         android:textAppearance="@style/ButtonText"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

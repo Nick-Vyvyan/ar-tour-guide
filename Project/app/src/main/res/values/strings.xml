@@ -7,7 +7,7 @@
     <string name="ar_map_button">Map Button</string>
     <string name="ar_search_button">Search Button</string>
     <string name="ar_tour_button">Tour Button</string>
-    <string name="ar_tour_skip">Skip</string>
+    <string name="ar_tour_next">Next</string>
     <string name="ar_tour_stop">Stop</string>
     <string name="dialog_building_name">Building Name (CODE)</string>
     <string name="dialog_ar">AR</string>
