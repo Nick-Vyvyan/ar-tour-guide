@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ArActivity">
 
-
     <com.google.ar.sceneform.ArSceneView
         android:id="@+id/arSceneView"
         android:layout_width="match_parent"
@@ -100,5 +99,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.109" />
+
+    <TextView
+        android:id="@+id/copyrightsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.907"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_fab"
+        app:layout_constraintVertical_bias="0.615" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

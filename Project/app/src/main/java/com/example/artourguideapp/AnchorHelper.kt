@@ -6,9 +6,6 @@ import com.google.ar.core.Earth
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ArSceneView
-import com.google.ar.sceneform.Node
-import com.google.ar.sceneform.math.Quaternion
-import com.google.ar.sceneform.math.Vector3
 
 class AnchorHelper {
 
@@ -25,7 +22,8 @@ class AnchorHelper {
         const val VISIBLE_NODE_PROXIMITY_DISTANCE = 150f
 
         const val SCALE_MULTIPLIER = 0.5f
-        const val SCALE_MIN_DISTANCE = 20
+        const val SCALE_MAX_DISTANCE = 50
+        const val DEFAULT_SCALE = SCALE_MAX_DISTANCE * SCALE_MULTIPLIER
 
         var initialAnchorsPlaced = false
 

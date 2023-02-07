@@ -73,9 +73,6 @@ class LandmarkDialogFragment(var landmarkData: LandmarkData, var center: Locatio
             if (activity?.localClassName == "SearchActivity") {
                 activity?.finish()
             }
-            if (Tour.onTour) {
-                Tour.stopTour()
-            }
 
             if (Tour.onTour) {
                 Tour.stopTour()

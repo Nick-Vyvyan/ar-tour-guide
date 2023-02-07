@@ -9,6 +9,7 @@ import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.ViewRenderable
+import kotlin.math.ceil
 import kotlin.math.round
 
 /** This is an AR Navigation Node that contains an arrow model and distance text.
@@ -16,8 +17,8 @@ import kotlin.math.round
 class NavigationArrowNode(activity: Activity, var currentWaypoint: Node, var destinationName: String) : Node() {
 
     // Allowed to be modified by Navigation class
-    var distanceFromCurrentWaypointToDestinationInMeters = 0.0
-    var distanceToWaypoint = 0f
+    var distanceFromCurrentWaypointToDestination = 0.0
+    var distanceToCurrentWaypoint = 0f
 
     // AR Nodes
     private var arrowNode: Node = Node()
@@ -88,7 +89,7 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node, var des
         val textRotation = Quaternion.lookRotation(textDirection, Vector3.up())
         textNode.worldRotation = textRotation
 
-        distanceToWaypoint = currentWaypointPositionFlat.length()
+        distanceToCurrentWaypoint = currentWaypointPositionFlat.length()
         distanceText.text = formattedDistanceText()
     }
 
@@ -99,39 +100,47 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node, var des
         formattedText += "$destinationName\n"
 
         // Get current waypoint distance at same height as user
-        val currentWaypointPositionFlat = Vector3(currentWaypoint!!.worldPosition.x, scene!!.camera.worldPosition.y, currentWaypoint!!.worldPosition.z)
+        val currentWaypointPositionFlat = Vector3(currentWaypoint!!.worldPosition.x, worldPosition.y, currentWaypoint!!.worldPosition.z)
         val distanceToCurrentWaypointFlat = Vector3.subtract(currentWaypointPositionFlat, worldPosition).length()
 
         // Get total distance left and convert to feet
-        val distanceInMeters = distanceToCurrentWaypointFlat + distanceFromCurrentWaypointToDestinationInMeters
+        val distanceInMeters = distanceToCurrentWaypointFlat + distanceFromCurrentWaypointToDestination
         val distanceInFeet = distanceInMeters * 3.28084
-
 
         // If more than 1000 feet away, convert to miles
         if (distanceInFeet > 1000) {
-            val distanceInMiles = round((distanceInFeet / 5280) * 10).toInt() / 10.0
+            val distanceInMiles = ceil((distanceInFeet / 5280) * 10).toInt() / 10.0
             formattedText += "$distanceInMiles miles away"
         }
         else {
             var formattedDistance: Int
+
             // Format to hundreds of feet
             if (distanceInFeet > 300) {
-                formattedDistance = round(distanceInFeet / 100).toInt() * 100
+                formattedDistance = ceil(distanceInFeet / 100).toInt() * 100
             }
 
             // Format to tens of feet
             else if (distanceInFeet > 50)  {
-                formattedDistance = round(distanceInFeet / 10).toInt() * 10
+                formattedDistance = ceil(distanceInFeet / 10).toInt() * 10
             }
 
             // Format to singles of feet
             else {
-                formattedDistance = round(distanceInFeet).toInt()
+                formattedDistance = ceil(distanceInFeet).toInt()
             }
 
             formattedText += "$formattedDistance feet away"
         }
 
-        return "$formattedText\n$distanceToWaypoint meters to waypoint"
+
+        if (distanceFromCurrentWaypointToDestination > 1) {
+            val distanceToWaypointInFeet = distanceToCurrentWaypoint * 3.28084
+            val formattedWaypointDistance = round(distanceToWaypointInFeet / 10).toInt() * 10
+
+            formattedText += "\n$formattedWaypointDistance ft. to waypoint"
+        }
+
+        return formattedText
     }
 }

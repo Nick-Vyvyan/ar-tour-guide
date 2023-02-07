@@ -47,10 +47,21 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
     private fun updateScale() {
         val distance = Vector3.subtract(worldPosition, scene!!.camera.worldPosition).length()
 
-        if (distance < AnchorHelper.SCALE_MIN_DISTANCE) {
-            worldScale = Vector3(distance * AnchorHelper.SCALE_MULTIPLIER, distance * AnchorHelper.SCALE_MULTIPLIER, distance * AnchorHelper.SCALE_MULTIPLIER)
-        } else
-            worldScale = Vector3(25f, 25f, 25f)
+        // If current distance < max scale distance, scale it
+        worldScale = if (distance  < AnchorHelper.SCALE_MAX_DISTANCE)
+                Vector3(
+                distance * AnchorHelper.SCALE_MULTIPLIER,
+                distance * AnchorHelper.SCALE_MULTIPLIER,
+                distance * AnchorHelper.SCALE_MULTIPLIER
+            )
+
+            // Otherwise set to default scale
+            else
+                Vector3(
+                    AnchorHelper.DEFAULT_SCALE,
+                    AnchorHelper.DEFAULT_SCALE,
+                    AnchorHelper.DEFAULT_SCALE
+                )
     }
 
     /** Rotation is updated to look at user */
