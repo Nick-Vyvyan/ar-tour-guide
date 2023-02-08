@@ -10,14 +10,13 @@ class AppSettings {
         const val PERMISSION_REQUEST_CODE = 12345
 
         /** Startup */
-//        const val LOAD_DUMMY_ENTITIES = true
-        const val LOAD_DUMMY_ENTITIES: Boolean = false
+        const val LOAD_DUMMY_ENTITIES = true
+//        const val LOAD_DUMMY_ENTITIES: Boolean = false
 
         /** Anchors */
+        const val ANCHOR_PROXIMITY_DISTANCE = 500f
         const val INITIAL_ANCHOR_SET_INTERVAL_MS : Long = 100
         const val ANCHOR_SET_INTERVAL_MS : Long = 10000
-
-        const val ANCHOR_PROXIMITY_DISTANCE = 500f
 
         /** AR Session */
         const val VISIBLE_NODE_PROXIMITY_DISTANCE = 150f
@@ -27,12 +26,14 @@ class AppSettings {
         val AR_PLANE_FINDING_MODE = Config.PlaneFindingMode.DISABLED
 
         /** Navigation */
-        val NAVIGATION_UPDATE_INTERVAL: Long = 2000
-        val NAVIGATION_UPDATE_DELAY: Long = 2000
-        val USER_WITHIN_WAYPOINT_RADIUS = 15f
-        val USER_WITHIN_DESTINATION_RADIUS = 5f
+        const val NAVIGATION_UPDATE_INTERVAL: Long = 2000
+        const val NAVIGATION_UPDATE_DELAY: Long = 2000
+        const val USER_WITHIN_WAYPOINT_RADIUS = 15f
+        const val USER_WITHIN_DESTINATION_RADIUS = 5f
 
         /** EntityNode */
+        const val ENTITY_VERTICAL_DISPLACEMENT = 5f
+        const val ENTITY_VERTICAL_DISPLACEMENT_UPDATE_TOLERANCE = 2f
         const val ENTITY_SCALE_MULTIPLIER = 0.5f
         const val ENTITY_SCALE_MAX_DISTANCE = 50
         val ENTITY_MAX_SCALE =
@@ -41,8 +42,6 @@ class AppSettings {
                 ENTITY_SCALE_MAX_DISTANCE * ENTITY_SCALE_MULTIPLIER,
                 ENTITY_SCALE_MAX_DISTANCE * ENTITY_SCALE_MULTIPLIER)
 
-        const val ENTITY_VERTICAL_DISPLACEMENT = 5f
-        const val ENTITY_VERTICAL_DISPLACEMENT_UPDATE_TOLERANCE = 2f
 
         /** NavigationArrowNode */
         val ARROW_NODE_LOCAL_POSITION = Vector3(0f, -.175f, -.5f)
