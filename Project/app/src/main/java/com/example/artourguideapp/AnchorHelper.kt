@@ -39,7 +39,7 @@ class AnchorHelper {
                 val verticalAccuracy = earth.cameraGeospatialPose.verticalAccuracy
 
                 if (horizontalAccuracy > 25 || verticalAccuracy > 20) {
-                    Log.d("Anchor Helper", "Anchors not placed - low accuracy")
+                    Log.d("ANCHOR HELPER", "Anchors not placed - low accuracy")
                     return
                 }
 
