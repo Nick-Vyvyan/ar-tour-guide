@@ -9,6 +9,8 @@ import com.google.ar.sceneform.ArSceneView
 class ArSessionFactory {
     companion object {
 
+        const val VISIBLE_NODE_PROXIMITY_DISTANCE = 150f
+
         /**
          * Create an AR session with a given context and ArSceneView
          */
@@ -25,7 +27,7 @@ class ArSessionFactory {
                 } else {
                     arSceneView.session = session;
                     // Clip anything past visible node distance
-                    arSceneView.scene.camera.farClipPlane = AnchorHelper.VISIBLE_NODE_PROXIMITY_DISTANCE
+                    arSceneView.scene.camera.farClipPlane = VISIBLE_NODE_PROXIMITY_DISTANCE
                 }
             } catch (e: UnavailableException) {
                 // TODO: Handle exception
@@ -38,6 +40,5 @@ class ArSessionFactory {
             config.geospatialMode = Config.GeospatialMode.ENABLED
             config.planeFindingMode = Config.PlaneFindingMode.DISABLED
         }
-
     }
 }

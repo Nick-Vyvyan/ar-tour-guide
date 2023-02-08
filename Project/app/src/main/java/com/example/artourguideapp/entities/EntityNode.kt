@@ -1,5 +1,6 @@
 package com.example.artourguideapp.entities
 
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.AnchorHelper
@@ -13,6 +14,20 @@ import com.google.ar.sceneform.rendering.ViewRenderable
 
 /** An AR Node that corresponds to a given Entity */
 class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node() {
+
+    companion object {
+        const val SCALE_MULTIPLIER = 0.5f
+        const val SCALE_MAX_DISTANCE = 50
+        val MAX_SCALE =
+            Vector3(
+            SCALE_MAX_DISTANCE * SCALE_MULTIPLIER,
+            SCALE_MAX_DISTANCE * SCALE_MULTIPLIER,
+            SCALE_MAX_DISTANCE * SCALE_MULTIPLIER)
+
+        val VERTICAL_DISPLACEMENT = 5f
+        val VERTICAL_DISPLACEMENT_UPDATE_TOLERANCE = 1f
+    }
+
 
     /** Set the node name and parent, then create the AR button. */
     init {
@@ -29,6 +44,9 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
         if (scene == null) {
             throw IllegalStateException("AR Scene is null!")
         }
+
+        val correctHeight =  scene!!.camera!!.worldPosition!!.y - VERTICAL_DISPLACEMENT
+        worldPosition = Vector3(worldPosition.x, correctHeight, worldPosition.z)
     }
 
     /** Update rotation and scale per frame*/
@@ -39,8 +57,24 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
             return
         }
 
+        updatePosition()
         updateRotation()
         updateScale()
+    }
+
+    /**
+     * Updates node position if user climbs to a higher elevation than the node
+     */
+    private fun updatePosition() {
+        if (scene == null || scene?.camera == null || scene?.camera?.worldPosition  == null) {
+            return
+        }
+
+        if (scene!!.camera!!.worldPosition!!.y > worldPosition.y - VERTICAL_DISPLACEMENT + VERTICAL_DISPLACEMENT_UPDATE_TOLERANCE) {
+            Log.d("NODE", "NODE POSITION UPDATED")
+            val correctHeight =  scene!!.camera!!.worldPosition!!.y + VERTICAL_DISPLACEMENT
+            worldPosition = Vector3(worldPosition.x, correctHeight, worldPosition.z)
+        }
     }
 
     /** Scale is updated according to current distance from user */
@@ -48,20 +82,16 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
         val distance = Vector3.subtract(worldPosition, scene!!.camera.worldPosition).length()
 
         // If current distance < max scale distance, scale it
-        worldScale = if (distance  < AnchorHelper.SCALE_MAX_DISTANCE)
+        worldScale = if (distance  < SCALE_MAX_DISTANCE)
                 Vector3(
-                distance * AnchorHelper.SCALE_MULTIPLIER,
-                distance * AnchorHelper.SCALE_MULTIPLIER,
-                distance * AnchorHelper.SCALE_MULTIPLIER
+                distance * SCALE_MULTIPLIER,
+                distance * SCALE_MULTIPLIER,
+                distance * SCALE_MULTIPLIER
             )
 
             // Otherwise set to default scale
             else
-                Vector3(
-                    AnchorHelper.DEFAULT_SCALE,
-                    AnchorHelper.DEFAULT_SCALE,
-                    AnchorHelper.DEFAULT_SCALE
-                )
+                MAX_SCALE
     }
 
     /** Rotation is updated to look at user */

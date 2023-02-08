@@ -1,5 +1,6 @@
 package com.example.artourguideapp.navigation
 
+import android.location.Location
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.AnchorHelper
+import com.example.artourguideapp.ArSessionFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.Earth
@@ -70,8 +72,8 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     /** Constants */
     private val NAVIGATION_UPDATE_INTERVAL: Long = 2000
     private val NAVIGATION_UPDATE_DELAY: Long = 2000
-    private val USER_WITHIN_WAYPOINT_RADIUS = 10f
-    private val USER_WITHIN_DESTINATION_RADIUS = 2f
+    private val USER_WITHIN_WAYPOINT_RADIUS = 15f
+    private val USER_WITHIN_DESTINATION_RADIUS = 5f
 
     /** Update Timer */
     private var navigationUpdateTimer: Timer = Timer()
@@ -396,27 +398,33 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
      * node and current waypoint will be disabled. Otherwise, enable and point to current waypoint
      */
     private fun pointArrowToCorrectNode() {
-        // If non-null destination and user position
-        if (destination != null && userPositionNotNull()) {
+        // If non-null destination and earth is being tracked
+        if (destination != null && arSceneView.session?.earth?.trackingState == TrackingState.TRACKING) {
+            val earth = arSceneView.session?.earth!!
 
-            // If destination node is visible, point directly to the destination, otherwise, point to the current waypoint node
-            val distanceFromUserToDestination = navigationArrowNode.distanceFromCurrentWaypointToDestination + navigationArrowNode.distanceFromCurrentWaypointToDestination
-            if (distanceFromUserToDestination < AnchorHelper.VISIBLE_NODE_PROXIMITY_DISTANCE) {
+            var userLocation = Location("User")
+            userLocation.latitude = earth.cameraGeospatialPose.latitude
+            userLocation.longitude = earth.cameraGeospatialPose.longitude
+
+            // If destination is visible, point directly to it
+            if (userLocation.distanceTo(destination!!.getCentralLocation()) < ArSessionFactory.VISIBLE_NODE_PROXIMITY_DISTANCE) {
                 navigationArrowNode.pointDirectlyToWaypoint = true
                 navigationArrowNode.currentWaypoint = destination!!.getNode()
                 navigationArrowNode.distanceFromCurrentWaypointToDestination = 0.0
                 currentWaypointNode.isEnabled = false
             }
-            else {
-                if (currentWaypointAnchorNode != null) {
-                    navigationArrowNode.pointDirectlyToWaypoint = false
-                    navigationArrowNode.currentWaypoint = currentWaypointAnchorNode!!
-                    if (currentWaypointIndex < distancesRemainingFromWaypoint.size) {
-                        navigationArrowNode.distanceFromCurrentWaypointToDestination = distancesRemainingFromWaypoint[currentWaypointIndex]
-                    }
-                    currentWaypointNode.isEnabled = true
+
+            // Otherwise point to current waypoint anchor node
+            else if (currentWaypointAnchorNode != null) {
+                navigationArrowNode.pointDirectlyToWaypoint = false
+                navigationArrowNode.currentWaypoint = currentWaypointAnchorNode!!
+                // Update distance remaining if the current waypoint index is in bounds
+                if (currentWaypointIndex < distancesRemainingFromWaypoint.size) {
+                    navigationArrowNode.distanceFromCurrentWaypointToDestination = distancesRemainingFromWaypoint[currentWaypointIndex]
                 }
+                currentWaypointNode.isEnabled = true
             }
+
         }
     }
 
@@ -504,9 +512,15 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                 val distanceFromUserToNextWaypoint = Vector3.subtract(nextWaypointAnchorNode!!.worldPosition, arSceneView.scene.camera.worldPosition).length()
                 val distanceFromCurrentToNextWaypoint = Vector3.subtract(nextWaypointAnchorNode!!.worldPosition, currentWaypointAnchorNode!!.worldPosition).length()
                 userIsCloserToNewWaypointThanCurrent = distanceFromCurrentToNextWaypoint > distanceFromUserToNextWaypoint
+                Log.d("NAVIGATION", "distance from user to next = $distanceFromUserToNextWaypoint\ndistance from current to next = $distanceFromCurrentToNextWaypoint")
+
             }
 
-            return (userIsCloserToNewWaypointThanCurrent || userIsCloseEnoughToCurrentWaypoint) && currentWaypointIsNotFinalWaypoint
+            Log.d("NAVIGATION", "closer to next = $userIsCloserToNewWaypointThanCurrent\nclose enough to current = $userIsCloseEnoughToCurrentWaypoint")
+
+            val shouldAdvanceToNextWaypoint = (userIsCloserToNewWaypointThanCurrent || userIsCloseEnoughToCurrentWaypoint) && currentWaypointIsNotFinalWaypoint
+
+            return shouldAdvanceToNextWaypoint
         }
 
         return false

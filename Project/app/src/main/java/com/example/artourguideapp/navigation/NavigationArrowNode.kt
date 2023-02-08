@@ -3,6 +3,7 @@ package com.example.artourguideapp.navigation
 import android.app.Activity
 import android.widget.TextView
 import com.example.artourguideapp.R
+import com.example.artourguideapp.entities.Entity
 import com.google.ar.sceneform.FrameTime
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.math.Quaternion
@@ -100,9 +101,6 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node(
 
         // update UI
         updateUI()
-        setDistanceToDestinationText()
-        setWaypointDistanceText()
-
     }
 
     private fun updateUI() {
@@ -111,9 +109,20 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node(
     }
 
     private fun setWaypointDistanceText() {
+        // Set text if current waypoint isn't destination
         if (distanceFromCurrentWaypointToDestination > 1) {
             val distanceToWaypointInFeet = distanceToCurrentWaypoint * 3.28084
-            val formattedWaypointDistance = round(distanceToWaypointInFeet / 10).toInt() * 10
+            var formattedWaypointDistance: Int
+
+            // Format to tens of feet
+            if (distanceToWaypointInFeet > 100)  {
+                formattedWaypointDistance = ceil(distanceToWaypointInFeet / 10).toInt() * 10
+            }
+
+            // Format to singles of feet
+            else {
+                formattedWaypointDistance = ceil(distanceToWaypointInFeet).toInt()
+            }
 
             waypointDistanceText.text = "\n$formattedWaypointDistance ft. to waypoint"
         }

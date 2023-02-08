@@ -16,21 +16,15 @@ class AnchorHelper {
      * the AR Scene. It also contains constants for proximities and function intervals.
      */
     companion object {
-        const val ANCHOR_PROXIMITY_DISTANCE = 500f
-        const val ANCHOR_ELEVATION_OFFSET = 1.5f
+//        const val ANCHOR_ELEVATION_OFFSET = 1.5f
         const val INITIAL_ANCHOR_SET_INTERVAL_MS : Long = 100
         const val ANCHOR_SET_INTERVAL_MS : Long = 10000
 
-        const val VISIBLE_NODE_PROXIMITY_DISTANCE = 150f
-
-        const val SCALE_MULTIPLIER = 0.5f
-        const val SCALE_MAX_DISTANCE = 50
-        const val DEFAULT_SCALE = SCALE_MAX_DISTANCE * SCALE_MULTIPLIER
+        const val ANCHOR_PROXIMITY_DISTANCE = 500f
 
         var initialAnchorsPlaced = false
 
         fun setAnchors(arSceneView: ArSceneView, entities: MutableList<Entity>) {
-
             // Get AR Earth
             val earth = arSceneView.session?.earth
             if (earth?.trackingState == TrackingState.TRACKING) {
@@ -73,7 +67,7 @@ class AnchorHelper {
             val entityAnchor = earth.createAnchor(
                 entity.getCentralLocation().latitude,
                 entity.getCentralLocation().longitude,
-                earth.cameraGeospatialPose.altitude + ANCHOR_ELEVATION_OFFSET,
+                earth.cameraGeospatialPose.altitude,
                 0f, 0f, 0f, 1f
             )
 
