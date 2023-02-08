@@ -1,6 +1,8 @@
 package com.example.artourguideapp
 
 import android.location.Location
+import android.os.Debug
+import android.util.Log
 import com.example.artourguideapp.entities.Entity
 import com.google.ar.core.Earth
 import com.google.ar.core.TrackingState
@@ -32,6 +34,15 @@ class AnchorHelper {
             // Get AR Earth
             val earth = arSceneView.session?.earth
             if (earth?.trackingState == TrackingState.TRACKING) {
+
+                val horizontalAccuracy = earth.cameraGeospatialPose.horizontalAccuracy
+                val verticalAccuracy = earth.cameraGeospatialPose.verticalAccuracy
+
+                if (horizontalAccuracy > 25 || verticalAccuracy > 20) {
+                    Log.d("Anchor Helper", "Anchors not placed - low accuracy")
+                    return
+                }
+
                 // Get user location
                 val userLocation = Location("User")
                 userLocation.latitude = earth.cameraGeospatialPose.latitude
