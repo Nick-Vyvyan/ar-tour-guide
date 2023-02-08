@@ -127,7 +127,7 @@ class ArActivity : AppCompatActivity() {
       */
     private fun scheduleInitialAnchorPlacements() {
         val delay: Long = 0 // waits this many ms before attempting
-        val interval = AnchorHelper.INITIAL_ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
+        val interval = AppSettings.INITIAL_ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
         Timer().schedule(object: TimerTask() {
             override fun run() {
@@ -150,7 +150,7 @@ class ArActivity : AppCompatActivity() {
      */
     private fun scheduleSecondaryAnchorPlacements() {
         val delay: Long = 0 // waits this many ms before attempting
-        val interval = AnchorHelper.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
+        val interval = AppSettings.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
         Timer().schedule(object: TimerTask() {
             override fun run() {

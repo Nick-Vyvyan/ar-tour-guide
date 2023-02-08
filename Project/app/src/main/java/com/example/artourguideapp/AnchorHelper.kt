@@ -16,12 +16,6 @@ class AnchorHelper {
      * the AR Scene. It also contains constants for proximities and function intervals.
      */
     companion object {
-//        const val ANCHOR_ELEVATION_OFFSET = 1.5f
-        const val INITIAL_ANCHOR_SET_INTERVAL_MS : Long = 100
-        const val ANCHOR_SET_INTERVAL_MS : Long = 10000
-
-        const val ANCHOR_PROXIMITY_DISTANCE = 500f
-
         var initialAnchorsPlaced = false
 
         fun setAnchors(arSceneView: ArSceneView, entities: MutableList<Entity>) {
@@ -49,7 +43,7 @@ class AnchorHelper {
                     val distance = userLocation.distanceTo(entity.getCentralLocation())
 
                     // If entity is too far away or is not the destination, remove the anchor
-                    if (distance > ANCHOR_PROXIMITY_DISTANCE && !entity.isDestination()) {
+                    if (distance > AppSettings.ANCHOR_PROXIMITY_DISTANCE && !entity.isDestination()) {
                         removeAnchor(entity)
                     }
                     // If entity in proximity or is destination, but node is not yet attached

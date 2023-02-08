@@ -1,6 +1,7 @@
 package com.example.artourguideapp.navigation
 
 import android.app.Activity
+import com.example.artourguideapp.AppSettings
 import com.example.artourguideapp.R
 import com.google.ar.sceneform.FrameTime
 import com.google.ar.sceneform.Node
@@ -9,9 +10,6 @@ import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
 
 class NavigationWaypointNode(var activity: Activity): Node() {
-
-    private val WAYPOINT_SCALE = Vector3(5f, 5f, 5f)
-    private val VERTICAL_DISPLACEMENT = 5f
 
     init {
         // Build arrow
@@ -24,8 +22,8 @@ class NavigationWaypointNode(var activity: Activity): Node() {
             }
 
         // Set scale
-        worldScale = WAYPOINT_SCALE
-        localPosition.y = VERTICAL_DISPLACEMENT
+        worldScale = AppSettings.WAYPOINT_SCALE
+        localPosition.y = AppSettings.WAYPOINT_VERTICAL_DISPLACEMENT
     }
 
     override fun onActivate() {
@@ -49,8 +47,8 @@ class NavigationWaypointNode(var activity: Activity): Node() {
             return
         }
 
-        if (localPosition.y != VERTICAL_DISPLACEMENT) {
-            localPosition.y = VERTICAL_DISPLACEMENT
+        if (localPosition.y != AppSettings.WAYPOINT_VERTICAL_DISPLACEMENT) {
+            localPosition.y = AppSettings.WAYPOINT_VERTICAL_DISPLACEMENT
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.AnchorHelper
+import com.example.artourguideapp.AppSettings
 import com.example.artourguideapp.ArSessionFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -68,12 +69,6 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         }
 
     }
-
-    /** Constants */
-    private val NAVIGATION_UPDATE_INTERVAL: Long = 2000
-    private val NAVIGATION_UPDATE_DELAY: Long = 2000
-    private val USER_WITHIN_WAYPOINT_RADIUS = 15f
-    private val USER_WITHIN_DESTINATION_RADIUS = 5f
 
     /** Update Timer */
     private var navigationUpdateTimer: Timer = Timer()
@@ -356,7 +351,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             override fun run() {
                 navigationUpdate()
             }
-        },NAVIGATION_UPDATE_DELAY, NAVIGATION_UPDATE_INTERVAL)
+        },AppSettings.NAVIGATION_UPDATE_DELAY, AppSettings.NAVIGATION_UPDATE_INTERVAL)
     }
 
     /** Navigation update */
@@ -407,7 +402,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             userLocation.longitude = earth.cameraGeospatialPose.longitude
 
             // If destination is visible, point directly to it
-            if (userLocation.distanceTo(destination!!.getCentralLocation()) < ArSessionFactory.VISIBLE_NODE_PROXIMITY_DISTANCE) {
+            if (userLocation.distanceTo(destination!!.getCentralLocation()) < AppSettings.VISIBLE_NODE_PROXIMITY_DISTANCE) {
                 navigationArrowNode.pointDirectlyToWaypoint = true
                 navigationArrowNode.currentWaypoint = destination!!.getNode()
                 navigationArrowNode.distanceFromCurrentWaypointToDestination = 0.0
@@ -486,7 +481,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private fun destinationReached(): Boolean {
         // If current waypoint is the destination and the distance is within the reached destination radius, return true
         return  navigationArrowNode.currentWaypoint == destination!!.getNode() &&
-                navigationArrowNode.distanceToCurrentWaypoint < USER_WITHIN_DESTINATION_RADIUS
+                navigationArrowNode.distanceToCurrentWaypoint < AppSettings.USER_WITHIN_DESTINATION_RADIUS
     }
 
     /**
@@ -499,7 +494,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         if (currentWaypointAnchorNode != null && userPositionNotNull()) {
 
             // Check if user is within a radius of the current waypoint
-            val userIsCloseEnoughToCurrentWaypoint = navigationArrowNode.distanceToCurrentWaypoint < USER_WITHIN_WAYPOINT_RADIUS
+            val userIsCloseEnoughToCurrentWaypoint = navigationArrowNode.distanceToCurrentWaypoint < AppSettings.USER_WITHIN_WAYPOINT_RADIUS
 
             // Make sure that the current waypoint isn't the final waypoint
             val currentWaypointIsNotFinalWaypoint = currentWaypointIndex < waypoints.size - 1

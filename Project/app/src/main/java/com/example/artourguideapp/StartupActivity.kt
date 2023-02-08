@@ -30,9 +30,7 @@ class StartupActivity : AppCompatActivity() {
     private lateinit var loadingText: TextView
     private lateinit var progressText: TextView
     private lateinit var appSettingsButton: Button
-    private val PERMISSION_REQUEST_CODE = 12345
 
-    private val loadDummyEntities: Boolean = false
     //endregion
 
     //region Activity Functions
@@ -78,7 +76,7 @@ class StartupActivity : AppCompatActivity() {
         // Request any needed permissions
 
         if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), AppSettings.PERMISSION_REQUEST_CODE)
         }
     }
 
@@ -90,7 +88,7 @@ class StartupActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            PERMISSION_REQUEST_CODE -> {
+            AppSettings.PERMISSION_REQUEST_CODE -> {
                 if (hasPermissions()) {
                     loadingText.text = "Loading…"
                     loadStructuresFromJsonAndStart()
@@ -143,7 +141,7 @@ class StartupActivity : AppCompatActivity() {
         appSettingsButton.visibility = View.GONE
         loadingText.text = "Loading…"
 
-        if (loadDummyEntities) {
+        if (AppSettings.LOAD_DUMMY_ENTITIES) {
             loadDummyEntitiesAndStart()
         }
         else {

@@ -2,6 +2,7 @@ package com.example.artourguideapp.navigation
 
 import android.app.Activity
 import android.widget.TextView
+import com.example.artourguideapp.AppSettings
 import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
 import com.google.ar.sceneform.FrameTime
@@ -33,10 +34,7 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node(
     private lateinit var waypointDistanceText: TextView
 
     // Constants
-    private var NODE_LOCAL_POSITION = Vector3(0f, -.175f, -.5f)
-    private var NODE_LOCAL_SCALE = Vector3(.25f, .25f, .25f)
-    private var ARROW_OFFSET = Vector3(0f, 0f, 0f)
-    private var TEXT_OFFSET = Vector3(0f, .15f, .0f)
+
 
     init {
         // Build arrow node
@@ -47,7 +45,7 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node(
             .thenAccept { newRenderable ->
                 arrowNode.renderable = newRenderable
                 arrowNode.parent = this
-                arrowNode.localPosition = Vector3.add(arrowNode.localPosition, ARROW_OFFSET)
+                arrowNode.localPosition = Vector3.add(arrowNode.localPosition, AppSettings.ARROW_NODE_ARROW_OFFSET)
             }
 
         // Build distance text node
@@ -55,7 +53,7 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node(
             .thenAccept { renderable ->
                 textNode.renderable = renderable
                 textNode.parent = arrowNode
-                textNode.localPosition = Vector3.add(textNode.localPosition, TEXT_OFFSET)
+                textNode.localPosition = Vector3.add(textNode.localPosition, AppSettings.ARROW_NODE_TEXT_OFFSET)
                 waypointDistanceText = renderable.view as TextView
             }
     }
@@ -67,8 +65,8 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node(
             throw IllegalStateException("AR Scene is null!")
         }
 
-        localPosition = NODE_LOCAL_POSITION
-        localScale = NODE_LOCAL_SCALE
+        localPosition = AppSettings.ARROW_NODE_LOCAL_POSITION
+        localScale = AppSettings.ARROW_NODE_LOCAL_SCALE
     }
 
     override fun onUpdate(frameTime: FrameTime?) {
