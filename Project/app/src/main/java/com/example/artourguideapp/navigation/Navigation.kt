@@ -8,9 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
-import com.example.artourguideapp.AnchorHelper
 import com.example.artourguideapp.AppSettings
-import com.example.artourguideapp.ArSessionFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.Earth
@@ -232,9 +230,8 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                     waypoints.add(pathLocation)
 
                     val stepDistance = step.getJSONObject("distance").getDouble("value")
-                    distanceRemaining -= stepDistance
-
                     distancesRemainingFromWaypoint.add(distanceRemaining)
+                    distanceRemaining -= stepDistance
                 }
                 Log.d("NAVIGATION", "Path to ${destination!!.getName()} = $waypoints")
 
@@ -402,7 +399,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             userLocation.longitude = earth.cameraGeospatialPose.longitude
 
             // If destination is visible, point directly to it
-            if (userLocation.distanceTo(destination!!.getCentralLocation()) < AppSettings.VISIBLE_NODE_PROXIMITY_DISTANCE) {
+            if (userLocation.distanceTo(destination!!.getCentralLocation()) < AppSettings.AR_VISIBILITY_DISTANCE) {
                 navigationArrowNode.pointDirectlyToWaypoint = true
                 navigationArrowNode.currentWaypoint = destination!!.getNode()
                 navigationArrowNode.distanceFromCurrentWaypointToDestination = 0.0

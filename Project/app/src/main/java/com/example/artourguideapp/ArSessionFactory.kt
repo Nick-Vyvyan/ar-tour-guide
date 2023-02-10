@@ -25,7 +25,7 @@ class ArSessionFactory {
                 } else {
                     arSceneView.session = session;
                     // Clip anything past visible node distance
-                    arSceneView.scene.camera.farClipPlane = AppSettings.VISIBLE_NODE_PROXIMITY_DISTANCE
+                    arSceneView.scene.camera.farClipPlane = AppSettings.AR_VISIBILITY_DISTANCE
                 }
             } catch (e: UnavailableException) {
                 // TODO: Handle exception

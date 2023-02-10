@@ -23,7 +23,7 @@ class NavigationWaypointNode(var activity: Activity): Node() {
 
         // Set scale
         worldScale = AppSettings.WAYPOINT_SCALE
-        localPosition.y = AppSettings.WAYPOINT_VERTICAL_DISPLACEMENT
+        localPosition.y = AppSettings.WAYPOINT_HEIGHT
     }
 
     override fun onActivate() {
@@ -47,8 +47,8 @@ class NavigationWaypointNode(var activity: Activity): Node() {
             return
         }
 
-        if (localPosition.y != AppSettings.WAYPOINT_VERTICAL_DISPLACEMENT) {
-            localPosition.y = AppSettings.WAYPOINT_VERTICAL_DISPLACEMENT
+        if (localPosition.y != AppSettings.WAYPOINT_HEIGHT) {
+            localPosition.y = AppSettings.WAYPOINT_HEIGHT
         }
     }
 }

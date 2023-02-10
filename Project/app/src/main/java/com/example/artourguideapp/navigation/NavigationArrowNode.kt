@@ -150,7 +150,7 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node(
             var formattedDistance: Int
 
             // Format to hundreds of feet
-            if (distanceInFeet > 300) {
+            if (distanceInFeet > 500) {
                 formattedDistance = ceil(distanceInFeet / 100).toInt() * 100
             }
 

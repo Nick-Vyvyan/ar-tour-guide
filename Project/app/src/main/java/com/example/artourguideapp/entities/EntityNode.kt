@@ -1,9 +1,7 @@
 package com.example.artourguideapp.entities
 
-import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.artourguideapp.AnchorHelper
 import com.example.artourguideapp.AppSettings
 import com.example.artourguideapp.R
 import com.example.artourguideapp.navigation.Navigation
@@ -32,7 +30,7 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
             throw IllegalStateException("AR Scene is null!")
         }
 
-        val correctHeight =  scene!!.camera!!.worldPosition!!.y + AppSettings.ENTITY_VERTICAL_DISPLACEMENT
+        val correctHeight =  scene!!.camera!!.worldPosition!!.y + AppSettings.ENTITY_HEIGHT
         worldPosition = Vector3(worldPosition.x, correctHeight, worldPosition.z)
     }
 
@@ -50,16 +48,21 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
     }
 
     /**
-     * Updates node position if user climbs to a higher elevation than the node
+     * Updates node position if user has gained or lost ENTITY_HEIGHT_UPDATE_TOLERANCE meters in height.
+     * i.e. User is at 2 meters height, Entity height is 5 meters and tolerance is 2 meters. When user height becomes
+     * 0 meters or 4 meters, the entity height will update to reflect that
      */
     private fun updatePosition() {
         if (scene == null || scene?.camera == null || scene?.camera?.worldPosition  == null) {
             return
         }
 
-        val minPositionUpdateHeight = worldPosition.y - AppSettings.ENTITY_VERTICAL_DISPLACEMENT + AppSettings.ENTITY_VERTICAL_DISPLACEMENT_UPDATE_TOLERANCE
-        if (scene!!.camera!!.worldPosition!!.y > minPositionUpdateHeight) {
-            val correctHeight =  scene!!.camera!!.worldPosition!!.y + AppSettings.ENTITY_VERTICAL_DISPLACEMENT
+        val userPositionHeight = scene!!.camera!!.worldPosition!!.y
+        val maxPositionUpdateHeight = worldPosition.y - AppSettings.ENTITY_HEIGHT + AppSettings.ENTITY_HEIGHT_UPDATE_TOLERANCE
+        val minPositionUpdateHeight = worldPosition.y - AppSettings.ENTITY_HEIGHT - AppSettings.ENTITY_HEIGHT_UPDATE_TOLERANCE
+
+        if (userPositionHeight > maxPositionUpdateHeight || userPositionHeight < minPositionUpdateHeight) {
+            val correctHeight =  scene!!.camera!!.worldPosition!!.y + AppSettings.ENTITY_HEIGHT
             worldPosition = Vector3(worldPosition.x, correctHeight, worldPosition.z)
         }
     }
