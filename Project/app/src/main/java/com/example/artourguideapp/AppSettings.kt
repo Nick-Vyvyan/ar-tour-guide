@@ -24,7 +24,7 @@ class AppSettings {
         /** Frequency of anchor setting after initial placement (milliseconds) */
         const val ANCHOR_SET_INTERVAL_MS : Long = 10000
 
-        const val ACCURACY_MAX_THRESHOLD = 15f
+        const val ACCURACY_MAX_THRESHOLD = 17.5f
 
         //endregion
 
