@@ -117,7 +117,7 @@ var pathtoroot = "../../../";
 public class <span class="typeNameLabel"><a href=AnchorHelper.Companion.html>AnchorHelper.Companion</a></span>
 
                     </pre>
-                    <div class="block"><p>This class contains the functions used to create, update, and remove anchors in the AR Scene.</p></div>
+                    <div class="block"></div>
                 </li>
             </ul>
         </div>
@@ -254,7 +254,7 @@ public class <span class="typeNameLabel"><a href=AnchorHelper.Companion.html>Anc
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=AnchorHelper.Companion.html#setAnchors(ArSceneView,List)>setAnchors</a>(ArSceneView arSceneView, <a href=https://developer.android.com/reference/kotlin/java/util/List.html>List</a>&lt;<a href=entities/Entity.html>Entity</a>&gt; entities) </code>
                                             </th>
-                                            <td class="colLast"></td>
+                                            <td class="colLast">wrapper function used to set/update/remove anchors in an ArSceneView for a list of given <a href=entities/Entity.html>Entity</a> objectsonly updates anchors if device position accuracy is within a certain threshold</td>
                                         </tr>
                                         
                                         <tr id="i1" class="rowColor">
@@ -326,7 +326,20 @@ public class <span class="typeNameLabel"><a href=AnchorHelper.Companion.html>Anc
                                     <li class="blockList">
                                         <h4>setAnchors</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=AnchorHelper.Companion.html#setAnchors(ArSceneView,List)>setAnchors</a>(ArSceneView arSceneView, <a href=https://developer.android.com/reference/kotlin/java/util/List.html>List</a>&lt;<a href=entities/Entity.html>Entity</a>&gt; entities)</pre>
-                                        <div class="block"></div>
+                                        <div class="block"><p>wrapper function used to set/update/remove anchors in an ArSceneView for a list of given <a href=entities/Entity.html>Entity</a> objects</p><p>only updates anchors if device position accuracy is within a certain threshold</p></div>
+                                        
+                                        <dl>
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>arSceneView</code> - the sceneView that the anchors should be placed in</dd>
+                                            
+                                            
+                                            
+                                            <dd><code>entities</code> - a <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html>MutableList</a> of <a href=entities/Entity.html>Entity</a> objects that each need an anchor</dd>
+                                            
+                                            
+                                        </dl>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>

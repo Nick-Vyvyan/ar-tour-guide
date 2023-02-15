@@ -763,7 +763,7 @@ public class <span class="typeNameLabel"><a href=AppSettings.Companion.html>AppS
                                     <li class="blockList">
                                         <h4>getACCURACY_MAX_THRESHOLD</h4>
                                         <pre class="methodSignature"> final <a href=https://developer.android.com/reference/kotlin/java/lang/Float.html>Float</a> <a href=AppSettings.Companion.html#getACCURACY_MAX_THRESHOLD()>getACCURACY_MAX_THRESHOLD</a>()</pre>
-                                        <div class="block"><p>Maximum accuracy threshold for anchor placement. Don't place anchors if accuracy is less than this value</p></div>
+                                        <div class="block"><p>Maximum accuracy threshold for anchor placement. Don't place anchors if accuracy is greater than this value. from Geospatial API documentation: &quot;We define horizontal accuracy as the radius of the 68th percentile confidence level around the estimated horizontal location. there is a 68% probability that the true location is inside the circle. Larger numbers indicate lower accuracy.&quot;</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
