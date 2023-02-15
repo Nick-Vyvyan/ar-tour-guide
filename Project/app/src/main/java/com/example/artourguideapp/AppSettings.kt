@@ -28,7 +28,11 @@ class AppSettings {
         const val ANCHOR_SET_INTERVAL_MS : Long = 10000
 
         /** Maximum accuracy threshold for anchor placement. Don't place anchors if
-         * accuracy is less than this value */
+         * accuracy is greater than this value. from Geospatial API documentation:
+         * "We define horizontal accuracy as the radius of the 68th percentile
+         * confidence level around the estimated horizontal location. there is a 68%
+         * probability that the true location is inside the circle.
+         * Larger numbers indicate lower accuracy." */
         const val ACCURACY_MAX_THRESHOLD = 17.5f
 
         //endregion
