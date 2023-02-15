@@ -10,8 +10,11 @@ import com.example.artourguideapp.R
 import com.example.artourguideapp.SearchActivity
 
 /**
- * [RecyclerView.Adapter] that can display an [Entity].
- * This is used for the app's structure search functionality.
+ * A [RecyclerView.Adapter] used to display [Entity] objects in a [RecyclerView],
+ * primarily used in [SearchActivity].
+ *
+ * @param values The list of [Entity] objects to display
+ * @param activity Used by [SearchActivity] in order to include a class reference
  */
 class MyEntityListRecyclerViewAdapter(
     private val values: List<Entity>,

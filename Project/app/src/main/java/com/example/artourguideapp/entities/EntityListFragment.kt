@@ -13,7 +13,9 @@ import com.example.artourguideapp.SearchActivity
 
 
 /**
- * A fragment representing a list of Items.
+ * Stores a list of [Entity] objects, to be used by [MyEntityListRecyclerViewAdapter]
+ * primarily in [SearchActivity]. This allows structures to appear and be used anywhere
+ * in the app.
  */
 class EntityListFragment : Fragment() {
 
@@ -52,10 +54,8 @@ class EntityListFragment : Fragment() {
     companion object {
         private lateinit var structures: List<Entity>
 
-        // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
-        // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(param: List<Entity>): EntityListFragment {
             val fragment = EntityListFragment().apply {

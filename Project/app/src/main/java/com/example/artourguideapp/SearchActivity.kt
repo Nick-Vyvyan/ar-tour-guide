@@ -13,7 +13,7 @@ import com.example.artourguideapp.entities.*
  * Allows the user to search for structures by name, using a search bar and dynamic list of structures.
  *
  * When a structure name is clicked on, either a [BuildingDialogFragment] or [LandmarkDialogFragment]
- * is shown, depending on the type of structure.
+ * is shown, depending on the type of structure, represented as an [Entity] object.
  */
 class SearchActivity : AppCompatActivity() {
 
@@ -48,6 +48,7 @@ class SearchActivity : AppCompatActivity() {
         val searchButton = findViewById<Button>(R.id.searchButton)
         val searchText = findViewById<EditText>(R.id.searchText)
 
+        // handle pressing search button in different ways
         searchButton.setOnClickListener {
             refreshEntityList()
         }
@@ -62,6 +63,10 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Update list with new [Entity] objects based on the search query provided
+     * by the user. If the search query is empty, load in original list.
+     */
     @SuppressLint("NotifyDataSetChanged")
     private fun refreshEntityList() {
         currentEntities.clear()
@@ -87,6 +92,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
+        // filter entities by query
         val newEntities = if (searchQuery.isEmpty())
             originalEntities
         else

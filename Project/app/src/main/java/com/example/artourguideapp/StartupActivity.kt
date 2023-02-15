@@ -22,6 +22,11 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 
+/**
+ * Handle permissions, display loading text, and load in [Entity] objects
+ * from administrative panel. If remote structures differ from locally stored
+ * ones, update local version to reflect this.
+ */
 class StartupActivity : AppCompatActivity() {
 
     //region Private Variables
