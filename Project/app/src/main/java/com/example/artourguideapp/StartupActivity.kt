@@ -236,42 +236,43 @@ class StartupActivity : AppCompatActivity() {
 
                     runOnUiThread {
                         "Getting structure $i of ${structuresJsonArr.length()}…".also { progressText.text = it }
-                        
-                        // if landmark, add as LandmarkEntity
-                        if (currentStructure.getBoolean("isLandmark")) {
-                            structures.add(
-                                LandmarkEntity(
-                                    location,
-                                    LandmarkData(
-                                        structureName,
-                                        currentScrapedData.getString("description"),
-                                        audioFileName, websiteLink
-                                    ),
-                                    searchId
-                                )
-                            )
-                        }
-                        // otherwise it's a building, so add as BuildingEntity
-                        else {
-                            structures.add(
-                                BuildingEntity(
-                                    location,
-                                    BuildingData(
-                                        structureName,
-                                        currentScrapedData.getString("buildingCode"),
-                                        currentScrapedData.getString("structureTypes"),
-                                        currentScrapedData.getString("departmentsOffices"),
-                                        currentScrapedData.getString("accessibilityInfo"),
-                                        currentScrapedData.getString("genderNeutralRestrooms"),
-                                        currentScrapedData.getString("computerLabs"),
-                                        currentScrapedData.getString("dining"),
-                                        audioFileName, websiteLink
-                                    ),
-                                    searchId
-                                )
-                            )
-                        }
                     }
+
+                    // if landmark, add as LandmarkEntity
+                    if (currentStructure.getBoolean("isLandmark")) {
+                        structures.add(
+                            LandmarkEntity(
+                                location,
+                                LandmarkData(
+                                    structureName,
+                                    currentScrapedData.getString("description"),
+                                    audioFileName, websiteLink
+                                ),
+                                searchId
+                            )
+                        )
+                    }
+                    // otherwise it's a building, so add as BuildingEntity
+                    else {
+                        structures.add(
+                            BuildingEntity(
+                                location,
+                                BuildingData(
+                                    structureName,
+                                    currentScrapedData.getString("buildingCode"),
+                                    currentScrapedData.getString("structureTypes"),
+                                    currentScrapedData.getString("departmentsOffices"),
+                                    currentScrapedData.getString("accessibilityInfo"),
+                                    currentScrapedData.getString("genderNeutralRestrooms"),
+                                    currentScrapedData.getString("computerLabs"),
+                                    currentScrapedData.getString("dining"),
+                                    audioFileName, websiteLink
+                                ),
+                                searchId
+                            )
+                        )
+                    }
+
                 }
 
 
@@ -282,10 +283,12 @@ class StartupActivity : AppCompatActivity() {
                 // add structure entities to app
                 controller.setEntities(structures)
 
+
                 runOnUiThread {
                     progressText.text = "Starting AR session…"
-                    startArActivity()
                 }
+                startArActivity()
+
             } catch (ioException: IOException) {
                 ioException.printStackTrace()
             }
