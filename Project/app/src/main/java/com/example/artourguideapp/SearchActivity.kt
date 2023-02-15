@@ -9,18 +9,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.artourguideapp.entities.*
 
-lateinit var structureListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-var controller: Controller = Controller()
-var originalEntities: ArrayList<Entity> = ArrayList(controller.getEntities())
-var currentEntities: ArrayList<Entity> = ArrayList()
-
 /**
  * Allows the user to search for structures by name, using a search bar and dynamic list of structures.
  *
- * When a structure name is clicked on, either a [BuildingDataDialogFragment] or [LandmarkDialogFragment]
+ * When a structure name is clicked on, either a [BuildingDialogFragment] or [LandmarkDialogFragment]
  * is shown, depending on the type of structure.
  */
 class SearchActivity : AppCompatActivity() {
+
+    companion object {
+        lateinit var structureListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
+        var controller: Controller = Controller()
+        var originalEntities: ArrayList<Entity> = ArrayList(controller.getEntities())
+        var currentEntities: ArrayList<Entity> = ArrayList()
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

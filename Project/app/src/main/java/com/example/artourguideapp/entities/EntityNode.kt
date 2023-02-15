@@ -11,7 +11,14 @@ import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ViewRenderable
 
-/** An AR Node that corresponds to a given Entity */
+/**
+ * An AR [Node] that corresponds to a given [Entity]
+ *
+ * @constructor Create an EntityNode inside an activity with a given entity
+ *
+ * @param activity The AR activity
+ * @param entity Entity to base this node off of
+ */
 class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node() {
 
     /** Set the node name and parent, then create the AR button. */
@@ -21,7 +28,6 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
 
         createButton(activity)
     }
-
 
     override fun onActivate() {
         super.onActivate()
@@ -34,7 +40,6 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
         worldPosition = Vector3(worldPosition.x, correctHeight, worldPosition.z)
     }
 
-    /** Update rotation and scale per frame*/
     override fun onUpdate(frameTime: FrameTime?) {
         super.onUpdate(frameTime)
 
@@ -67,7 +72,9 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
         }
     }
 
-    /** Scale is updated according to current distance from user */
+    /**
+     * Scale is updated according to current distance from user
+     */
     private fun updateScale() {
         val distance = Vector3.subtract(worldPosition, scene!!.camera.worldPosition).length()
 
@@ -84,14 +91,20 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
                 AppSettings.ENTITY_MAX_SCALE
     }
 
-    /** Rotation is updated to look at user */
+    /**
+     * Rotation is updated to look at user
+     */
     private fun updateRotation() {
         val direction = Vector3.subtract(worldPosition, scene!!.camera.worldPosition)
         val rotation = Quaternion.lookRotation(direction, Vector3.up())
         worldRotation = rotation
     }
 
-    /** Create the AR button */
+    /**
+     * Create AR rendered button
+     *
+     * @param activity AR activity to render in
+     */
     private fun createButton(activity: AppCompatActivity) {
 
         val arButton = Button(activity)

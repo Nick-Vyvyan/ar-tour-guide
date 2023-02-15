@@ -9,18 +9,33 @@ import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-/** This class allows a Tour option to be added to the main AR activity.
- *  The tour has been hard-coded according to specifications by our client, Diana Feinson
+/**
+ * This class allows a Tour option to be added to the main AR activity. The tour takes the
+ * user through a series of destinations. The tour progresses at the user's pace with a "next" button
+ * and can be stopped at any time. init MUST BE CALLED BEFORE ATTEMPTING TO TOUR.
+ *
+ * The tour has been hard-coded according to specifications by our client, Diana Feinson
  */
 class Tour {
 
+    /**
+     * There only needs to be a single Tour object so all functionality inside companion
+     */
     companion object {
+
+        /** On tour (true or false) */
         var onTour = false
+
+        /** AR Activity */
         private lateinit var activity: AppCompatActivity
 
+        /** Destinations */
         private var destinations: MutableList<Entity> = mutableListOf()
+
+        /** Destination index */
         private var destinationIndex = 0
 
+        /** Hard-coded destination route */
         private var destinationRoute = mutableListOf<String>(
             "Wade King Recreation Center",
             "Academic Instructional West",
@@ -49,13 +64,27 @@ class Tour {
             "Viking Union",
             "Performing Arts Center")
 
-        /** UI Elements */
+        //region UI Elements
+
+        /** Start tour button */
         private lateinit var startTourButton: FloatingActionButton
+
+        /** Stop tour button */
         private lateinit var stopTourButton: FloatingActionButton
+
+        /** Skip to next destination button */
         private lateinit var skipToNextDestinationButton: Button
+
+        /** Navigation type text view */
         private lateinit var navigationTypeTextView: TextView
 
-        /** Initializes the tour functionality */
+        //endregion
+
+        /**
+         * Initializes the tour functionality
+         *
+         * @param activity AR activity
+         */
         fun init(activity: AppCompatActivity) {
             Companion.activity = activity
 
@@ -76,7 +105,7 @@ class Tour {
 
             skipToNextDestinationButton = activity.findViewById(R.id.skipToNextDestinationButton)
             skipToNextDestinationButton.setOnClickListener {
-                skipToNextDestination()
+                advanceToNextDestination()
             }
 
             navigationTypeTextView = activity.findViewById(R.id.navigationTypeTextView)
@@ -123,8 +152,8 @@ class Tour {
             skipToNextDestinationButton.visibility = View.INVISIBLE
         }
 
-        /** Skips to the next destination */
-        private fun skipToNextDestination() {
+        /** Advances to the next destination */
+        private fun advanceToNextDestination() {
             destinationIndex++
             if (destinationIndex < destinations.size) {
                 Navigation.startNavigationTo(destinations[destinationIndex])
@@ -138,7 +167,12 @@ class Tour {
             }
         }
 
-        /** Helper function to retrieve entity from list with a specific name */
+        /**
+         * Helper function to retrieve entity from list with a specific name
+         *
+         * @param name Name of Entity to retrieve
+         * @return Entity with given name
+         */
         private fun getEntityWithName(name: String): Entity? {
             val entities = Model.getEntities()
             for (entity in entities) {
@@ -150,6 +184,7 @@ class Tour {
             return null
         }
 
+        /** Format tour text for user display */
         private fun formatTourText() {
             navigationTypeTextView.text = "Campus Tour: ${destinationIndex+1}/${destinations.size}"
         }

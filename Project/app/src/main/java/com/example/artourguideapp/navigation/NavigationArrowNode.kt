@@ -4,7 +4,6 @@ import android.app.Activity
 import android.widget.TextView
 import com.example.artourguideapp.AppSettings
 import com.example.artourguideapp.R
-import com.example.artourguideapp.entities.Entity
 import com.google.ar.sceneform.FrameTime
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.math.Quaternion
@@ -12,29 +11,57 @@ import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.ViewRenderable
 import kotlin.math.ceil
-import kotlin.math.round
 
-/** This is an AR Navigation Node that contains an arrow model and distance text.
- *  It points to the current waypoint and displays how much distance remains in the path */
+/**
+ * This is an AR [Node] that contains an arrow model and distance text and is used in Navigation.
+ * It points to the current waypoint and displays how much distance remains in the path
+ *
+ * @property currentWaypoint The [Node] that the arrow will point at
+ *
+ * @constructor Create a new directional navigation arrow
+ *
+ * @param activity AR activity
+ * @param currentWaypoint The [Node] that the arrow will point at
+ */
 class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node() {
 
-    // Allowed to be modified by Navigation class
+    //region Public variables
+    /**
+     * Distance from current waypoint to destination
+     */
     var distanceFromCurrentWaypointToDestination = 0.0
+
+    /**
+     * Distance to current waypoint
+     */
     var distanceToCurrentWaypoint = 0f
+
+    /**
+     * Point directly to waypoint
+     */
     var pointDirectlyToWaypoint = false
 
-    // UI Elements
+    //endregion
+
+    //region UI Elements
+
+    /** Distance to destination text view */
     private var distanceToDestinationTextView: TextView = activity.findViewById(R.id.distanceToDestinationTextView)
 
-    // AR Nodes
+    //endregion
+
+    //region AR Elements
+
+    /** Arrow node */
     private var arrowNode: Node = Node()
+
+    /** Text node */
     private var textNode: Node = Node()
 
-    // AR TextView
+    /** Waypoint distance text */
     private lateinit var waypointDistanceText: TextView
 
-    // Constants
-
+    //endregion
 
     init {
         // Build arrow node
@@ -101,11 +128,19 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node(
         updateUI()
     }
 
+    /**
+     * Update visual elements
+     *
+     */
     private fun updateUI() {
         setDistanceToDestinationText()
         setWaypointDistanceText()
     }
 
+    /**
+     * Set waypoint distance text. Distance is formatted to tens of feet when greater than 100.
+     * Distance is formatted to singles of feet when less than or equal to 100.
+     */
     private fun setWaypointDistanceText() {
         // Set text if current waypoint isn't destination
         if (distanceFromCurrentWaypointToDestination > 1) {
@@ -129,6 +164,13 @@ class NavigationArrowNode(activity: Activity, var currentWaypoint: Node) : Node(
         }
     }
 
+    /**
+     * Set distance to destination text. Text is formatted based on the following:
+     * - If greater than 1000 feet, display in miles
+     * - Else if greater than 500 feet, display in hundreds of feet
+     * - Else if greater than 50 feet, display in tens of feet
+     * - Else, display in singles of feet
+     */
     private fun setDistanceToDestinationText() {
         // Return variable
         var formattedText = ""

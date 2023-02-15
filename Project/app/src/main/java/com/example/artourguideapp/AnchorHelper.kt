@@ -1,7 +1,6 @@
 package com.example.artourguideapp
 
 import android.location.Location
-import android.os.Debug
 import android.util.Log
 import com.example.artourguideapp.entities.Entity
 import com.google.ar.core.Earth
@@ -13,7 +12,7 @@ class AnchorHelper {
 
     /**
      * This class contains the functions used to create, update, and remove anchors in
-     * the AR Scene. It also contains constants for proximities and function intervals.
+     * the AR Scene.
      */
     companion object {
         var initialAnchorsPlaced = false

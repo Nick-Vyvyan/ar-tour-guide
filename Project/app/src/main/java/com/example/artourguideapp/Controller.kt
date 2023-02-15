@@ -7,11 +7,21 @@ import com.example.artourguideapp.entities.*
  */
 class Controller
 {
+    /**
+     * Set entities in Model
+     *
+     * @param entities Desired list of entities
+     */
     fun setEntities(entities: MutableList<Entity>) {
         Model.clearEntities()
         Model.setEntities(entities)
     }
 
+    /**
+     * Get entities in model
+     *
+     * @return Model Entity list
+     */
     fun getEntities(): MutableList<Entity> {
         return Model.getEntities()
     }

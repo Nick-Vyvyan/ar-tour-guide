@@ -1,14 +1,16 @@
 package com.example.artourguideapp.entities
 
-import android.graphics.PointF
 import android.location.Location
 
 /**
- * A BuildingEntity is a subclass of Entity and is constructed with a name, center,
- * location, and a BuildingData object.
+ * A subclass of [Entity]. The main container class for all building information.
  *
- * It contains a BuildingInfoDialogFragment that can be retrieved and shown in whatever
- * activity is desired.
+ * It contains a [BuildingDialogFragment] that displays information about this object.
+ * @constructor Create a BuildingEntity by providing a location, building data, and search ID
+ *
+ * @param location Building location
+ * @param buildingData Building data
+ * @param searchId Search ID
  */
 class BuildingEntity(
     location : Location,
@@ -22,7 +24,7 @@ class BuildingEntity(
     searchId) {
 
     init {
-        setDialogFragment(BuildingDataDialogFragment(buildingData, location, this))
+        setDialogFragment(BuildingDialogFragment(this))
     }
 
 }

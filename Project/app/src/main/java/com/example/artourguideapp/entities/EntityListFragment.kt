@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import com.example.artourguideapp.R
 import com.example.artourguideapp.SearchActivity
 
-private lateinit var structures: List<Entity>
 
 /**
  * A fragment representing a list of Items.
@@ -51,6 +50,7 @@ class EntityListFragment : Fragment() {
     }
 
     companion object {
+        private lateinit var structures: List<Entity>
 
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"

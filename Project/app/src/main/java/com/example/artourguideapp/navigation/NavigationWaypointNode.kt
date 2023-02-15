@@ -9,7 +9,15 @@ import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
 
-class NavigationWaypointNode(var activity: Activity): Node() {
+/**
+ * A [Node] that represents a waypoint in Navigation. Currently displays as a downward facing
+ * arrow at waypoint coordinate
+ *
+ * @constructor Initialize the Navigation Waypoint Node in a given activity
+ *
+ * @param activity AR activity
+ */
+class NavigationWaypointNode(activity: Activity): Node() {
 
     init {
         // Build arrow

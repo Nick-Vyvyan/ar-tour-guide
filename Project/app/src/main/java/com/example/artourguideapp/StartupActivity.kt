@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.view.ViewManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
@@ -56,6 +55,7 @@ class StartupActivity : AppCompatActivity() {
 
     //region Permissions
 
+    /** Request permissions from user */
     private fun requestPermissions() {
         val permissionsToRequest = mutableListOf<String>()
 
@@ -102,14 +102,18 @@ class StartupActivity : AppCompatActivity() {
         }
     }
 
+    /** True if user has all permissions, false if not */
     private fun hasPermissions() = hasCameraPermission() && hasCoarseLocationPermission() && hasFineLocationPermission()
 
+    /** True if user has camera permission, false if not */
     private fun hasCameraPermission() =
         ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
 
+    /** True if user has fine location permission, false if not */
     private fun hasFineLocationPermission() =
         ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
+    /** True if user has coarse location permission, false if not */
     private fun hasCoarseLocationPermission() =
         ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
@@ -117,7 +121,7 @@ class StartupActivity : AppCompatActivity() {
 
     //region Startup Functions
 
-    // Initialize all UI elements
+    /** Initialize all loading screen UI elements */
     private fun initializeUI() {
         loadingText = findViewById(R.id.loadingText)
         loadingText.text = "Requesting Camera and Location permission…"
@@ -136,7 +140,7 @@ class StartupActivity : AppCompatActivity() {
         }
     }
 
-    // Initialize entities and start AR
+    /** Initialize entities and start AR */
     private fun initializeEntitiesAndStart() {
         appSettingsButton.visibility = View.GONE
         loadingText.text = "Loading…"
@@ -149,14 +153,15 @@ class StartupActivity : AppCompatActivity() {
         }
     }
 
-    // Initialize with DummyEntities and start AR
+    /** Initialize with DummyEntities and start AR */
     private fun loadDummyEntitiesAndStart() {
+        var controller = Controller()
         DummyEntities.initialize(this)
         controller.setEntities(DummyEntities.entityList)
         startArActivity()
     }
 
-    // Initialize with JSON Entities and start AR
+    /** Initialize with JSON Entities and start AR */
     private fun loadStructuresFromJsonAndStart() {
         thread {
             var controller = Controller()
@@ -288,7 +293,7 @@ class StartupActivity : AppCompatActivity() {
     }
 
 
-    // Start AR and finish StartupActivity
+    /** Start AR and finish StartupActivity */
     private fun startArActivity() {
         var arActivityIntent = Intent(this, ArActivity::class.java)
         startActivity(arActivityIntent)
@@ -357,4 +362,6 @@ class StartupActivity : AppCompatActivity() {
             }
         }
     }
+
+    //endregion
 }

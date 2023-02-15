@@ -22,13 +22,20 @@ import java.net.URL
 import java.util.*
 import kotlin.concurrent.thread
 
-
 /**
- * This class handles AR Navigation. MUST CALL init(...) BEFORE USE
+ * This class handles AR Navigation. The path to the destination is generated from a
+ * Google Maps request. The user is then guided with an AR directional arrow through a
+ * series of waypoints until the destination Node is visible. The directional arrow then
+ * points directly to the Node.
  *
- * To use:
- *      call Navigation.init(arSceneView, activity)
- *      call startNavigationTo(entity) or stopNavigation()
+ * INSTRUCTIONS FOR USE:
+ * 1) call Navigation.init(arSceneView, activity)
+ * 2) call startNavigationTo(entity) or stopNavigation()
+ *
+ * @constructor Create a Navigation object
+ *
+ * @param arSceneView The AR Scene View to display AR navigation in
+ * @param activity The AR activity
  */
 class Navigation private constructor(private var arSceneView: ArSceneView,
                                      private var activity: AppCompatActivity){
@@ -39,13 +46,18 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
         /**
          * Initializes the navigation object
+         *
+         * @param arSceneView The AR Scene View to display AR navigation in
+         * @param activity The AR activity
          */
         fun init(arSceneView: ArSceneView, activity: AppCompatActivity) {
             navigation = Navigation(arSceneView, activity)
         }
 
         /**
-         * Starts navigation to a destination
+         * Start navigation to a destination
+         *
+         * @param destination The Entity to start navigating to
          */
         fun startNavigationTo(destination: Entity) {
             if (navigationInitialized()) {
@@ -62,45 +74,91 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             }
         }
 
+        /**
+         * Navigation initialized
+         *
+         * @return True if navigation object is not null, false if null
+         */
         private fun navigationInitialized(): Boolean {
             return navigation != null
         }
 
     }
 
-    /** Update Timer */
+    //region Updates
+
+    /** Navigation update timer */
     private var navigationUpdateTimer: Timer = Timer()
 
-    /** Destination and Waypoint Variables */
+    //endregion
+
+    //region Destination and Waypoints
+
+    /** Destination */
     private var destination: Entity? = null
+
+    /** Path waypoints to navigate through */
     private var waypoints = mutableListOf<LatLng>()
+
+    /** Path distances remaining from each waypoint */
     private var distancesRemainingFromWaypoint = mutableListOf<Double>()
+
+    /** Distance from current waypoint to destination */
     private var distanceFromCurrentWaypointToDestination = 0.0
+
+    /** Current waypoint index */
     private var currentWaypointIndex = 0
 
-    /** UI Elements */
+    //endregion
+
+    //region UI Elements
+
+    /** Destination linear layout */
     private var destinationLinearLayout: LinearLayout = activity.findViewById(R.id.destinationLinearLayout)
+
+    /** Navigation type text view */
     private var navigationTypeTextView: TextView = activity.findViewById(R.id.navigationTypeTextView)
+
+    /** Destination name text view */
     private var destinationNameTextView: TextView = activity.findViewById(R.id.destinationNameTextView)
+
+    /** Stop nav button */
     private var stopNavButton: FloatingActionButton = activity.findViewById(R.id.stopNavButton)
+
+    /** Copyrights text view */
     private var copyrightsTextView: TextView = activity.findViewById(R.id.copyrightsText)
 
-    /** AR Elements */
+    //endregion
+
+    //region AR Element
+
+    /** Current waypoint anchor node */
     private var currentWaypointAnchorNode: AnchorNode? = null
+
+    /** Next waypoint anchor node */
     private var nextWaypointAnchorNode: AnchorNode? = null
+
+    /** Current waypoint node */
     private var currentWaypointNode: NavigationWaypointNode = NavigationWaypointNode(activity)
+
+    /** Navigation directional arrow node */
     private var navigationArrowNode: NavigationArrowNode = NavigationArrowNode(activity, currentWaypointNode)
+
+    //endregion
 
     /** Google Maps Licensing */
     private var copyrights = ""
 
     // region Navigation
 
-    /** Navigation entry function
+    /**
+     * Navigation entry function
      *  - stops any existing navigation
      *  - sets the new destination
      *  - generates a path to that destination and displays UI
      *  - starts navigation updates
+     *
+     *  @param newDestination The new destination to navigate to
      */
     private fun navigateTo(newDestination: Entity) {
         stopNavigation()
@@ -109,13 +167,17 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         startNavigationUpdates()
     }
 
-    /** Set entity as destination on entity and on this */
+    /**
+     * Set entity as destination
+     *
+     * @param newDestination New destination to set destination as
+     */
     private fun setDestination(newDestination: Entity) {
         newDestination.setAsDestination()
         destination = newDestination
     }
 
-    /** Stop Navigation and reset all variables */
+    /** Stop navigation and reset all variables */
     private fun stopNavigation() {
         // Stop navigation updates
         navigationUpdateTimer.cancel()
@@ -147,6 +209,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         }
     }
 
+    /** Reset UI elements to non-navigation state*/
     private fun resetUIElements() {
         stopNavButton.visibility = View.INVISIBLE
 
@@ -162,7 +225,8 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
     //region Path and UI Generation
 
-    /** Generates the path and UI. Done together since both tasks require AR Earth and therefore
+    /**
+     * Generates the path and UI. Done together since both tasks require AR Earth and therefore
      * UI elements and path elements appear together.
      */
     private fun generatePathAndUI() {
@@ -462,6 +526,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     //endregion
 
     //region Helper Boolean Functions
+
     /** Returns true if there is a generated path and the destination has been reached */
     private fun shouldStopNavigation(): Boolean {
         var shouldStopNavigation = false
@@ -518,6 +583,11 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         return false
     }
 
+    /**
+     * Returns whether user position in AR Scene is null or not
+     *
+     * @return True if user position not null, false if null
+     */
     private fun userPositionNotNull(): Boolean {
         return  arSceneView != null &&
                 arSceneView.scene != null &&

@@ -1,14 +1,16 @@
 package com.example.artourguideapp.entities
 
-import android.graphics.PointF
 import android.location.Location
 
 /**
- * A LandmarkEntity is a subclass of Entity and is constructed with a name, center,
- * location, and a LandmarkData object.
+ * A subclass of [Entity]. The main container class for all landmark information.
  *
- * It contains a LandmarkInfoDialogFragment that can be retrieved and shown in whatever
- * activity is desired.
+ * It contains a [LandmarkDialogFragment] that displays information about this object.
+ * @constructor Create a LandmarkEntity by providing a location, landmark data, and search ID
+ *
+ * @param location Landmark location
+ * @param buildingData Landmark data
+ * @param searchId Search ID
  */
 class LandmarkEntity(
     location : Location,
@@ -22,6 +24,6 @@ class LandmarkEntity(
     searchId) {
 
     init {
-        setDialogFragment(LandmarkDialogFragment(landmarkData, location, this))
+        setDialogFragment(LandmarkDialogFragment(this))
     }
 }

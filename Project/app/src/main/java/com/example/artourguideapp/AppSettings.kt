@@ -3,7 +3,10 @@ package com.example.artourguideapp
 import com.google.ar.core.Config
 import com.google.ar.sceneform.math.Vector3
 
+/** App Settings */
 class AppSettings {
+
+    /** App Settings */
     companion object {
 
         /** Permissions Request Code */
@@ -24,6 +27,8 @@ class AppSettings {
         /** Frequency of anchor setting after initial placement (milliseconds) */
         const val ANCHOR_SET_INTERVAL_MS : Long = 10000
 
+        /** Maximum accuracy threshold for anchor placement. Don't place anchors if
+         * accuracy is less than this value */
         const val ACCURACY_MAX_THRESHOLD = 17.5f
 
         //endregion
@@ -107,6 +112,16 @@ class AppSettings {
 
         /** Height of the waypoint arrow */
         const val WAYPOINT_HEIGHT = 5f
+
+        //endregion
+
+        //region EntityDialog
+
+        /** Dialog size as a percentage of screen size */
+        const val DIALOG_SIZE_PERCENTAGE_OF_SCREEN_WIDTH = .95f
+
+        /** Dialog size as a percentage of screen size */
+        const val DIALOG_SIZE_PERCENTAGE_OF_SCREEN_HEIGHT = .95f
 
         //endregion
     }

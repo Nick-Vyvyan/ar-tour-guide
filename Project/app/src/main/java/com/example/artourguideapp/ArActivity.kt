@@ -3,7 +3,6 @@ package com.example.artourguideapp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.entities.Entity
 import com.example.artourguideapp.navigation.Navigation
@@ -13,15 +12,19 @@ import com.google.ar.core.exceptions.CameraNotAvailableException
 import com.google.ar.sceneform.ArSceneView
 import java.util.*
 
-
+/**
+ * The main activity of the app. Uses Sceneform and Google's ARCore to view the world and
+ * render AR elements. Contains functionality for searching, touring, navigating, and looking
+ * at a campus map.
+ */
 class ArActivity : AppCompatActivity() {
 
     //region Private Variables
 
-    // Main controller for accessing entities
+    /** Main controller for accessing entities */
     private val controller = Controller()
 
-    // AR SceneForm Variables
+    /** AR Scene View from Sceneform */
     private lateinit var arSceneView: ArSceneView
 
     //endregion
@@ -92,14 +95,14 @@ class ArActivity : AppCompatActivity() {
 
     //region UI
 
-    // Initialize all Entity nodes. Mu
+    /** Initialize entity nodes. Must be called in order to view EntityNode's in AR */
     private fun initializeEntityNodes() {
         for (entity: Entity in controller.getEntities()) {
             entity.initNode(this)
         }
     }
 
-    // Create the search button
+    /** Create search button */
     private fun createSearchButton() {
         // search button on-click listener
         val fab = findViewById<FloatingActionButton>(R.id.search_fab)
@@ -109,6 +112,7 @@ class ArActivity : AppCompatActivity() {
         }
     }
 
+    /** Create map button */
     private fun createMapButton() {
         // map button on-click listener
         val fab = findViewById<FloatingActionButton>(R.id.map_fab)
@@ -122,9 +126,7 @@ class ArActivity : AppCompatActivity() {
 
     //region Scheduling
 
-    /**
-     * Schedule the initial anchor placement update (very frequent)
-      */
+    /** Schedule the initial anchor placement update (very frequent) */
     private fun scheduleInitialAnchorPlacements() {
         val delay: Long = 0 // waits this many ms before attempting
         val interval = AppSettings.INITIAL_ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
@@ -145,9 +147,7 @@ class ArActivity : AppCompatActivity() {
         },delay, interval)
     }
 
-    /**
-     * Schedule the secondary anchor placement update (less frequent)
-     */
+    /** Schedule the secondary anchor placement update (less frequent) */
     private fun scheduleSecondaryAnchorPlacements() {
         val delay: Long = 0 // waits this many ms before attempting
         val interval = AppSettings.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously

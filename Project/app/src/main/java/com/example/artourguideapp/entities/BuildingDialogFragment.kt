@@ -4,7 +4,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Rect
-import android.location.Location
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
@@ -21,24 +20,27 @@ import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
+import com.example.artourguideapp.AppSettings
 import com.example.artourguideapp.navigation.Navigation
 import com.example.artourguideapp.R
 import com.example.artourguideapp.navigation.Tour
 import java.io.File
 
-
 /**
- * This is a custom Dialog that can be used to display building info.
+ * This is a custom [DialogFragment] that can be used to display building info.
  *
- * To use:
- *      Construct a BuildingEntity
- *      Get the BuildingEntity's Dialog Fragment (.getDialogFragment())
- *      call buildingInfoDialogFragment.show(supportFragmentManager, "custom tag")
+ * INSTRUCTIONS FOR USE:
+ * 1) Construct a [BuildingEntity]
+ * 2) Get the [BuildingDialogFragment] (.getDialogFragment())
+ * 3) Call buildingInfoDialogFragment.show(supportFragmentManager, "custom tag")
+ *
+ * @constructor Construct a building dialog fragment from a given [BuildingEntity]
+ *
+ * @param entity Building entity to create this dialog fragment from
  */
-class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Location, var entity: Entity): DialogFragment() {
+class BuildingDialogFragment(var entity: BuildingEntity): DialogFragment() {
 
-    private val sizePercentageOfScreen = .95f
-    var player: MediaPlayer? = null
+    private var player: MediaPlayer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,6 +53,8 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val buildingData = entity.getEntityData() as BuildingData
 
         /* GET ALL UI ELEMENTS */
         var nameAndCode: TextView = view.findViewById(R.id.landmark_data_name)
@@ -143,7 +147,7 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
 
         mapButton.text = "Map"
         mapButton.setOnClickListener {
-            var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + center.latitude + "%2C" + center.longitude)
+            var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + entity.getCentralLocation().latitude + "%2C" + entity.getCentralLocation().longitude)
             startActivity(Intent(Intent.ACTION_VIEW, uri))
         }
 
@@ -160,8 +164,9 @@ class BuildingDataDialogFragment(var buildingData: BuildingData, var center: Loc
         // Set dialog width and height
         val dm = Resources.getSystem().displayMetrics
         val rect = dm.run { Rect(0, 0, widthPixels, heightPixels) }
-        val percentWidth = rect.width() * sizePercentageOfScreen
-        dialog?.window?.setLayout(percentWidth.toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+        val percentWidth = rect.width() * AppSettings.DIALOG_SIZE_PERCENTAGE_OF_SCREEN_WIDTH
+        val percentHeight = rect.height() * AppSettings.DIALOG_SIZE_PERCENTAGE_OF_SCREEN_HEIGHT
+        dialog?.window?.setLayout(percentWidth.toInt(), percentHeight.toInt())
 
 
 

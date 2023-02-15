@@ -6,11 +6,17 @@ import com.google.ar.core.Session
 import com.google.ar.core.exceptions.UnavailableException
 import com.google.ar.sceneform.ArSceneView
 
+/** A class for creating the AR session */
 class ArSessionFactory {
+
+    /** A class for creating the AR session */
     companion object {
 
         /**
-         * Create an AR session with a given context and ArSceneView
+         * Create an AR session
+         *
+         * @param context Session context
+         * @param arSceneView AR Scene View to create the session for
          */
         fun createArSession(context: Context, arSceneView: ArSceneView) {
             try {
@@ -32,6 +38,11 @@ class ArSessionFactory {
             }
         }
 
+        /**
+         * Set config parameters for AR Session
+         *
+         * @param config The config object
+         */
         private fun setConfigParameters(config: Config) {
             config.updateMode = AppSettings.AR_UPDATE_MODE
             config.lightEstimationMode = AppSettings.AR_LIGHT_ESTIMATION_MODE

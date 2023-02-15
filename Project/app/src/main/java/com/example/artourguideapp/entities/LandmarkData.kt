@@ -1,9 +1,18 @@
 package com.example.artourguideapp.entities
 
 /**
- * A class that represents the data of a LandmarkEntity, which is shown in the structure popup dialog.
+ * A class that represents the data of a [LandmarkEntity].
  *
- * This class is a subclass of EntityData.
+ * Data is displayed to the user through a [BuildingDialogFragment].
+ *
+ * This class is a subclass of [EntityData].
+ *
+ * @constructor Create a LandmarkData object
+ *
+ * @param title Landmark title
+ * @param description Landmark description
+ * @param audioFileName Landmark audio file name
+ * @param url Landmark url
  */
 class LandmarkData(title: String,
                    private var description: String,
@@ -14,10 +23,20 @@ class LandmarkData(title: String,
         description = formatArrayString(description)
     }
 
+    /**
+     * Get description
+     *
+     * @return Landmark description
+     */
     fun getDescription(): String {
         return description
     }
 
+    /**
+     * Returns a formatted String representing this [LandmarkData] object
+     *
+     * @return String representation of this [LandmarkData]
+     */
     override fun toString(): String {
         return ("title: " + getTitle()
                 + "\ndescription: " + description
