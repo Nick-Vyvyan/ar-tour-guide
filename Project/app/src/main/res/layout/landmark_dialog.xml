@@ -12,7 +12,7 @@
     android:theme="@style/Theme.ARTourGuideApp">
 
     <TextView
-        android:id="@+id/landmark_data_name"
+        android:id="@+id/entity_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -35,7 +35,7 @@
             android:gravity="center">
 
             <Button
-                android:id="@+id/landmarkArNavigationButton"
+                android:id="@+id/arNavigationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
@@ -47,7 +47,7 @@
                 style="?android:attr/buttonBarButtonStyle" />
 
             <Button
-                android:id="@+id/landmarkMapButton"
+                android:id="@+id/mapButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
@@ -61,7 +61,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/landmarkMediaButton"
+            android:id="@+id/mediaButton"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
@@ -83,7 +83,7 @@
         android:backgroundTint="?attr/colorOnPrimary" />
 
     <ScrollView
-        android:id="@+id/landmark_data_scrollview"
+        android:id="@+id/entity_data_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#00FFFFFF"
@@ -116,7 +116,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/landmark_data_url_label"
+                android:id="@+id/url_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -125,7 +125,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/landmark_data_url"
+                android:id="@+id/url"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"

@@ -1,54 +1,33 @@
 package com.example.artourguideapp.entities
 
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Rect
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
-import androidx.core.content.FileProvider
-import androidx.core.text.HtmlCompat
-import androidx.fragment.app.DialogFragment
-import com.example.artourguideapp.AppSettings
-import com.example.artourguideapp.navigation.Navigation
 import com.example.artourguideapp.R
-import com.example.artourguideapp.navigation.Tour
-import java.io.File
 
 /**
- * This is a custom [DialogFragment] that can be used to display building info.
+ * This is a custom [EntityDialogFragment] that can be used to display building info.
  *
  * INSTRUCTIONS FOR USE:
  * 1) Construct a [BuildingEntity]
- * 2) Get the [BuildingDialogFragment] (.getDialogFragment())
+ * 2) Get the [EntityDialogFragment] (.getDialogFragment())
  * 3) Call buildingInfoDialogFragment.show(supportFragmentManager, "custom tag")
  *
  * @constructor Construct a building dialog fragment from a given [BuildingEntity]
  *
  * @param entity Building entity to create this dialog fragment from
  */
-class BuildingDialogFragment(var entity: BuildingEntity): DialogFragment() {
-
-    private var player: MediaPlayer? = null
+class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entity) {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var rootView = inflater.inflate(R.layout.building_dialog, container, false)
-        return rootView
+        return inflater.inflate(R.layout.building_dialog, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,23 +36,14 @@ class BuildingDialogFragment(var entity: BuildingEntity): DialogFragment() {
         val buildingData = entity.getEntityData() as BuildingData
 
         /* GET ALL UI ELEMENTS */
-        var nameAndCode: TextView = view.findViewById(R.id.landmark_data_name)
-        var buildingScrollView : ScrollView = view.findViewById(R.id.landmark_data_scrollview)
-        var types: TextView = view.findViewById(R.id.landmark_data_description)
-        var departments: TextView = view.findViewById(R.id.buildingDepartments)
+        var nameAndCode: TextView = view.findViewById(R.id.entity_name)
+        var types: TextView = view.findViewById(R.id.types)
+        var departments: TextView = view.findViewById(R.id.departments)
         var accessibilityLayout: LinearLayout = view.findViewById(R.id.accessibilityLayout)
         var genderNeutralRestrooms: TextView = view.findViewById(R.id.genderNeutralRestrooms)
         var computerLabs: TextView = view.findViewById(R.id.computerLabs)
-        var audioButton: Button = view.findViewById(R.id.buildingMediaButton)
-        var navButton: Button = view.findViewById(R.id.buildingArNavigationButton)
-        var mapButton: Button = view.findViewById(R.id.buildingMapButton)
 
         var dining: TextView = view.findViewById(R.id.dining)
-
-        // Allow additional info to hold website link
-        var additionalInfo: TextView = view.findViewById(R.id.landmark_data_url)
-        additionalInfo.isClickable = true
-        additionalInfo.movementMethod = LinkMovementMethod.getInstance()
 
         /* SET ALL UI ELEMENTS */
         nameAndCode.text = buildingData.getTitle() + " (" + buildingData.getCode() + ")"
@@ -94,92 +64,8 @@ class BuildingDialogFragment(var entity: BuildingEntity): DialogFragment() {
             }
         }
 
-        if (buildingData.getAudioFileName().isNotEmpty()) {
-            context?.let {
-                var uri =
-                    FileProvider.getUriForFile(it.applicationContext,
-                        it.applicationContext.packageName + ".provider",
-                        File(it.applicationContext.filesDir, buildingData.getAudioFileName())
-                    )
-
-                player = MediaPlayer().apply {
-                    setAudioAttributes(
-                        AudioAttributes.Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                            .setUsage(AudioAttributes.USAGE_MEDIA)
-                            .build()
-                    )
-                    if (uri != null) {
-                        setDataSource(it.applicationContext, uri)
-                    }
-                    prepare()
-                }
-            }
-
-            audioButton.setOnClickListener {
-                if (player!!.isPlaying) {
-                    audioButton.text = "Play Audio"
-                    player!!.pause()
-                } else {
-                    audioButton.text = "Pause Audio"
-                    player!!.start()
-                }
-            }
-
-            player?.setOnCompletionListener {
-                audioButton.text = "Play Audio"
-            }
-        } else {
-            audioButton.visibility = GONE
-        }
-
-        navButton.setOnClickListener {
-            if (activity?.localClassName != "ArActivity") {
-                activity?.finish()
-            }
-            if (Tour.onTour) {
-                Tour.stopTour()
-            }
-            Navigation.startNavigationTo(entity)
-
-            dialog?.dismiss()
-        }
-
-        mapButton.text = "Map"
-        mapButton.setOnClickListener {
-            var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + entity.getCentralLocation().latitude + "%2C" + entity.getCentralLocation().longitude)
-            startActivity(Intent(Intent.ACTION_VIEW, uri))
-        }
-
         genderNeutralRestrooms.text = buildingData.getGenderNeutralRestrooms()
         computerLabs.text = buildingData.getComputerLabs()
         dining.text = buildingData.getDining()
-
-        // Build html website link in a string
-        var hyperlinkText = "<a href='" + buildingData.getURL() + "'> Link to website </a>"
-        additionalInfo.text = HtmlCompat.fromHtml(hyperlinkText, HtmlCompat.FROM_HTML_MODE_COMPACT)
-
-        buildingScrollView.scrollY = 0
-
-        // Set dialog width and height
-        val dm = Resources.getSystem().displayMetrics
-        val rect = dm.run { Rect(0, 0, widthPixels, heightPixels) }
-        val percentWidth = rect.width() * AppSettings.DIALOG_SIZE_PERCENTAGE_OF_SCREEN_WIDTH
-        val percentHeight = rect.height() * AppSettings.DIALOG_SIZE_PERCENTAGE_OF_SCREEN_HEIGHT
-        dialog?.window?.setLayout(percentWidth.toInt(), percentHeight.toInt())
-
-
-
-    }
-
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-
-        player?.stop()
-        player?.release()
-
-        // Set ScrollView back to top so opening it again will appear as a fresh view
-        view?.findViewById<ScrollView>(R.id.landmark_data_scrollview)?.scrollY = 0
     }
 }

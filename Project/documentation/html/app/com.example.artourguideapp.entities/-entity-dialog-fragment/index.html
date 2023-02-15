@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-    <title>BuildingDialogFragment</title>
+    <title>EntityDialogFragment</title>
     <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
@@ -51,31 +51,31 @@
         <div id="sideMenu"></div>
     </div>
     <div id="main">
-<div class="main-content" id="content" pageIds="app::com.example.artourguideapp.entities/BuildingDialogFragment///PointingToDeclaration//492899073">
-  <div class="breadcrumbs"><a href="../../../index.html">app</a><span class="delimiter">/</span><a href="../index.html">com.example.artourguideapp.entities</a><span class="delimiter">/</span><span class="current">BuildingDialogFragment</span></div>
+<div class="main-content" id="content" pageIds="app::com.example.artourguideapp.entities/EntityDialogFragment///PointingToDeclaration//492899073">
+  <div class="breadcrumbs"><a href="../../../index.html">app</a><span class="delimiter">/</span><a href="../index.html">com.example.artourguideapp.entities</a><span class="delimiter">/</span><span class="current">EntityDialogFragment</span></div>
   <div class="cover ">
-    <h1 class="cover"><span>Building</span><wbr></wbr><span>Dialog</span><wbr></wbr><span><span>Fragment</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">BuildingDialogFragment</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">var </span>entity<span class="token operator">: </span><a href="../-building-entity/index.html">BuildingEntity</a></span></span><span class="token punctuation">)</span> : <a href="../-entity-dialog-fragment/index.html">EntityDialogFragment</a></div><p class="paragraph">This is a custom <a href="../-entity-dialog-fragment/index.html">EntityDialogFragment</a> that can be used to display building info.</p><p class="paragraph">INSTRUCTIONS FOR USE:</p><ol><li><p class="paragraph">Construct a <a href="../-building-entity/index.html">BuildingEntity</a></p></li><li><p class="paragraph">Get the <a href="../-entity-dialog-fragment/index.html">EntityDialogFragment</a> (.getDialogFragment())</p></li><li><p class="paragraph">Call buildingInfoDialogFragment.show(supportFragmentManager, &quot;custom tag&quot;)</p></li></ol></div></div>
+    <h1 class="cover"><span>Entity</span><wbr></wbr><span>Dialog</span><wbr></wbr><span><span>Fragment</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">EntityDialogFragment</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">var </span>entity<span class="token operator">: </span><a href="../-entity/index.html">Entity</a></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/DialogFragment.html">DialogFragment</a></div><p class="paragraph">This is a custom <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/DialogFragment.html">DialogFragment</a> that is used as the parent class of <a href="../-building-dialog-fragment/index.html">BuildingDialogFragment</a> and <a href="../-landmark-dialog-fragment/index.html">LandmarkDialogFragment</a>. Both types of entities share some information so abstracting here is better. This class sets the URL, audio file, navigation button, map button, and the dialog window size.</p></div></div>
   </div>
   <div class="tabbedcontent">
-    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Parameters">Parameters</button></div>
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Parameters">Parameters</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
     <div class="tabs-section-body">
       <h4 class="">Parameters</h4>
       <div data-togglable="Parameters">
-        <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><u><span><span>entity</span></span></u></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">Building entity to create this dialog fragment from</p></div></div></div></div></div></div></div></div></div>
+        <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><u><span><span>entity</span></span></u></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">Entity to create this dialog fragment from</p></div></div></div></div></div></div></div></div></div>
       </div>
       <h2 class="tabbedcontent">Constructors</h2>
-      <div class="table" data-togglable="Constructors"><a data-name="-796955656%2FConstructors%2F492899073" anchor-label="BuildingDialogFragment" id="-796955656%2FConstructors%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+      <div class="table" data-togglable="Constructors"><a data-name="-1109269588%2FConstructors%2F492899073" anchor-label="EntityDialogFragment" id="-1109269588%2FConstructors%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
         <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
           <div class="main-subrow keyValue TabbedContent">
             <div class=""><span class="inline-flex">
-                <div><a href="-building-dialog-fragment.html"><span>Building</span><wbr></wbr><span>Dialog</span><wbr></wbr><span><span>Fragment</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-796955656%2FConstructors%2F492899073"></span>
+                <div><a href="-entity-dialog-fragment.html"><span>Entity</span><wbr></wbr><span>Dialog</span><wbr></wbr><span><span>Fragment</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1109269588%2FConstructors%2F492899073"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-building-dialog-fragment.html"><span class="token function">BuildingDialogFragment</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entity<span class="token operator">: </span><a href="../-building-entity/index.html">BuildingEntity</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Construct a building dialog fragment from a given <a href="../-building-entity/index.html">BuildingEntity</a></p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-entity-dialog-fragment.html"><span class="token function">EntityDialogFragment</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entity<span class="token operator">: </span><a href="../-entity/index.html">Entity</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Construct an entity dialog fragment from a given <a href="../-entity/index.html">Entity</a></p></div></div></div>
               </div>
             </div>
           </div>
@@ -1072,17 +1072,17 @@
             </div>
           </div>
         </div>
-<a data-name="-990204529%2FFunctions%2F492899073" anchor-label="onCreateView" id="-990204529%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+<a data-name="-114875845%2FFunctions%2F492899073" anchor-label="onCreateView" id="-114875845%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
         <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
-                <div><a href="on-create-view.html"><span>on</span><wbr></wbr><span>Create</span><wbr></wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-990204529%2FFunctions%2F492899073"></span>
+                <div><a href="index.html#-114875845%2FFunctions%2F492899073"><span>on</span><wbr></wbr><span>Create</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-114875845%2FFunctions%2F492899073"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-create-view.html"><span class="token function">onCreateView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">inflater<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/LayoutInflater.html">LayoutInflater</a><span class="token punctuation">, </span></span><span class="parameter ">container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">savedInstanceState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">?</span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/MainThread.html"><span class="token annotation builtin">MainThread</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-114875845%2FFunctions%2F492899073"><span class="token function">onCreateView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a> </span>p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/LayoutInflater.html">LayoutInflater</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a> </span>p1<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a> </span>p2<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">?</span></div></div></div>
               </div>
             </div>
           </div>
@@ -1151,13 +1151,13 @@
         <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
-                <div><a href="../-entity-dialog-fragment/on-dismiss.html"><span>on</span><wbr></wbr><span><span>Dismiss</span></span></a></div>
+                <div><a href="on-dismiss.html"><span>on</span><wbr></wbr><span><span>Dismiss</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-601875810%2FFunctions%2F492899073"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../-entity-dialog-fragment/on-dismiss.html"><span class="token function">onDismiss</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">dialog<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/DialogInterface.html">DialogInterface</a></span></span><span class="token punctuation">)</span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-dismiss.html"><span class="token function">onDismiss</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">dialog<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/DialogInterface.html">DialogInterface</a></span></span><span class="token punctuation">)</span></div></div></div>
               </div>
             </div>
           </div>
@@ -1402,12 +1402,12 @@
             </div>
           </div>
         </div>
-<a data-name="-1935699369%2FFunctions%2F492899073" anchor-label="onViewCreated" id="-1935699369%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+<a data-name="280399944%2FFunctions%2F492899073" anchor-label="onViewCreated" id="280399944%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
         <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
                 <div><a href="on-view-created.html"><span>on</span><wbr></wbr><span>View</span><wbr></wbr><span><span>Created</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1935699369%2FFunctions%2F492899073"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="280399944%2FFunctions%2F492899073"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
@@ -2068,13 +2068,13 @@
         <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
-                <div><a href="../-entity-dialog-fragment/entity.html"><span><span>entity</span></span></a></div>
+                <div><a href="entity.html"><span><span>entity</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1028796517%2FProperties%2F492899073"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="1028796517%2FProperties%2F492899073" anchor-label="entity" id="1028796517%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="../-entity-dialog-fragment/entity.html">entity</a><span class="token operator">: </span><a href="../-entity/index.html">Entity</a></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="1028796517%2FProperties%2F492899073" anchor-label="entity" id="1028796517%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="entity.html">entity</a><span class="token operator">: </span><a href="../-entity/index.html">Entity</a></div></div></div>
               </div>
             </div>
           </div>
@@ -2092,6 +2092,30 @@
                 <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="2039995422%2FProperties%2F492899073" anchor-label="savedStateRegistry" id="2039995422%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">override </span><span class="token keyword">val </span><a href="../-landmark-dialog-fragment/index.html#2039995422%2FProperties%2F492899073">savedStateRegistry</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/savedstate/SavedStateRegistry.html">SavedStateRegistry</a></div></div></div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Inheritors</h2>
+      <div class="table" data-togglable="Inheritors"><a data-name="1547433478%2FInheritors%2F492899073" anchor-label="BuildingDialogFragment" id="1547433478%2FInheritors%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../-building-dialog-fragment/index.html">BuildingDialogFragment</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1547433478%2FInheritors%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="-964259582%2FInheritors%2F492899073" anchor-label="LandmarkDialogFragment" id="-964259582%2FInheritors%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../-landmark-dialog-fragment/index.html">LandmarkDialogFragment</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-964259582%2FInheritors%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
           </div>
         </div>
       </div>
