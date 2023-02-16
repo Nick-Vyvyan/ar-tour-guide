@@ -306,7 +306,6 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                     distancesRemainingFromWaypoint.add(distanceRemaining)
                     distanceRemaining -= stepDistance
                 }
-                Log.d("NAVIGATION", "Path to ${destination!!.getName()} = $waypoints")
 
                 // Reset current waypoint index to beginning
                 currentWaypointIndex = 0
@@ -327,7 +326,6 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         initializeNavigationArrow()
         pointArrowToCorrectNode()
         setUIElements()
-
     }
 
     /** Set all UI elements based on current data */
@@ -341,7 +339,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             navigationTypeTextView.visibility = View.GONE
         }
 
-        destinationNameTextView.text = destination!!.getName()
+        destinationNameTextView.text = destination?.getName()
 
         destinationLinearLayout.visibility = View.VISIBLE
 

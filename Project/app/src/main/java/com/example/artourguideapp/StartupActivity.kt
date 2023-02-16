@@ -207,22 +207,29 @@ class StartupActivity : AppCompatActivity() {
                     val audioFileName = currentScrapedData.getString("audioFileName")
                     val searchId = currentStructure.getInt("id")
 
-                    // if has audio file, download from s3
+                    // If has audio file name
                     if (audioFileName != "") {
-                        try {
-                            val connection =
-                                URL("https://artourguide.s3.us-west-2.amazonaws.com/$audioFileName")
-                                    .openConnection() as HttpURLConnection
 
-                            // set remote json string
-                            val audioData = connection.inputStream.readBytes()
+                        // If audio file doesn't exist locally
+                        val file = applicationContext.getFileStreamPath(audioFileName)
+                        if (file == null || !file.exists()) {
 
-                            val outputStreamWriter =
-                                DataOutputStream(openFileOutput(audioFileName, MODE_PRIVATE))
-                            outputStreamWriter.write(audioData)
-                            outputStreamWriter.close()
-                        } catch (ioException: IOException) {
-                            ioException.printStackTrace()
+                            // Download audio from s3
+                            try {
+                                val connection =
+                                    URL("https://artourguide.s3.us-west-2.amazonaws.com/$audioFileName")
+                                        .openConnection() as HttpURLConnection
+
+                                // set remote json string
+                                val audioData = connection.inputStream.readBytes()
+
+                                val outputStreamWriter =
+                                    DataOutputStream(openFileOutput(audioFileName, MODE_PRIVATE))
+                                outputStreamWriter.write(audioData)
+                                outputStreamWriter.close()
+                            } catch (ioException: IOException) {
+                                ioException.printStackTrace()
+                            }
                         }
                     }
 
