@@ -35,9 +35,8 @@ class LandmarkDialogFragment(entity: LandmarkEntity): EntityDialogFragment(entit
         val landmarkData = entity.getEntityData() as LandmarkData
 
         /* GET ALL UI ELEMENTS */
-        var name: TextView = view.findViewById(R.id.entity_name)
-        var description: TextView = view.findViewById(R.id.landmark_data_description)
-
+        val name: TextView = view.findViewById(R.id.entity_name)
+        val description: TextView = view.findViewById(R.id.landmark_data_description)
 
         /* SET ALL UI ELEMENTS */
         name.text = landmarkData.getTitle()

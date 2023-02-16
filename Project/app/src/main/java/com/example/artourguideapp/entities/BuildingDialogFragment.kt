@@ -1,11 +1,13 @@
 package com.example.artourguideapp.entities
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import com.example.artourguideapp.R
 
 /**
@@ -36,36 +38,200 @@ class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entit
         val buildingData = entity.getEntityData() as BuildingData
 
         /* GET ALL UI ELEMENTS */
-        var nameAndCode: TextView = view.findViewById(R.id.entity_name)
-        var types: TextView = view.findViewById(R.id.types)
-        var departments: TextView = view.findViewById(R.id.departments)
-        var accessibilityLayout: LinearLayout = view.findViewById(R.id.accessibilityLayout)
-        var genderNeutralRestrooms: TextView = view.findViewById(R.id.genderNeutralRestrooms)
-        var computerLabs: TextView = view.findViewById(R.id.computerLabs)
+        val nameAndCode: TextView = view.findViewById(R.id.entity_name)
 
-        var dining: TextView = view.findViewById(R.id.dining)
+        val types: TextView = view.findViewById(R.id.types)
+        val typesLabel: TextView = view.findViewById(R.id.typesLabel)
+
+        val departmentsLayout: LinearLayout = view.findViewById(R.id.departmentsLayout)
+        val departmentsLabel: TextView = view.findViewById(R.id.departmentsLabel)
+
+        val genderNeutralRestrooms: TextView = view.findViewById(R.id.genderNeutralRestrooms)
+        val genderNeutralRestroomsLabel: TextView = view.findViewById(R.id.genderNeutralRestroomsLabel)
+
+        val computerLabs: TextView = view.findViewById(R.id.computerLabs)
+        val computerLabsLabel: TextView = view.findViewById(R.id.computerLabsLabel)
+
+        val diningLayout: LinearLayout = view.findViewById(R.id.diningLayout)
+        val diningLabel: TextView = view.findViewById(R.id.diningLabel)
+
+        val accessibilityLayout: LinearLayout = view.findViewById(R.id.accessibilityLayout)
+        val accessibilityInfoLabel: TextView = view.findViewById(R.id.accessibilityInfoLabel)
 
         /* SET ALL UI ELEMENTS */
-        nameAndCode.text = buildingData.getTitle() + " (" + buildingData.getCode() + ")"
-        types.text = buildingData.getTypes()
-        departments.text = buildingData.getDepartments()
+        val formattedTitle = "${buildingData.getTitle()} (${buildingData.getCode()})"
+        nameAndCode.text = formattedTitle
 
-        //accessibilityLayout.removeAllViews()
-        var accessibilityInfo: String = buildingData.getAccessibilityInfo()
+        formatUiForData(typesLabel, types, buildingData.getTypes())
+        formatUiForData(genderNeutralRestroomsLabel, genderNeutralRestrooms, buildingData.getGenderNeutralRestrooms())
+        formatUiForData(computerLabsLabel, computerLabs, buildingData.getComputerLabs())
+        formatDepartments(departmentsLabel, departmentsLayout, buildingData.getDepartments())
+        formatAccessibility(accessibilityLayout, accessibilityInfoLabel, buildingData.getAccessibilityInfo())
+        formatDining(diningLabel, diningLayout, buildingData.getDining())
+    }
 
-        // CURRENT METHOD OF PARSING ACCESSIBILITY INFO. MAY CHANGE
-        if (accessibilityInfo != "") {
-            var accessibilitySections = accessibilityInfo.split("\n")
+    /**
+     * Format the UI. If the data is blank, remove that section from the UI. Otherwise, set the text
+     *
+     * @param labelView Label TextView
+     * @param dataView Data TextView
+     * @param data Data to test
+     */
+    private fun formatUiForData(labelView: TextView, dataView: TextView, data: String) {
+        if (data.isNotBlank()) {
+            dataView.text = data
+        }
+        else {
+            labelView.visibility = View.GONE
+            dataView.visibility = View.GONE
+        }
+    }
+
+    private fun formatDepartments(departmentsLabel: TextView, departmentsLayout: LinearLayout, departments: String) {
+        // If not empty
+        if (departments.isNotBlank()) {
+
+            // Split dining data into each dining option and iterate
+            val departmentsArray = departments.split(",")
+            var i = 0
+            while (i < departmentsArray.size) {
+                var department = departmentsArray[i].trim().replace("&#039;", "'")
+
+                val departmentTextView = TextView(activity)
+
+                val density = resources.displayMetrics.density
+                val leftPad = (20 * density).toInt()
+                val topPad = (10 * density).toInt()
+                departmentTextView.setPadding(leftPad, topPad, 0, 0)
+                departmentTextView.textSize = 18f
+
+                // If department is "Women", this is an edge case due to department of
+                // "Women, Gender, and Sexuality Studies" being split earlier. Get next two elements
+                // of the array and concatenate for this department
+                if (department == "Women") {
+                    department = "$department, ${departmentsArray[++i].trim()}, ${departmentsArray[++i].trim()}"
+                }
+
+                departmentTextView.text = department
+
+                // Add new linear layout to accessibility layout
+                departmentsLayout.addView(departmentTextView)
+
+                i++
+            }
+
+        }
+        // If empty, remove
+        else {
+            departmentsLabel.visibility = View.GONE
+            departmentsLayout.visibility = View.GONE
+        }
+    }
+
+    /**
+     * Format accessibility on UI
+     *
+     * @param accessibilityLayout Accessibility layout
+     * @param accessibilityInfoLabel Accessibility info label
+     * @param accessibilityInfo Accessibility info
+     */
+    private fun formatAccessibility(accessibilityLayout: LinearLayout, accessibilityInfoLabel: TextView, accessibilityInfo: String) {
+        // If non-empty info
+        if (accessibilityInfo.isNotBlank()) {
+
+            // Split into sections and iterate
+            val accessibilitySections = accessibilityInfo.split(",")
             for (section in accessibilitySections) {
-                var newView = TextView(activity)
-                newView.textSize = 18f
-                newView.text = "-    $section"
-                accessibilityLayout.addView(newView)
+
+                // Each section gets its own horizontal linear layout so that hyphens and text are aligned
+                val newLayout = LinearLayout(context)
+                newLayout.orientation = LinearLayout.HORIZONTAL
+
+                val density = resources.displayMetrics.density
+                val leftPad = (20 * density).toInt()
+                val topPad = (10 * density).toInt()
+                newLayout.setPadding(leftPad, topPad, 0, 0)
+
+                // Create the hyphen TextView and section TextView
+                val hyphenView = TextView(activity)
+                val accessibilitySectionView = TextView(activity)
+
+                // Set text size
+                hyphenView.textSize = 18f
+                accessibilitySectionView.textSize = 18f
+
+                // Set text
+                hyphenView.text = "-    "
+                accessibilitySectionView.text = section.trim()
+
+                // Add to new linear layout
+                newLayout.addView(hyphenView)
+                newLayout.addView(accessibilitySectionView)
+
+                // Add new linear layout to accessibility layout
+                accessibilityLayout.addView(newLayout)
             }
         }
+        // Otherwise, remove elements from UI
+        else {
+            accessibilityLayout.visibility = View.GONE
+            accessibilityInfoLabel.visibility = View.GONE
+        }
+    }
 
-        genderNeutralRestrooms.text = buildingData.getGenderNeutralRestrooms()
-        computerLabs.text = buildingData.getComputerLabs()
-        dining.text = buildingData.getDining()
+    /**
+     * Format dining information. Dining options will link to their website if they have a website
+     *
+     * @param diningLabel Dining label
+     * @param diningLayout Dining layout
+     * @param dining Dining data
+     */
+    private fun formatDining(diningLabel: TextView, diningLayout: LinearLayout, dining: String) {
+        // If not empty
+        if (dining.isNotBlank() && dining != "None") {
+
+            val density = resources.displayMetrics.density
+            val leftPad = (20 * density).toInt()
+            val topPad = (10 * density).toInt()
+
+            // Split dining data into each dining option and iterate
+            val diningOptions = dining.split(",")
+            for (i in diningOptions.indices) {
+
+                // Get the option tuple
+                val option = diningOptions[i]
+                val optionTuple = option.split("-")
+                val optionName = optionTuple[0].trim()
+
+                // Create the TextView for this option
+                val diningView = TextView(context)
+
+                // If the option has a url, link the url
+                if (optionTuple.size > 1) {
+                    val optionLink = optionTuple[1].trim()
+                    val hyperlinkText = "<a href='$optionLink'> $optionName </a>"
+
+                    diningView.text = HtmlCompat.fromHtml(hyperlinkText, HtmlCompat.FROM_HTML_MODE_COMPACT)
+                    diningView.isClickable = true
+                    diningView.movementMethod = LinkMovementMethod.getInstance()
+                }
+                // Otherwise, just the name is fine
+                else {
+                    diningView.text = optionName
+                }
+
+                // Set text size and add to layout
+                diningView.setPadding(leftPad, topPad, 0, 0)
+                diningView.textSize = 18f
+                diningLayout.addView(diningView)
+
+            }
+
+        }
+        // If empty, remove
+        else {
+            diningLabel.visibility = View.GONE
+            diningLayout.visibility = View.GONE
+        }
     }
 }
