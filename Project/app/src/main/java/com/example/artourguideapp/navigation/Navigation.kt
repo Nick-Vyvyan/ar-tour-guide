@@ -286,8 +286,17 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                 // Get the steps for that leg
                 val steps = defaultRouteLeg.getJSONArray("steps")
 
+                // If more than one waypoint, start at second step
+                var startingIndex = 0
+                if (steps.length() > 1) {
+                    startingIndex = 1
+                    val step = steps.getJSONObject(0)
+                    val stepDistance = step.getJSONObject("distance").getDouble("value")
+                    distanceRemaining -= stepDistance
+                }
+
                 // Add each step location into the path locations
-                for (i in 0 until steps.length()) {
+                for (i in startingIndex until steps.length()) {
                     val step = steps.getJSONObject(i)
                     val stepEndLocation = step.getJSONObject("start_location")
                     val pathLocation = LatLng(stepEndLocation.getDouble("lat"), stepEndLocation.getDouble("lng"))
