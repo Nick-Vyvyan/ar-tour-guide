@@ -71,7 +71,7 @@ class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entit
     }
 
     /**
-     * Format the UI. If the data is blank, remove that section from the UI. Otherwise, set the text
+     * Format the UI. If the data is blank, remove that section from the UI. Otherwise, set the text.
      *
      * @param labelView Label TextView
      * @param dataView Data TextView
@@ -87,23 +87,29 @@ class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entit
         }
     }
 
+    /**
+     * Format departments on UI. If the data is blank, remove that section from the UI. Otherwise, set the text.
+     *
+     * @param departmentsLabel Departments label
+     * @param departmentsLayout Departments layout
+     * @param departments Departments data
+     */
     private fun formatDepartments(departmentsLabel: TextView, departmentsLayout: LinearLayout, departments: String) {
         // If not empty
         if (departments.isNotBlank()) {
+            // Set left pad to 20dp and top pad to 10dp
+            val density = resources.displayMetrics.density
+            val leftPad = (20 * density).toInt()
+            val topPad = (10 * density).toInt()
 
             // Split dining data into each dining option and iterate
             val departmentsArray = departments.split(",")
             var i = 0
             while (i < departmentsArray.size) {
-                var department = departmentsArray[i].trim().replace("&#039;", "'")
-
                 val departmentTextView = TextView(activity)
 
-                val density = resources.displayMetrics.density
-                val leftPad = (20 * density).toInt()
-                val topPad = (10 * density).toInt()
-                departmentTextView.setPadding(leftPad, topPad, 0, 0)
-                departmentTextView.textSize = 18f
+                // Trim and replace incorrect substrings with apostrophes
+                var department = departmentsArray[i].trim().replace("&#039;", "'")
 
                 // If department is "Women", this is an edge case due to department of
                 // "Women, Gender, and Sexuality Studies" being split earlier. Get next two elements
@@ -112,9 +118,10 @@ class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entit
                     department = "$department, ${departmentsArray[++i].trim()}, ${departmentsArray[++i].trim()}"
                 }
 
+                // Set padding, size, and text. Then add to layout
+                departmentTextView.setPadding(leftPad, topPad, 0, 0)
+                departmentTextView.textSize = 18f
                 departmentTextView.text = department
-
-                // Add new linear layout to accessibility layout
                 departmentsLayout.addView(departmentTextView)
 
                 i++
@@ -129,7 +136,8 @@ class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entit
     }
 
     /**
-     * Format accessibility on UI
+     * Format accessibility on UI. Each section is displayed with a preceding hyphen.
+     * If the data is blank, remove that section from the UI. Otherwise, set the text.
      *
      * @param accessibilityLayout Accessibility layout
      * @param accessibilityInfoLabel Accessibility info label
@@ -139,6 +147,11 @@ class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entit
         // If non-empty info
         if (accessibilityInfo.isNotBlank()) {
 
+            // Set left pad to 20dp and top pad to 10dp
+            val density = resources.displayMetrics.density
+            val leftPad = (20 * density).toInt()
+            val topPad = (10 * density).toInt()
+
             // Split into sections and iterate
             val accessibilitySections = accessibilityInfo.split(",")
             for (section in accessibilitySections) {
@@ -147,9 +160,6 @@ class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entit
                 val newLayout = LinearLayout(context)
                 newLayout.orientation = LinearLayout.HORIZONTAL
 
-                val density = resources.displayMetrics.density
-                val leftPad = (20 * density).toInt()
-                val topPad = (10 * density).toInt()
                 newLayout.setPadding(leftPad, topPad, 0, 0)
 
                 // Create the hyphen TextView and section TextView
@@ -180,7 +190,8 @@ class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entit
     }
 
     /**
-     * Format dining information. Dining options will link to their website if they have a website
+     * Format dining information. Dining options will link to their website if they have a website.
+     * If the data is blank, remove that section from the UI. Otherwise, set the text.
      *
      * @param diningLabel Dining label
      * @param diningLayout Dining layout
@@ -190,6 +201,7 @@ class BuildingDialogFragment(entity: BuildingEntity): EntityDialogFragment(entit
         // If not empty
         if (dining.isNotBlank() && dining != "None") {
 
+            // Set left pad to 20dp and top pad to 10dp
             val density = resources.displayMetrics.density
             val leftPad = (20 * density).toInt()
             val topPad = (10 * density).toInt()
