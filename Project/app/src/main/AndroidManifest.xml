@@ -88,10 +88,10 @@
             android:value="required" />
         <meta-data
             android:name="com.google.android.ar.API_KEY"
-            android:value="@string/GoogleCloudApiKey" />
+            android:value="@string/GoogleApiKey" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/GoogleCloudApiKey" />
+            android:value="@string/GoogleApiKey" />
     </application>
 
 </manifest>

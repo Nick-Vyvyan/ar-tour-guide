@@ -250,7 +250,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                 "origin=$originString&" +
                 "destination=$destinationString&" +
                 "mode=walking&" +
-                "key=${activity.resources.getString(R.string.GoogleMapsApiKey)}"
+                "key=${activity.resources.getString(R.string.GoogleApiKey)}"
         val url = URL(directionsRequestURL)
         val connection = url.openConnection() as HttpURLConnection
 
