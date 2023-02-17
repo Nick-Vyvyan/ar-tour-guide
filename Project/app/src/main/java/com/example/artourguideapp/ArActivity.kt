@@ -24,6 +24,9 @@ class ArActivity : AppCompatActivity() {
     /** Main controller for accessing entities */
     private val controller = Controller()
 
+    /** Anchor update timer */
+    private var anchorUpdateTimer = Timer()
+
     /** AR Scene View from Sceneform */
     private lateinit var arSceneView: ArSceneView
 
@@ -70,6 +73,8 @@ class ArActivity : AppCompatActivity() {
 
         try {
             arSceneView.resume()
+            resumeTimer()
+            Navigation.resumeNavigationUpdates()
         } catch (ex: CameraNotAvailableException) {
             finish()
             return
@@ -82,7 +87,11 @@ class ArActivity : AppCompatActivity() {
         if (arSceneView != null) {
             arSceneView.pause()
         }
+
+        pauseTimer()
+        Navigation.pauseNavigationUpdates()
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -126,12 +135,24 @@ class ArActivity : AppCompatActivity() {
 
     //region Scheduling
 
+    /** Resume timers */
+    private fun resumeTimer() {
+        scheduleInitialAnchorPlacements()
+    }
+
+    /** Pause timers */
+    private fun pauseTimer() {
+        anchorUpdateTimer.cancel()
+    }
+
     /** Schedule the initial anchor placement update (very frequent) */
     private fun scheduleInitialAnchorPlacements() {
         val delay: Long = 0 // waits this many ms before attempting
         val interval = AppSettings.INITIAL_ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
-        Timer().schedule(object: TimerTask() {
+        anchorUpdateTimer.cancel()
+        anchorUpdateTimer = Timer()
+        anchorUpdateTimer.schedule(object: TimerTask() {
             override fun run() {
                 runOnUiThread {
                     if (!AnchorHelper.initialAnchorsPlaced) {
@@ -140,7 +161,6 @@ class ArActivity : AppCompatActivity() {
                     }
                     else {
                         scheduleSecondaryAnchorPlacements()
-                        cancel()
                     }
                 }
             }
@@ -149,10 +169,12 @@ class ArActivity : AppCompatActivity() {
 
     /** Schedule the secondary anchor placement update (less frequent) */
     private fun scheduleSecondaryAnchorPlacements() {
-        val delay: Long = 0 // waits this many ms before attempting
+        val delay: Long = AppSettings.ANCHOR_SET_INTERVAL_MS // waits this many ms before attempting
         val interval = AppSettings.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
-        Timer().schedule(object: TimerTask() {
+        anchorUpdateTimer.cancel()
+        anchorUpdateTimer = Timer()
+        anchorUpdateTimer.schedule(object: TimerTask() {
             override fun run() {
                 runOnUiThread {
                     Log.d("ANCHOR HELPER", "Secondary anchor placements")

@@ -104,6 +104,8 @@ $dokka.location:com.example.artourguideapp.entities/MyEntityListRecyclerViewAdap
 $dokka.location:com.example.artourguideapp.navigation////PointingToDeclaration/app/com.example.artourguideapp.navigation/index.html
 $dokka.location:com.example.artourguideapp.navigation/Navigation.Companion///PointingToDeclaration/app/com.example.artourguideapp.navigation/-navigation/-companion/index.html
 $dokka.location:com.example.artourguideapp.navigation/Navigation.Companion/init/#com.google.ar.sceneform.ArSceneView#androidx.appcompat.app.AppCompatActivity/PointingToDeclaration/app/com.example.artourguideapp.navigation/-navigation/-companion/init.html
+$dokka.location:com.example.artourguideapp.navigation/Navigation.Companion/pauseNavigationUpdates/#/PointingToDeclaration/app/com.example.artourguideapp.navigation/-navigation/-companion/pause-navigation-updates.html
+$dokka.location:com.example.artourguideapp.navigation/Navigation.Companion/resumeNavigationUpdates/#/PointingToDeclaration/app/com.example.artourguideapp.navigation/-navigation/-companion/resume-navigation-updates.html
 $dokka.location:com.example.artourguideapp.navigation/Navigation.Companion/startNavigationTo/#com.example.artourguideapp.entities.Entity/PointingToDeclaration/app/com.example.artourguideapp.navigation/-navigation/-companion/start-navigation-to.html
 $dokka.location:com.example.artourguideapp.navigation/Navigation.Companion/stopNavigation/#/PointingToDeclaration/app/com.example.artourguideapp.navigation/-navigation/-companion/stop-navigation.html
 $dokka.location:com.example.artourguideapp.navigation/Navigation///PointingToDeclaration/app/com.example.artourguideapp.navigation/-navigation/index.html

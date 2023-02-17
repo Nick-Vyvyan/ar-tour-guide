@@ -65,9 +65,21 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             }
         }
 
-        /**
-         * Stops navigation
-         */
+        /** Pause navigation updates. Call this in ArActivity onPause() */
+        fun pauseNavigationUpdates() {
+            if (navigationInitialized()) {
+                navigation.pauseNavigationUpdates()
+            }
+        }
+
+        /** Resume navigation updates. Call this in ArActivity onResume() */
+        fun resumeNavigationUpdates() {
+            if (navigationInitialized()) {
+                navigation.resumeNavigationUpdates()
+            }
+        }
+
+        /** Stops navigation */
         fun stopNavigation() {
             if (navigationInitialized()) {
                 navigation.stopNavigation()
@@ -151,6 +163,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
     // region Navigation
 
+
     /**
      * Navigation entry function
      *  - stops any existing navigation
@@ -175,6 +188,20 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private fun setDestination(newDestination: Entity) {
         newDestination.setAsDestination()
         destination = newDestination
+    }
+
+    /** Pause navigation updates */
+    private fun pauseNavigationUpdates() {
+        if (destination != null) {
+            navigationUpdateTimer.cancel()
+        }
+    }
+
+    /** Resume navigation updates */
+    private fun resumeNavigationUpdates() {
+        if (destination != null) {
+            startNavigationUpdates()
+        }
     }
 
     /** Stop navigation and reset all variables */
