@@ -270,6 +270,8 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
     /** Generate the directions to the current destination */
     private fun generateDirectionsToDestination(earth: Earth) {
+        if (destination == null) return
+
         // Generate a google maps JSON request
         val originString = "${earth.cameraGeospatialPose.latitude},${earth.cameraGeospatialPose.longitude}"
         val destinationString = "${destination!!.getCentralLocation().latitude},${destination!!.getCentralLocation().longitude}"
@@ -349,6 +351,8 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
      * arrow to the correct node.
      */
     private fun initializeNavigationUI(earth: Earth) {
+        if (destination == null) return
+        
         initializeWaypointAnchorsAndNodes(earth)
         initializeNavigationArrow()
         pointArrowToCorrectNode()
