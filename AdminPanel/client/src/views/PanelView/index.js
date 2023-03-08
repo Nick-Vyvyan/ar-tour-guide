@@ -11,7 +11,6 @@ import { v4 as uuidv4 } from "uuid";
 import useAuth from "../../hook/useAuth";
 import Error from "../../components/Error";
 
-
 // components
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
@@ -31,25 +30,22 @@ const PanelView = (props) => {
   const { state } = useLocation();
   const { structureData } = state ? state : { structureData: {} };
 
-  
-
   //const baseServerURL = "http://localhost:5000";
-  
 
   // eslint-disable-next-line
   const [error, setError] = useState(null);
   // eslint-disable-next-line
   const [websiteLink, setWebsiteLink] = useState("");
   const [coordinates, setCoordinates] = !structureData._id
-  // eslint-disable-next-line
-    ? useState("")
-    // eslint-disable-next-line
-    : useState(structureData.centerPoint);
+    ? // eslint-disable-next-line
+      useState("")
+    : // eslint-disable-next-line
+      useState(structureData.centerPoint);
   const [scrapedData, setScrapedData] = !structureData._id
-  // eslint-disable-next-line
-    ? useState()
-    // eslint-disable-next-line
-    : useState(structureData.scrapedData);
+    ? // eslint-disable-next-line
+      useState()
+    : // eslint-disable-next-line
+      useState(structureData.scrapedData);
 
   // center point for WWU on Google map
   const wwuCenter = useMemo(
@@ -66,7 +62,8 @@ const PanelView = (props) => {
     libraries,
   });
 
-  //const baseServerURL = "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
+  const baseServerURL =
+    "https://us-central1-ar-tour-guide-admin-panel.cloudfunctions.net/app";
 
   if (user === null || user === undefined)
     return <Navigate to={{ pathname: "/login" }} />;
@@ -79,7 +76,6 @@ const PanelView = (props) => {
     secretAccessKey: "3TziVm4GISQMvwpDeBVck7/rkf2JpVvsawLgaYYI",
   });
 
-  
   if (!isLoaded) return <div>Loading Map...</div>;
 
   // const onLoad = (drawingManager) => {
@@ -103,7 +99,7 @@ const PanelView = (props) => {
     // make sure structure is outlined on map first
     if (coordinates === "")
       return window.alert(
-        "Please outline a building/landmark on the map using the polygon tool!"
+        "Please outline a structure on the map using the polygon tool!"
       );
 
     // forward request to server to bypass cors restrictions
@@ -115,9 +111,9 @@ const PanelView = (props) => {
           const message = `An error occurred: ${res.statusText}`;
           return window.alert(message);
         }
-        let tempData = parseWeb(res.data)
-        tempData.searchTerms = ""
-        console.log(tempData)
+        let tempData = parseWeb(res.data);
+        tempData.searchTerms = "";
+        console.log(tempData);
         setScrapedData(tempData);
       })
       .catch((err) => console.error(err));
@@ -208,14 +204,12 @@ const PanelView = (props) => {
     return tempStr.charAt(0).toUpperCase() + tempStr.slice(1);
   };
 
-  
-
   return (
     <>
       {/* if coordinates and scraped data are present, display form to manually review it */}
       {coordinates !== "" && scrapedData ? (
         <Container>
-          <h1>Review your Building/Landmark Data</h1>
+          <h1>Review your Structure Data</h1>
           <p>
             Your supplied coordinates are: <b>{coordinates}</b>
           </p>
@@ -256,10 +250,10 @@ const PanelView = (props) => {
       ) : (
         // otherwise, display google map and field to input website link for scraping
         <Container>
-          <h1>Add a Building/Landmark</h1>
+          <h1>Add a Structure</h1>
           <br />
           <Form onSubmit={handleFirstSubmit}>
-            <Form.Label>Outline Building/Landmark on Map:</Form.Label>
+            <Form.Label>Outline Structure on Map:</Form.Label>
             <GoogleMap
               zoom={15}
               center={wwuCenter}

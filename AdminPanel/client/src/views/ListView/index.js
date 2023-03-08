@@ -17,10 +17,10 @@ const ListView = (props) => {
 
   return (
     <Container>
-      <h1>Add or Remove Structures</h1>
+      <h1>Add, Edit, or Remove Structures</h1>
       <a class="linkStyle" href="/panel">
         <div class="buttonStyle" style={{ textAlign: "center" }}>
-          Add a Structure
+          Add Structure
         </div>
       </a>
       <StructInformation />
