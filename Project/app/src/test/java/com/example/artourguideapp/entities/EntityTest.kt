@@ -1,7 +1,9 @@
 package com.example.artourguideapp.entities
 
 import android.location.Location
+import com.google.android.gms.maps.model.LatLng
 import com.google.common.truth.Truth.assertThat
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -12,11 +14,10 @@ class EntityTest {
 
     private lateinit var testBuildingEntity: BuildingEntity
     private lateinit var testBuildingData: BuildingData
-    private lateinit var testBuildingLocation: Location
+    private var testBuildingLatLng = LatLng(20.0, 40.0)
 
     @Before
     fun setUp() {
-
         // Set up BuildingEntity
         testBuildingData = BuildingData(
             "Name",
@@ -31,11 +32,7 @@ class EntityTest {
             "URL"
         )
 
-        testBuildingLocation = Location("Building")
-        testBuildingLocation.latitude = 20.0
-        testBuildingLocation.longitude = 40.0
-
-        testBuildingEntity = BuildingEntity(testBuildingLocation, testBuildingData, 0)
+        testBuildingEntity = BuildingEntity(testBuildingLatLng, testBuildingData, 0)
     }
 
     @Test
@@ -70,26 +67,30 @@ class EntityTest {
 
     @Test
     fun getCentralLocation() {
-        val location = testBuildingEntity.getCentralLocation()
-        val result = location.provider == "Building" &&
-                     location.latitude == 20.0 &&
-                     location.longitude == 40.0
+        val latLng = testBuildingEntity.getLatLng()
+        val result = latLng.latitude == 20.0 &&
+                latLng.longitude == 40.0
 
         assertThat(result).isEqualTo(true)
     }
 
     @Test
     fun setLocation() {
-        testBuildingEntity.setLocation(40.0, 20.0)
+        testBuildingEntity.setLatLng(40.0, 20.0)
 
-        val location = testBuildingEntity.getCentralLocation()
-        val result = location.provider == "Building" &&
-                     location.latitude == 40.0 &&
-                     location.longitude == 20.0
+        val latLng = testBuildingEntity.getLatLng()
+        val result = latLng.latitude == 40.0 &&
+                latLng.longitude == 20.0
 
         assertThat(result).isEqualTo(true)
 
-        testBuildingEntity.setLocation(20.0, 40.0)
+        assertThrows(IllegalStateException::class.java) {
+            testBuildingEntity.setLatLng(-100.0, 20.0)
+        }
+
+        assertThrows(IllegalStateException::class.java) {
+            testBuildingEntity.setLatLng(40.0, 220.0)
+        }
     }
 
     //TODO: Write UI testing for entity dialog fragments
@@ -120,6 +121,10 @@ class EntityTest {
     @Test
     fun clearAsDestination() {
         var result = testBuildingEntity.isDestination()
+        assertThat(result).isEqualTo(false)
+
+        testBuildingEntity.setAsDestination()
+        result = testBuildingEntity.isDestination()
         assertThat(result).isEqualTo(true)
 
         testBuildingEntity.clearAsDestination()

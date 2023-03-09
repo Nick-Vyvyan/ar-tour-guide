@@ -103,7 +103,7 @@ abstract class EntityDialogFragment(var entity: Entity): DialogFragment() {
 
         mapButton.text = "Map"
         mapButton.setOnClickListener {
-            var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + entity.getCentralLocation().latitude + "%2C" + entity.getCentralLocation().longitude)
+            var uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + entity.getLatLng().latitude + "%2C" + entity.getLatLng().longitude)
             startActivity(Intent(Intent.ACTION_VIEW, uri))
         }
 

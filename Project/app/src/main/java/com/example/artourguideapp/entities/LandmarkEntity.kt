@@ -1,6 +1,7 @@
 package com.example.artourguideapp.entities
 
 import android.location.Location
+import com.google.android.gms.maps.model.LatLng
 
 /**
  * A subclass of [Entity]. The main container class for all landmark information.
@@ -13,13 +14,13 @@ import android.location.Location
  * @param searchId Search ID
  */
 class LandmarkEntity(
-    location : Location,
+    latLng: LatLng,
     landmarkData: LandmarkData,
     searchId: Int,
 ) : Entity(
     landmarkData.getTitle(),
     landmarkData.getURL(),
-    location,
+    latLng,
     landmarkData,
     searchId) {
 

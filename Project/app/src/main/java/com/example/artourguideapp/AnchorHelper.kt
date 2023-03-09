@@ -3,6 +3,7 @@ package com.example.artourguideapp
 import android.location.Location
 import android.util.Log
 import com.example.artourguideapp.entities.Entity
+import com.google.android.gms.maps.model.LatLng
 import com.google.ar.core.Earth
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
@@ -41,15 +42,19 @@ class AnchorHelper {
                 }
 
                 // Get user location - used to determine proximity
-                val userLocation = Location("User")
-                userLocation.latitude = earth.cameraGeospatialPose.latitude
-                userLocation.longitude = earth.cameraGeospatialPose.longitude
+                val userLatLng = LatLng(earth.cameraGeospatialPose.latitude, earth.cameraGeospatialPose.longitude)
 
                 // Attempt to set anchor for all entities
                 for (entity in entities) {
+                    val entityLatLng = entity.getLatLng()
 
+                    var results = FloatArray(1)
                     // Get distance to entity
-                    val distance = userLocation.distanceTo(entity.getCentralLocation())
+                    Location.distanceBetween(userLatLng.latitude, userLatLng.longitude,
+                                             entityLatLng.latitude, entityLatLng.longitude,
+                                             results)
+
+                    val distance = results[0]
 
                     // If entity is too far away or is not the destination, remove the anchor
                     if (distance > AppSettings.ANCHOR_PROXIMITY_DISTANCE && !entity.isDestination()) {
@@ -76,8 +81,8 @@ class AnchorHelper {
         private fun createAnchorAndSetNode(earth: Earth, entity: Entity, arSceneView: ArSceneView) {
             // Create anchor
             val entityAnchor = earth.createAnchor(
-                entity.getCentralLocation().latitude,
-                entity.getCentralLocation().longitude,
+                entity.getLatLng().latitude,
+                entity.getLatLng().longitude,
                 earth.cameraGeospatialPose.altitude,
                 0f, 0f, 0f, 1f
             )

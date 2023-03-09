@@ -274,7 +274,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
 
         // Generate a google maps JSON request
         val originString = "${earth.cameraGeospatialPose.latitude},${earth.cameraGeospatialPose.longitude}"
-        val destinationString = "${destination!!.getCentralLocation().latitude},${destination!!.getCentralLocation().longitude}"
+        val destinationString = "${destination!!.getLatLng().latitude},${destination!!.getLatLng().longitude}"
         val directionsRequestURL = "https://maps.googleapis.com/maps/api/directions/json?" +
                 "origin=$originString&" +
                 "destination=$destinationString&" +
@@ -496,12 +496,19 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         if (destination != null && arSceneView.session?.earth?.trackingState == TrackingState.TRACKING) {
             val earth = arSceneView.session?.earth!!
 
-            var userLocation = Location("User")
-            userLocation.latitude = earth.cameraGeospatialPose.latitude
-            userLocation.longitude = earth.cameraGeospatialPose.longitude
+            val userLatLng = LatLng(earth.cameraGeospatialPose.latitude, earth.cameraGeospatialPose.longitude)
+            val entityLatLng = destination!!.getLatLng()
+
+            var results = FloatArray(1)
+            // Get distance to entity
+            Location.distanceBetween(userLatLng.latitude, userLatLng.longitude,
+                entityLatLng.latitude, entityLatLng.longitude,
+                results)
+
+            val distance = results[0]
 
             // If destination is visible, point directly to it
-            if (userLocation.distanceTo(destination!!.getCentralLocation()) < AppSettings.AR_VISIBILITY_DISTANCE) {
+            if (distance < AppSettings.AR_VISIBILITY_DISTANCE) {
                 navigationArrowNode.pointDirectlyToWaypoint = true
                 navigationArrowNode.currentWaypoint = destination!!.getNode()!!
                 navigationArrowNode.distanceFromCurrentWaypointToDestination = 0.0

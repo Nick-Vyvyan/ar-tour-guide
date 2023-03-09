@@ -15,6 +15,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import com.example.artourguideapp.entities.*
+import com.google.android.gms.maps.model.LatLng
 import kotlin.concurrent.thread
 import org.json.JSONArray
 import org.json.JSONObject
@@ -242,9 +243,7 @@ class StartupActivity : AppCompatActivity() {
 
                     // set name and location info
                     val structureName = currentScrapedData.getString("structureName")
-                    val location = Location(structureName)
-                    location.latitude = centerPoint.x.toDouble()
-                    location.longitude = centerPoint.y.toDouble()
+                    val latLng = LatLng(centerPoint.x.toDouble(), centerPoint.y.toDouble())
 
                     runOnUiThread {
                         "Getting structure $i of ${structuresJsonArr.length()}…".also { progressText.text = it }
@@ -254,7 +253,7 @@ class StartupActivity : AppCompatActivity() {
                     if (currentStructure.getBoolean("isLandmark")) {
                         structures.add(
                             LandmarkEntity(
-                                location,
+                                latLng,
                                 LandmarkData(
                                     structureName,
                                     currentScrapedData.getString("description"),
@@ -268,7 +267,7 @@ class StartupActivity : AppCompatActivity() {
                     else {
                         structures.add(
                             BuildingEntity(
-                                location,
+                                latLng,
                                 BuildingData(
                                     structureName,
                                     currentScrapedData.getString("buildingCode"),

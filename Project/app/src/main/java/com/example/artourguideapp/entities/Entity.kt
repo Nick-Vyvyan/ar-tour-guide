@@ -1,8 +1,8 @@
 package com.example.artourguideapp.entities
 
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import com.google.android.gms.maps.model.LatLng
 
 
 /**
@@ -14,14 +14,14 @@ import androidx.fragment.app.DialogFragment
  *
  * @param name Entity name
  * @param url Entity url
- * @param centralLocation Entity location
+ * @param latLng Entity latitude and longitude
  * @param entityData Entity data
  * @param searchId Entity search ID
  */
 abstract class Entity(
     private var name: String,
     private var url: String,
-    private var centralLocation : Location,
+    private var latLng: LatLng,
     private var entityData: EntityData,
     private var searchId: Int,
 ) {
@@ -86,30 +86,30 @@ abstract class Entity(
     }
 
     /**
-     * Get central location
+     * Get entity's latitude and longitude
      *
-     * @return central location
+     * @return LatLng of this entity
      */
-    fun getCentralLocation() : Location
+    fun getLatLng() : LatLng
     {
-        return centralLocation
+        return latLng
     }
 
     /**
-     * Set location
+     * Set latitude and longitude
      *
      * @param latitude desired latitude [-90, 90]
      * @param longitude desired longitude [-180, 180]
      * @return
      */
-    fun setLocation(latitude : Double, longitude : Double)
+    fun setLatLng(latitude : Double, longitude : Double)
     {
         val latRange : ClosedRange<Double> = -90.0..90.0
         val lonRange : ClosedRange<Double> = -180.0..180.0
         if (latitude in latRange && longitude in lonRange)
         {
-            centralLocation.latitude = latitude
-            centralLocation.longitude = longitude
+            latLng = LatLng(latitude, longitude)
+
         }
         else
         {

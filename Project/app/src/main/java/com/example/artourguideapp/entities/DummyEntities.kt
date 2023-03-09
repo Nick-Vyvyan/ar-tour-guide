@@ -5,6 +5,7 @@ import android.graphics.PointF
 import android.location.Location
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.DataOutputStream
@@ -18,20 +19,18 @@ import java.net.URL
  */
 class DummyEntities{
     companion object {
-        var cfLoc : Location = Location("Communications Facility")
-        var wkrcLoc : Location = Location("Wade King Recreational Center")
-        var awLoc : Location = Location("Academic West")
-        var esLoc = Location("Environmental Studies")
+        var cfLoc = LatLng(48.7327738818, -122.485214413)
+        var wkrcLoc = LatLng(48.7315959997, -122.488958036)
+        var awLoc = LatLng(48.73228015834756, -122.48651712172678)
+        var esLoc = LatLng(48.73343638692885, -122.48551791080642)
 
-        var h1Loc : Location = Location("House 1")
-        var h2Loc : Location = Location("House 2")
-        var h3Loc : Location = Location("House 3")
-        var h4Loc : Location = Location("House 4")
-        var h5Loc : Location = Location("House 5")
-        var shLoc : Location = Location("SlowHouse")
-        var stairLoc : Location = Location("Stairs")
-
-        var entityList = ArrayList<Entity>()
+        var h1Loc = LatLng(48.88876780964667, -122.47953104095755)
+        var h2Loc = LatLng(48.88908458266765, -122.47990714754998)
+        var h3Loc = LatLng(48.88906218630042, -122.4789534134033)
+        var h4Loc = LatLng(48.88876263392437, -122.47895767114501)
+        var h5Loc = LatLng(48.76244375674259, -122.45055761431342)
+        var shLoc = LatLng(48.7458610000001, -122.440000001)
+        var stairLoc = LatLng(48.73259523326817, -122.48624102397639)
 
         var commFacilityEntity = BuildingEntity(
             cfLoc,
@@ -76,7 +75,7 @@ class DummyEntities{
         2
         )
 
-        var handel = LandmarkEntity( Location("Mark di Suvero, For Handel, 1975"), LandmarkData(
+        var handel = LandmarkEntity( LatLng(0.0, 0.0), LandmarkData(
             "Mark di Suvero, For Handel, 1975", "Di Suvero's knowledge of music and sensitivity to the relationship of art and architecture led him to create a soaring sculpture dedicated to the " +
                     "composer George Frederic Handel. Di Suvero's work rises not only from the roof of the rehearsal hall below but also projects beyond this roof/plaza and against a " +
                     "magnificent view of water, mountains and sky. Sometimes di Suvero is considered an \"action sculptor\" in the way he draws directly with the steel I- beams. In " +
@@ -297,55 +296,16 @@ class DummyEntities{
             0
         )
 
+        private var entityArray =
+            mutableListOf(commFacilityEntity,
+                wadeKingEntity,
+                academicWest,
+                environmentalStudies,
+                house1, house2, house3, house4, house5,
+                stairsToNowhere, slowhouse)
+        var entityList = ArrayList<Entity>(entityArray)
+
         fun initialize(activity: AppCompatActivity) {
-            cfLoc.latitude = 48.7327738818
-            cfLoc.longitude = -122.485214413
-
-            wkrcLoc.latitude = 48.7315959997
-            wkrcLoc.longitude = -122.488958036
-
-            awLoc.latitude = 48.73228015834756
-            awLoc.longitude = -122.48651712172678
-
-            esLoc.latitude = 48.73343638692885
-            esLoc.longitude =  -122.48551791080642
-
-            h1Loc.latitude = 48.88876780964667
-            h1Loc.longitude = -122.47953104095755
-
-            h2Loc.latitude = 48.88908458266765
-            h2Loc.longitude = -122.47990714754998
-
-            h3Loc.latitude = 48.88906218630042
-            h3Loc.longitude = -122.4789534134033
-
-            h4Loc.latitude = 48.88876263392437
-            h4Loc.longitude = -122.47895767114501
-
-            h5Loc.latitude = 48.76244375674259
-            h5Loc.longitude = -122.45055761431342
-
-            shLoc.latitude = 48.7458610000001
-            shLoc.longitude = -122.440000001
-
-            stairLoc.latitude = 48.73259523326817
-            stairLoc.longitude = -122.48624102397639
-
-            entityList.add(commFacilityEntity)
-            entityList.add(wadeKingEntity)
-            entityList.add(academicWest)
-            entityList.add(environmentalStudies)
-            entityList.add(house1)
-            entityList.add(house2)
-            entityList.add(house3)
-            entityList.add(house4)
-            entityList.add(house5)
-            entityList.add(stairsToNowhere)
-            entityList.add(slowhouse)
-
-
-
-
             for (entity in entityList) {
                 entity.initNode(activity)
             }
