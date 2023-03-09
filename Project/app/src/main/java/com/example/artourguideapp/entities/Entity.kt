@@ -26,8 +26,8 @@ abstract class Entity(
     private var searchId: Int,
 ) {
 
-    private lateinit var dialogFragment: DialogFragment
-    private lateinit var node: EntityNode
+    private lateinit var dialogFragment: EntityDialogFragment
+    private var node: EntityNode? = null
     private var isDestination: Boolean = false
 
     /**
@@ -46,7 +46,7 @@ abstract class Entity(
      * @return True if the node has been attached (node and parent are not null), false if not.
      */
     fun nodeIsAttached() : Boolean {
-        return node != null && node.parent != null
+        return node != null && node!!.isActive
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class Entity(
      *
      * @return Entity AR node
      */
-    fun getNode() : EntityNode {
+    fun getNode() : EntityNode? {
         return node
     }
 
@@ -131,7 +131,7 @@ abstract class Entity(
      *
      * @param dialogFragment Desired dialog fragment for this Entity
      */
-    protected fun setDialogFragment(dialogFragment: DialogFragment) {
+    protected fun setDialogFragment(dialogFragment: EntityDialogFragment) {
         this.dialogFragment = dialogFragment
     }
 

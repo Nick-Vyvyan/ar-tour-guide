@@ -503,7 +503,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             // If destination is visible, point directly to it
             if (userLocation.distanceTo(destination!!.getCentralLocation()) < AppSettings.AR_VISIBILITY_DISTANCE) {
                 navigationArrowNode.pointDirectlyToWaypoint = true
-                navigationArrowNode.currentWaypoint = destination!!.getNode()
+                navigationArrowNode.currentWaypoint = destination!!.getNode()!!
                 navigationArrowNode.distanceFromCurrentWaypointToDestination = 0.0
                 currentWaypointNode.isEnabled = false
             }

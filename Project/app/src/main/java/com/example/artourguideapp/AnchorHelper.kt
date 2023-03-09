@@ -86,7 +86,7 @@ class AnchorHelper {
             val arAnchorNode = AnchorNode(entityAnchor)
 
             // Set entity node parent to anchor node
-            entity.getNode().parent = arAnchorNode
+            entity.getNode()?.parent = arAnchorNode
 
             // Set anchor node parent to the AR Scene
             arAnchorNode.parent = arSceneView.scene
@@ -99,10 +99,10 @@ class AnchorHelper {
          * */
         private fun removeAnchor(entity: Entity) {
             if (entity.nodeIsAttached()) {
-                val anchorNode = entity.getNode().parent as AnchorNode
+                val anchorNode = entity.getNode()!!.parent as AnchorNode
                 anchorNode.anchor?.detach()
                 anchorNode.parent = null
-                entity.getNode().parent = null
+                entity.getNode()!!.parent = null
             }
         }
     }
