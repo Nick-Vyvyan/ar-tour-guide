@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.artourguideapp.Model
+import com.example.artourguideapp.entities.EntityModel
 import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -174,7 +174,7 @@ class Tour {
          * @return Entity with given name
          */
         private fun getEntityWithName(name: String): Entity? {
-            val entities = Model.getEntities()
+            val entities = EntityModel.getEntities()
             for (entity in entities) {
                 if (entity.getName() == name) {
                     return entity

@@ -2,7 +2,7 @@ package com.example.artourguideapp.entities
 
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.artourguideapp.AppSettings
+import com.example.artourguideapp.ApplicationSettings
 import com.example.artourguideapp.R
 import com.example.artourguideapp.navigation.Navigation
 import com.google.ar.sceneform.FrameTime
@@ -36,7 +36,7 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
             throw IllegalStateException("AR Scene is null!")
         }
 
-        val correctHeight =  scene!!.camera!!.worldPosition!!.y + AppSettings.ENTITY_HEIGHT
+        val correctHeight =  scene!!.camera!!.worldPosition!!.y + ApplicationSettings.ENTITY_HEIGHT
         worldPosition = Vector3(worldPosition.x, correctHeight, worldPosition.z)
     }
 
@@ -63,11 +63,11 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
         }
 
         val userPositionHeight = scene!!.camera!!.worldPosition!!.y
-        val maxPositionUpdateHeight = worldPosition.y - AppSettings.ENTITY_HEIGHT + AppSettings.ENTITY_HEIGHT_UPDATE_TOLERANCE
-        val minPositionUpdateHeight = worldPosition.y - AppSettings.ENTITY_HEIGHT - AppSettings.ENTITY_HEIGHT_UPDATE_TOLERANCE
+        val maxPositionUpdateHeight = worldPosition.y - ApplicationSettings.ENTITY_HEIGHT + ApplicationSettings.ENTITY_HEIGHT_UPDATE_TOLERANCE
+        val minPositionUpdateHeight = worldPosition.y - ApplicationSettings.ENTITY_HEIGHT - ApplicationSettings.ENTITY_HEIGHT_UPDATE_TOLERANCE
 
         if (userPositionHeight > maxPositionUpdateHeight || userPositionHeight < minPositionUpdateHeight) {
-            val correctHeight =  scene!!.camera!!.worldPosition!!.y + AppSettings.ENTITY_HEIGHT
+            val correctHeight =  scene!!.camera!!.worldPosition!!.y + ApplicationSettings.ENTITY_HEIGHT
             worldPosition = Vector3(worldPosition.x, correctHeight, worldPosition.z)
         }
     }
@@ -79,16 +79,16 @@ class EntityNode(activity: AppCompatActivity, private var entity: Entity): Node(
         val distance = Vector3.subtract(worldPosition, scene!!.camera.worldPosition).length()
 
         // If current distance < max scale distance, scale it
-        worldScale = if (distance  < AppSettings.ENTITY_SCALE_MAX_DISTANCE)
+        worldScale = if (distance  < ApplicationSettings.ENTITY_SCALE_MAX_DISTANCE)
                 Vector3(
-                distance * AppSettings.ENTITY_SCALE_MULTIPLIER,
-                distance * AppSettings.ENTITY_SCALE_MULTIPLIER,
-                distance * AppSettings.ENTITY_SCALE_MULTIPLIER
+                distance * ApplicationSettings.ENTITY_SCALE_MULTIPLIER,
+                distance * ApplicationSettings.ENTITY_SCALE_MULTIPLIER,
+                distance * ApplicationSettings.ENTITY_SCALE_MULTIPLIER
             )
 
             // Otherwise set to default scale
             else
-                AppSettings.ENTITY_MAX_SCALE
+                ApplicationSettings.ENTITY_MAX_SCALE
     }
 
     /**

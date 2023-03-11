@@ -93,15 +93,6 @@ class EntityTest {
         }
     }
 
-    //TODO: Write UI testing for entity dialog fragments
-//    @Test
-//    fun getDialogFragment() {
-//    }
-//
-//    @Test
-//    fun setDialogFragment() {
-//    }
-
     @Test
     fun getEntityData() {
         val result = testBuildingEntity.getEntityData() == testBuildingData

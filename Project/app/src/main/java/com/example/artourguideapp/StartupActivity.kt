@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PointF
-import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -82,7 +81,7 @@ class StartupActivity : AppCompatActivity() {
         // Request any needed permissions
 
         if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), AppSettings.PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), ApplicationSettings.PERMISSION_REQUEST_CODE)
         }
     }
 
@@ -94,7 +93,7 @@ class StartupActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            AppSettings.PERMISSION_REQUEST_CODE -> {
+            ApplicationSettings.PERMISSION_REQUEST_CODE -> {
                 if (hasPermissions()) {
                     loadingText.text = "Loading…"
                     loadStructuresFromJsonAndStart()
@@ -151,7 +150,7 @@ class StartupActivity : AppCompatActivity() {
         appSettingsButton.visibility = View.GONE
         loadingText.text = "Loading…"
 
-        if (AppSettings.LOAD_DUMMY_ENTITIES) {
+        if (ApplicationSettings.LOAD_DUMMY_ENTITIES) {
             loadDummyEntitiesAndStart()
         }
         else {
@@ -161,16 +160,16 @@ class StartupActivity : AppCompatActivity() {
 
     /** Initialize with DummyEntities and start AR */
     private fun loadDummyEntitiesAndStart() {
-        var controller = Controller()
+        var entityController = EntityController()
         DummyEntities.initialize(this)
-        controller.setEntities(DummyEntities.getEntityList())
+        entityController.setEntities(DummyEntities.getEntityList())
         startArActivity()
     }
 
     /** Initialize with JSON Entities and start AR */
     private fun loadStructuresFromJsonAndStart() {
         thread {
-            var controller = Controller()
+            var entityController = EntityController()
             val searchFilename = "search.json"
             val structuresFilename = "structures.json"
 
@@ -290,9 +289,9 @@ class StartupActivity : AppCompatActivity() {
 
 
 
-                controller.setSearchIndex(searchIndex)
+                entityController.setSearchIndex(searchIndex)
                 // add structure entities to app
-                controller.setEntities(structures)
+                entityController.setEntities(structures)
 
 
                 runOnUiThread {

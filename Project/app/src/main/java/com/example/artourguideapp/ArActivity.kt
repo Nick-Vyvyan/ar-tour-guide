@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.entities.Entity
+import com.example.artourguideapp.entities.EntityController
 import com.example.artourguideapp.navigation.Navigation
 import com.example.artourguideapp.navigation.Tour
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,7 +23,7 @@ class ArActivity : AppCompatActivity() {
     //region Private Variables
 
     /** Main controller for accessing entities */
-    private val controller = Controller()
+    private val entityController = EntityController()
 
     /** Anchor update timer */
     private var anchorUpdateTimer = Timer()
@@ -106,7 +107,7 @@ class ArActivity : AppCompatActivity() {
 
     /** Initialize entity nodes. Must be called in order to view EntityNode's in AR */
     private fun initializeEntityNodes() {
-        for (entity: Entity in controller.getEntities()) {
+        for (entity: Entity in entityController.getEntities()) {
             entity.initNode(this)
         }
     }
@@ -148,7 +149,7 @@ class ArActivity : AppCompatActivity() {
     /** Schedule the initial anchor placement update (very frequent) */
     private fun scheduleInitialAnchorPlacements() {
         val delay: Long = 0 // waits this many ms before attempting
-        val interval = AppSettings.INITIAL_ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
+        val interval = ApplicationSettings.INITIAL_ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
         anchorUpdateTimer.cancel()
         anchorUpdateTimer = Timer()
@@ -157,7 +158,7 @@ class ArActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (!AnchorHelper.initialAnchorsPlaced) {
                         Log.d("ANCHOR HELPER", "Attempting to set initial anchors...")
-                        AnchorHelper.setAnchors(arSceneView, controller.getEntities())
+                        AnchorHelper.setAnchors(arSceneView, entityController.getEntities())
                     }
                     else {
                         scheduleSecondaryAnchorPlacements()
@@ -169,8 +170,8 @@ class ArActivity : AppCompatActivity() {
 
     /** Schedule the secondary anchor placement update (less frequent) */
     private fun scheduleSecondaryAnchorPlacements() {
-        val delay: Long = AppSettings.ANCHOR_SET_INTERVAL_MS // waits this many ms before attempting
-        val interval = AppSettings.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
+        val delay: Long = ApplicationSettings.ANCHOR_SET_INTERVAL_MS // waits this many ms before attempting
+        val interval = ApplicationSettings.ANCHOR_SET_INTERVAL_MS // updates after this many ms continuously
 
         anchorUpdateTimer.cancel()
         anchorUpdateTimer = Timer()
@@ -178,7 +179,7 @@ class ArActivity : AppCompatActivity() {
             override fun run() {
                 runOnUiThread {
                     Log.d("ANCHOR HELPER", "Secondary anchor placements")
-                    AnchorHelper.setAnchors(arSceneView, controller.getEntities())
+                    AnchorHelper.setAnchors(arSceneView, entityController.getEntities())
                 }
             }
         },delay, interval)

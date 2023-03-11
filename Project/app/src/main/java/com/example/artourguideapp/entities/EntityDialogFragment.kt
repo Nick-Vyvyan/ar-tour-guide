@@ -17,7 +17,7 @@ import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
-import com.example.artourguideapp.AppSettings
+import com.example.artourguideapp.ApplicationSettings
 import com.example.artourguideapp.navigation.Navigation
 import com.example.artourguideapp.R
 import com.example.artourguideapp.navigation.Tour
@@ -114,8 +114,8 @@ abstract class EntityDialogFragment(var entity: Entity): DialogFragment() {
         // Set dialog width and height
         val dm = Resources.getSystem().displayMetrics
         val rect = dm.run { Rect(0, 0, widthPixels, heightPixels) }
-        val percentWidth = rect.width() * AppSettings.DIALOG_SIZE_PERCENTAGE_OF_SCREEN_WIDTH
-        val percentHeight = rect.height() * AppSettings.DIALOG_SIZE_PERCENTAGE_OF_SCREEN_HEIGHT
+        val percentWidth = rect.width() * ApplicationSettings.DIALOG_SIZE_PERCENTAGE_OF_SCREEN_WIDTH
+        val percentHeight = rect.height() * ApplicationSettings.DIALOG_SIZE_PERCENTAGE_OF_SCREEN_HEIGHT
         dialog?.window?.setLayout(percentWidth.toInt(), percentHeight.toInt())
     }
 

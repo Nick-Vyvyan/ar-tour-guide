@@ -1,14 +1,10 @@
 $dokka.format:javadoc-v1
 $dokka.linkExtension:html
-$dokka.location:com.example.artourguideapp.entities/DummyEntities.Companion///PointingToDeclaration/com/example/artourguideapp/entities/DummyEntities.Companion.html
 $dokka.location:com.example.artourguideapp.entities/EntityListFragment.Companion///PointingToDeclaration/com/example/artourguideapp/entities/EntityListFragment.Companion.html
+$dokka.location:com.example.artourguideapp.entities/EntityModel.Companion///PointingToDeclaration/com/example/artourguideapp/entities/EntityModel.Companion.html
 $dokka.location:com.example.artourguideapp.entities/MyEntityListRecyclerViewAdapter.ViewHolder///PointingToDeclaration/com/example/artourguideapp/entities/MyEntityListRecyclerViewAdapter.ViewHolder.html
 $dokka.location:com.example.artourguideapp.navigation/Navigation.Companion///PointingToDeclaration/com/example/artourguideapp/navigation/Navigation.Companion.html
 $dokka.location:com.example.artourguideapp.navigation/Tour.Companion///PointingToDeclaration/com/example/artourguideapp/navigation/Tour.Companion.html
-$dokka.location:com.example.artourguideapp/AnchorHelper.Companion///PointingToDeclaration/com/example/artourguideapp/AnchorHelper.Companion.html
-$dokka.location:com.example.artourguideapp/AppSettings.Companion///PointingToDeclaration/com/example/artourguideapp/AppSettings.Companion.html
-$dokka.location:com.example.artourguideapp/ArSessionFactory.Companion///PointingToDeclaration/com/example/artourguideapp/ArSessionFactory.Companion.html
-$dokka.location:com.example.artourguideapp/Model.Companion///PointingToDeclaration/com/example/artourguideapp/Model.Companion.html
 $dokka.location:com.example.artourguideapp/SearchActivity.Companion///PointingToDeclaration/com/example/artourguideapp/SearchActivity.Companion.html
 com.example.artourguideapp
 com.example.artourguideapp.entities

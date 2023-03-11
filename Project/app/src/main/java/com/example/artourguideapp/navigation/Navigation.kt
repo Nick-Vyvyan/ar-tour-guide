@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.artourguideapp.R
 import com.example.artourguideapp.entities.Entity
-import com.example.artourguideapp.AppSettings
+import com.example.artourguideapp.ApplicationSettings
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.ar.core.Earth
@@ -449,7 +449,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             override fun run() {
                 navigationUpdate()
             }
-        },AppSettings.NAVIGATION_UPDATE_DELAY, AppSettings.NAVIGATION_UPDATE_INTERVAL)
+        },ApplicationSettings.NAVIGATION_UPDATE_DELAY, ApplicationSettings.NAVIGATION_UPDATE_INTERVAL)
     }
 
     /** Navigation update */
@@ -507,7 +507,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
             val distance = results[0]
 
             // If destination is visible, point directly to it
-            if (distance < AppSettings.AR_VISIBILITY_DISTANCE) {
+            if (distance < ApplicationSettings.AR_VISIBILITY_DISTANCE) {
                 navigationArrowNode.pointDirectlyToWaypoint = true
                 navigationArrowNode.currentWaypoint = destination!!.getNode()!!
                 navigationArrowNode.distanceFromCurrentWaypointToDestination = 0.0
@@ -587,7 +587,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
     private fun destinationReached(): Boolean {
         // If current waypoint is the destination and the distance is within the reached destination radius, return true
         return  navigationArrowNode.currentWaypoint == destination!!.getNode() &&
-                navigationArrowNode.distanceToCurrentWaypoint < AppSettings.USER_WITHIN_DESTINATION_RADIUS
+                navigationArrowNode.distanceToCurrentWaypoint < ApplicationSettings.USER_WITHIN_DESTINATION_RADIUS
     }
 
     /**
@@ -600,7 +600,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
         if (currentWaypointAnchorNode != null && userPositionNotNull()) {
 
             // Check if user is within a radius of the current waypoint
-            val userIsCloseEnoughToCurrentWaypoint = navigationArrowNode.distanceToCurrentWaypoint < AppSettings.USER_WITHIN_WAYPOINT_RADIUS
+            val userIsCloseEnoughToCurrentWaypoint = navigationArrowNode.distanceToCurrentWaypoint < ApplicationSettings.USER_WITHIN_WAYPOINT_RADIUS
 
             // Make sure that the current waypoint isn't the final waypoint
             val currentWaypointIsNotFinalWaypoint = currentWaypointIndex < waypoints.size - 1

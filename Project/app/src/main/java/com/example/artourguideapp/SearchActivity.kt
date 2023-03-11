@@ -17,10 +17,13 @@ import com.example.artourguideapp.entities.*
  */
 class SearchActivity : AppCompatActivity() {
 
+    /**
+     * SearchActivity Companion
+     */
     companion object {
         lateinit var structureListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-        var controller: Controller = Controller()
-        var originalEntities: ArrayList<Entity> = ArrayList(controller.getEntities())
+        var entityController: EntityController = EntityController()
+        var originalEntities: ArrayList<Entity> = ArrayList(entityController.getEntities())
         var currentEntities: ArrayList<Entity> = ArrayList()
     }
 
@@ -39,7 +42,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // handle search
-        originalEntities = ArrayList(controller.getEntities())
+        originalEntities = ArrayList(entityController.getEntities())
 
         currentEntities.clear()
         currentEntities.addAll(originalEntities)
@@ -73,7 +76,7 @@ class SearchActivity : AppCompatActivity() {
         currentEntities.addAll(originalEntities)
 
         val searchQuery = findViewById<EditText>(R.id.searchText).text.toString().split(' ')
-        val searchIndex = controller.getSearchIndex()
+        val searchIndex = entityController.getSearchIndex()
         var searchResults = ArrayList<Int>()
 
         for (token in searchQuery) {

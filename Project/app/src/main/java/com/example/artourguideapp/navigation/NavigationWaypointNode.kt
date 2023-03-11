@@ -1,7 +1,7 @@
 package com.example.artourguideapp.navigation
 
 import android.app.Activity
-import com.example.artourguideapp.AppSettings
+import com.example.artourguideapp.ApplicationSettings
 import com.example.artourguideapp.R
 import com.google.ar.sceneform.FrameTime
 import com.google.ar.sceneform.Node
@@ -30,8 +30,8 @@ class NavigationWaypointNode(activity: Activity): Node() {
             }
 
         // Set scale
-        worldScale = AppSettings.WAYPOINT_SCALE
-        localPosition.y = AppSettings.WAYPOINT_HEIGHT
+        worldScale = ApplicationSettings.WAYPOINT_SCALE
+        localPosition.y = ApplicationSettings.WAYPOINT_HEIGHT
     }
 
     override fun onActivate() {
@@ -55,8 +55,8 @@ class NavigationWaypointNode(activity: Activity): Node() {
             return
         }
 
-        if (localPosition.y != AppSettings.WAYPOINT_HEIGHT) {
-            localPosition.y = AppSettings.WAYPOINT_HEIGHT
+        if (localPosition.y != ApplicationSettings.WAYPOINT_HEIGHT) {
+            localPosition.y = ApplicationSettings.WAYPOINT_HEIGHT
         }
     }
 }
