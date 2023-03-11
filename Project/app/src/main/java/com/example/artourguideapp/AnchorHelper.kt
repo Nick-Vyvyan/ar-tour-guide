@@ -15,9 +15,12 @@ import com.google.ar.sceneform.ArSceneView
  */
 class AnchorHelper {
     companion object {
+
+        /** Before anchors are placed, do "initial updates". After initial anchors are placed, slow down
+         *  frequency of updates to "secondary updates." Both functions do the same thing but secondary
+         *  doesn't update as frequently */
         var initialAnchorsPlaced = false
 
-        
         /**
          * wrapper function used to set/update/remove anchors in an [ArSceneView] for a list of given [Entity] objects
          *

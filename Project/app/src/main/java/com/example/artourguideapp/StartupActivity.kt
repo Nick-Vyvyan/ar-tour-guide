@@ -163,7 +163,7 @@ class StartupActivity : AppCompatActivity() {
     private fun loadDummyEntitiesAndStart() {
         var controller = Controller()
         DummyEntities.initialize(this)
-        controller.setEntities(DummyEntities.entityList)
+        controller.setEntities(DummyEntities.getEntityList())
         startArActivity()
     }
 

@@ -122,7 +122,7 @@ abstract class Entity(
      *
      * @return Entity dialog fragment
      */
-    fun getDialogFragment(): DialogFragment {
+    fun getDialogFragment(): EntityDialogFragment {
         return dialogFragment
     }
 

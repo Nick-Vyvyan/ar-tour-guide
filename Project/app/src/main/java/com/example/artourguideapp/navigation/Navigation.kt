@@ -1,7 +1,6 @@
 package com.example.artourguideapp.navigation
 
 import android.location.Location
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -614,11 +613,7 @@ class Navigation private constructor(private var arSceneView: ArSceneView,
                 val distanceFromUserToNextWaypoint = Vector3.subtract(nextWaypointAnchorNode!!.worldPosition, arSceneView.scene.camera.worldPosition).length()
                 val distanceFromCurrentToNextWaypoint = Vector3.subtract(nextWaypointAnchorNode!!.worldPosition, currentWaypointAnchorNode!!.worldPosition).length()
                 userIsCloserToNewWaypointThanCurrent = distanceFromCurrentToNextWaypoint > distanceFromUserToNextWaypoint
-                Log.d("NAVIGATION", "distance from user to next = $distanceFromUserToNextWaypoint\ndistance from current to next = $distanceFromCurrentToNextWaypoint")
-
             }
-
-            Log.d("NAVIGATION", "closer to next = $userIsCloserToNewWaypointThanCurrent\nclose enough to current = $userIsCloseEnoughToCurrentWaypoint")
 
             val shouldAdvanceToNextWaypoint = (userIsCloserToNewWaypointThanCurrent || userIsCloseEnoughToCurrentWaypoint) && currentWaypointIsNotFinalWaypoint
 

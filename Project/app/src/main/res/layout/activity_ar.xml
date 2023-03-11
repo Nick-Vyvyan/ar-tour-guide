@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/ar_activity_layout"
     tools:context=".ArActivity">
 
     <com.google.ar.sceneform.ArSceneView
@@ -82,15 +83,15 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#00000000"
             android:clickable="true"
+            android:visibility="visible"
             app:borderWidth="0dp"
             app:elevation="0dp"
-            android:visibility="visible"
             app:fabCustomSize="36dp"
             app:fabSize="normal"
             app:maxImageSize="36dp"
             app:rippleColor="@color/black"
-            app:tint="@color/white"
-            app:srcCompat="@drawable/ic_baseline_cancel_24" />
+            app:srcCompat="@drawable/ic_baseline_cancel_24"
+            app:tint="@color/white" />
 
     </LinearLayout>
 
@@ -101,7 +102,7 @@
         android:backgroundTint="?attr/colorSecondary"
         android:text="@string/ar_tour_next"
         android:textAppearance="@style/ButtonText"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/start_tour_fab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -158,7 +159,7 @@
         app:tint="@color/white" />
 
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/copyrightsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

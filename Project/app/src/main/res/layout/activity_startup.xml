@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     android:backgroundTint="@color/black"
+    android:id="@+id/startup_activity_layout"
     tools:context=".StartupActivity">
 
     <TextView

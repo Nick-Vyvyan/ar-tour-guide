@@ -12,6 +12,8 @@ import java.io.DataOutputStream
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * This class serves as a placeholder and/or alternative for the BuildingEntities loaded in
@@ -303,7 +305,17 @@ class DummyEntities{
                 environmentalStudies,
                 house1, house2, house3, house4, house5,
                 stairsToNowhere, slowhouse)
-        var entityList = ArrayList<Entity>(entityArray)
+        private var entityList = ArrayList<Entity>(entityArray)
+
+        fun getEntityList(): MutableList<Entity> {
+            var newList = mutableListOf<Entity>()
+
+            for (entity in entityList) {
+                newList.add(entity)
+            }
+
+            return newList
+        }
 
         fun initialize(activity: AppCompatActivity) {
             for (entity in entityList) {

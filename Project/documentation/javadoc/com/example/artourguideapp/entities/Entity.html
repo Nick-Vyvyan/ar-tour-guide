@@ -190,7 +190,7 @@ public abstract class <span class="typeNameLabel"><a href=Entity.html>Entity</a>
                                         
                                             <tr class="altColor">
                                                 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a
-                                                        href="#Entity(String,String,Location,EntityData,Integer)">Entity</a></span>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> name, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> url, <a href=https://developer.android.com/reference/kotlin/android/location/Location.html>Location</a> centralLocation, <a href=EntityData.html>EntityData</a> entityData, <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> searchId)</code></th>
+                                                        href="#Entity(String,String,LatLng,EntityData,Integer)">Entity</a></span>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> name, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> url, LatLng latLng, <a href=EntityData.html>EntityData</a> entityData, <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> searchId)</code></th>
                                                 <td class="colLast">Construct an <a href=Entity.html>Entity</a></td>
                                             </tr>
                                         
@@ -292,23 +292,23 @@ public abstract class <span class="typeNameLabel"><a href=Entity.html>Entity</a>
                                         </tr>
                                         
                                         <tr id="i6" class="altColor">
-                                            <td class="colFirst"><code>final <a href=https://developer.android.com/reference/kotlin/android/location/Location.html>Location</a></code>
+                                            <td class="colFirst"><code>final LatLng</code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=LandmarkEntity.html#getCentralLocation()>getCentralLocation</a>() </code>
+                                            <th class="colSecond" scope="row"><code><a href=LandmarkEntity.html#getLatLng()>getLatLng</a>() </code>
                                             </th>
-                                            <td class="colLast">Get central location</td>
+                                            <td class="colLast">Get entity's latitude and longitude</td>
                                         </tr>
                                         
                                         <tr id="i7" class="rowColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=LandmarkEntity.html#setLocation(Double,Double)>setLocation</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Double.html>Double</a> latitude, <a href=https://developer.android.com/reference/kotlin/java/lang/Double.html>Double</a> longitude) </code>
+                                            <th class="colSecond" scope="row"><code><a href=LandmarkEntity.html#setLatLng(Double,Double)>setLatLng</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Double.html>Double</a> latitude, <a href=https://developer.android.com/reference/kotlin/java/lang/Double.html>Double</a> longitude) </code>
                                             </th>
-                                            <td class="colLast">Set location</td>
+                                            <td class="colLast">Set latitude and longitude</td>
                                         </tr>
                                         
                                         <tr id="i8" class="altColor">
-                                            <td class="colFirst"><code>final <a href=https://developer.android.com/reference/kotlin/androidx/fragment/app/DialogFragment.html>DialogFragment</a></code>
+                                            <td class="colFirst"><code>final <a href=EntityDialogFragment.html>EntityDialogFragment</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=LandmarkEntity.html#getDialogFragment()>getDialogFragment</a>() </code>
                                             </th>
@@ -378,11 +378,11 @@ public abstract class <span class="typeNameLabel"><a href=Entity.html>Entity</a>
                             </a>
                                 <h3>Constructor Detail</h3>
                                 
-                                <a name="Entity(String,String,Location,EntityData,Integer)"></a>
+                                <a name="Entity(String,String,LatLng,EntityData,Integer)"></a>
                                 <ul class="blockList">
                                     <li class="blockList">
                                         <h4>Entity</h4>
-                                        <pre>Entity(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> name, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> url, <a href=https://developer.android.com/reference/kotlin/android/location/Location.html>Location</a> centralLocation, <a href=EntityData.html>EntityData</a> entityData, <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> searchId)</pre>
+                                        <pre>Entity(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> name, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> url, LatLng latLng, <a href=EntityData.html>EntityData</a> entityData, <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> searchId)</pre>
                                         <div class="block">Construct an <a href=Entity.html>Entity</a></div>
                                         
                                         <dl>
@@ -397,7 +397,7 @@ public abstract class <span class="typeNameLabel"><a href=Entity.html>Entity</a>
                                             
                                             
                                             
-                                            <dd><code>centralLocation</code> - Entity location</dd>
+                                            <dd><code>latLng</code> - Entity latitude and longitude</dd>
                                             
                                             
                                             
@@ -525,31 +525,31 @@ public abstract class <span class="typeNameLabel"><a href=Entity.html>Entity</a>
                                     </li>
                                 </ul>
                                 
-                                <a id="getCentralLocation()">
+                                <a id="getLatLng()">
                                     <!--   -->
                                 </a>
                                 <ul class=
                                               "blockList"
                                           >
                                     <li class="blockList">
-                                        <h4>getCentralLocation</h4>
-                                        <pre class="methodSignature"> final <a href=https://developer.android.com/reference/kotlin/android/location/Location.html>Location</a> <a href=LandmarkEntity.html#getCentralLocation()>getCentralLocation</a>()</pre>
-                                        <div class="block"><p>Get central location</p></div>
+                                        <h4>getLatLng</h4>
+                                        <pre class="methodSignature"> final LatLng <a href=LandmarkEntity.html#getLatLng()>getLatLng</a>()</pre>
+                                        <div class="block"><p>Get entity's latitude and longitude</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
                                 </ul>
                                 
-                                <a id="setLocation(Double,Double)">
+                                <a id="setLatLng(Double,Double)">
                                     <!--   -->
                                 </a>
                                 <ul class=
                                               "blockList"
                                           >
                                     <li class="blockList">
-                                        <h4>setLocation</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=LandmarkEntity.html#setLocation(Double,Double)>setLocation</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Double.html>Double</a> latitude, <a href=https://developer.android.com/reference/kotlin/java/lang/Double.html>Double</a> longitude)</pre>
-                                        <div class="block"><p>Set location</p></div>
+                                        <h4>setLatLng</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=LandmarkEntity.html#setLatLng(Double,Double)>setLatLng</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Double.html>Double</a> latitude, <a href=https://developer.android.com/reference/kotlin/java/lang/Double.html>Double</a> longitude)</pre>
+                                        <div class="block"><p>Set latitude and longitude</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -576,7 +576,7 @@ public abstract class <span class="typeNameLabel"><a href=Entity.html>Entity</a>
                                           >
                                     <li class="blockList">
                                         <h4>getDialogFragment</h4>
-                                        <pre class="methodSignature"> final <a href=https://developer.android.com/reference/kotlin/androidx/fragment/app/DialogFragment.html>DialogFragment</a> <a href=LandmarkEntity.html#getDialogFragment()>getDialogFragment</a>()</pre>
+                                        <pre class="methodSignature"> final <a href=EntityDialogFragment.html>EntityDialogFragment</a> <a href=LandmarkEntity.html#getDialogFragment()>getDialogFragment</a>()</pre>
                                         <div class="block"><p>Get dialog fragment</p></div>
                                         
                                         <!-- TODO missing return annotation -->

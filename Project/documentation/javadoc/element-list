@@ -5,9 +5,6 @@ $dokka.location:com.example.artourguideapp.entities/EntityListFragment.Companion
 $dokka.location:com.example.artourguideapp.entities/MyEntityListRecyclerViewAdapter.ViewHolder///PointingToDeclaration/com/example/artourguideapp/entities/MyEntityListRecyclerViewAdapter.ViewHolder.html
 $dokka.location:com.example.artourguideapp.navigation/Navigation.Companion///PointingToDeclaration/com/example/artourguideapp/navigation/Navigation.Companion.html
 $dokka.location:com.example.artourguideapp.navigation/Tour.Companion///PointingToDeclaration/com/example/artourguideapp/navigation/Tour.Companion.html
-$dokka.location:com.example.artourguideapp.previouswork/CampusWaypoints.Companion///PointingToDeclaration/com/example/artourguideapp/previouswork/CampusWaypoints.Companion.html
-$dokka.location:com.example.artourguideapp.previouswork/DummyWaypoints.Companion///PointingToDeclaration/com/example/artourguideapp/previouswork/DummyWaypoints.Companion.html
-$dokka.location:com.example.artourguideapp.previouswork/PathFactory.Companion///PointingToDeclaration/com/example/artourguideapp/previouswork/PathFactory.Companion.html
 $dokka.location:com.example.artourguideapp/AnchorHelper.Companion///PointingToDeclaration/com/example/artourguideapp/AnchorHelper.Companion.html
 $dokka.location:com.example.artourguideapp/AppSettings.Companion///PointingToDeclaration/com/example/artourguideapp/AppSettings.Companion.html
 $dokka.location:com.example.artourguideapp/ArSessionFactory.Companion///PointingToDeclaration/com/example/artourguideapp/ArSessionFactory.Companion.html
@@ -16,5 +13,4 @@ $dokka.location:com.example.artourguideapp/SearchActivity.Companion///PointingTo
 com.example.artourguideapp
 com.example.artourguideapp.entities
 com.example.artourguideapp.navigation
-com.example.artourguideapp.previouswork
 

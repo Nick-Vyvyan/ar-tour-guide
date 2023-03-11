@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.LatLng
  * It contains a [BuildingDialogFragment] that displays information about this object.
  * @constructor Create a BuildingEntity by providing a location, building data, and search ID
  *
- * @param location Building location
+ * @param latLng Building latitude and longitude
  * @param buildingData Building data
  * @param searchId Search ID
  */

@@ -190,7 +190,7 @@ extends <a href=Entity.html>Entity</a>
                                         
                                             <tr class="altColor">
                                                 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a
-                                                        href="#BuildingEntity(Location,BuildingData,Integer)">BuildingEntity</a></span>(<a href=https://developer.android.com/reference/kotlin/android/location/Location.html>Location</a> location, <a href=BuildingData.html>BuildingData</a> buildingData, <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> searchId)</code></th>
+                                                        href="#BuildingEntity(LatLng,BuildingData,Integer)">BuildingEntity</a></span>(LatLng latLng, <a href=BuildingData.html>BuildingData</a> buildingData, <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> searchId)</code></th>
                                                 <td class="colLast">Create a BuildingEntity by providing a location, building data, and search ID</td>
                                             </tr>
                                         
@@ -252,7 +252,7 @@ extends <a href=Entity.html>Entity</a>
                                             <!--   -->
                                         </a>
                                             <h3>Methods inherited from class&nbsp;com.example.artourguideapp.entities.Entity</h3>
-                                            <code>clearAsDestination, getCentralLocation, getDialogFragment, getEntityData, getName, getNode, getSearchId, getURL, initNode, isDestination, nodeIsAttached, setAsDestination, setLocation</code></li>
+                                            <code>clearAsDestination, getDialogFragment, getEntityData, getLatLng, getName, getNode, getSearchId, getURL, initNode, isDestination, nodeIsAttached, setAsDestination, setLatLng</code></li>
                                  
                                     <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
                                         <!--   -->
@@ -280,18 +280,18 @@ extends <a href=Entity.html>Entity</a>
                             </a>
                                 <h3>Constructor Detail</h3>
                                 
-                                <a name="BuildingEntity(Location,BuildingData,Integer)"></a>
+                                <a name="BuildingEntity(LatLng,BuildingData,Integer)"></a>
                                 <ul class="blockList">
                                     <li class="blockList">
                                         <h4>BuildingEntity</h4>
-                                        <pre>BuildingEntity(<a href=https://developer.android.com/reference/kotlin/android/location/Location.html>Location</a> location, <a href=BuildingData.html>BuildingData</a> buildingData, <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> searchId)</pre>
+                                        <pre>BuildingEntity(LatLng latLng, <a href=BuildingData.html>BuildingData</a> buildingData, <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> searchId)</pre>
                                         <div class="block">Create a BuildingEntity by providing a location, building data, and search ID</div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
                                             
                                             
-                                            <dd><code>location</code> - Building location</dd>
+                                            <dd><code>latLng</code> - Building latitude and longitude</dd>
                                             
                                             
                                             
