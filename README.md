@@ -7,3 +7,5 @@ Currently, the primary options for getting a tour of Western Washington Universi
 **Our team's Google Drive for use by future teams:** https://drive.google.com/drive/folders/1VvjXP6k3vRIRpspx2XTSL9UOtjW2jRw6
 
 *(Contains all necessary documentation and information needed in order to set up the project)*
+
+repo questions can be emailed to: vyvyannick@gmail.com
