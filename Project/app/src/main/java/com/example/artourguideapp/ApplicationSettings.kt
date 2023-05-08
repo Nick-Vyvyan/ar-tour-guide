@@ -10,8 +10,8 @@ object ApplicationSettings {
     const val PERMISSION_REQUEST_CODE = 12345
 
     /** Start with dummy entities (T/F) */
-        const val LOAD_DUMMY_ENTITIES = true
-//    const val LOAD_DUMMY_ENTITIES: Boolean = false
+//        const val LOAD_DUMMY_ENTITIES = true
+    const val LOAD_DUMMY_ENTITIES: Boolean = false
 
     //region AnchorHelper
 
